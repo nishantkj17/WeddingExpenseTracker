@@ -128,22 +128,6 @@
                         <label for="category">Category</label>
                         <input type="text" id="category" list="categoryList" required placeholder="Select or type new category">
                         <datalist id="categoryList">
-                            <option value="Venue">
-                            <option value="Catering">
-                            <option value="Photography">
-                            <option value="Videography">
-                            <option value="Flowers & Decorations">
-                            <option value="Music & Entertainment">
-                            <option value="Wedding Dress">
-                            <option value="Suit/Tuxedo">
-                            <option value="Rings">
-                            <option value="Jewellery">
-                            <option value="Invitations">
-                            <option value="Wedding Cake">
-                            <option value="Transportation">
-                            <option value="Accommodation">
-                            <option value="Favors & Gifts">
-                            <option value="Other">
                         </datalist>
                     </div>
                     <div class="form-group">
@@ -159,12 +143,6 @@
                         <label for="paidBy">Paid By</label>
                         <input type="text" id="paidBy" list="paidByList" required placeholder="Who paid?">
                         <datalist id="paidByList">
-                            <option value="Bride">
-                            <option value="Groom">
-                            <option value="Bride's Family">
-                            <option value="Groom's Family">
-                            <option value="Joint">
-                            <option value="Other">
                         </datalist>
                     </div>
                 </div>
@@ -182,8 +160,12 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="cost">Cost</label>
+                        <label for="cost" id="costLabel">Cost</label>
                         <input type="number" id="cost" step="0.01" required placeholder="0.00">
+                    </div>
+                    <div class="form-group" id="totalCostDisplay" style="display: none;">
+                        <label>Total Cost</label>
+                        <input type="text" id="totalCost" readonly style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="0.00">
                     </div>
                 </div>
 
@@ -226,25 +208,9 @@
             </div>
             <div class="section-content collapsed">
                 <div class="filter-section">
-                    <input type="text" id="filterCategory" list="filterCategoryList" placeholder="Filter by category...">
-                    <datalist id="filterCategoryList">
-                        <option value="">
-                        <option value="Venue">
-                        <option value="Catering">
-                        <option value="Photography">
-                        <option value="Videography">
-                        <option value="Flowers & Decorations">
-                        <option value="Music & Entertainment">
-                        <option value="Wedding Dress">
-                        <option value="Suit/Tuxedo">
-                        <option value="Rings">
-                        <option value="Invitations">
-                        <option value="Wedding Cake">
-                        <option value="Transportation">
-                        <option value="Accommodation">
-                        <option value="Favors & Gifts">
-                        <option value="Other">
-                    </datalist>
+                    <input type="text" id="filterCategory" placeholder="🔍 Search expenses (description, category, paid by...)">
+                    <input type="text" id="filterPaidBy" list="paidByFilterList" placeholder="💰 Filter by Paid By...">
+                    <datalist id="paidByFilterList"></datalist>
                 </div>
                 <div id="expensesList" class="expenses-list" style="max-height: 65vh; overflow-y: auto;">
                     <!-- Expenses will be dynamically loaded here -->

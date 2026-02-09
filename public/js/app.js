@@ -1,25 +1,7 @@
 const API_URL = '/api';
 
 let currentEditId = null;
-
-// Category to SubCategory mapping
-const categorySubCategories = {
-    'Jewellery': ['Gold', 'Silver', 'Platinum', 'Diamond', 'Kundan', 'Polki', 'Other'],
-    'Venue': ['Indoor', 'Outdoor', 'Garden', 'Banquet Hall', 'Hotel', 'Beach', 'Other'],
-    'Catering': ['Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Desserts', 'Beverages', 'Other'],
-    'Photography': ['Pre-Wedding', 'Wedding Day', 'Reception', 'Candid', 'Traditional', 'Other'],
-    'Videography': ['Pre-Wedding', 'Wedding Day', 'Reception', 'Cinematic', 'Traditional', 'Other'],
-    'Flowers & Decorations': ['Stage', 'Entrance', 'Hall', 'Tables', 'Car', 'Mandap', 'Other'],
-    'Music & Entertainment': ['DJ', 'Band', 'Singer', 'Dancers', 'MC', 'Sound System', 'Other'],
-    'Wedding Dress': ['Bridal Lehenga', 'Bridal Saree', 'Gown', 'Accessories', 'Alterations', 'Other'],
-    'Suit/Tuxedo': ['Sherwani', 'Suit', 'Indo-Western', 'Accessories', 'Alterations', 'Other'],
-    'Rings': ['Engagement Ring', 'Wedding Band', 'Engraving', 'Other'],
-    'Invitations': ['Physical Cards', 'Digital Invites', 'Envelopes', 'Printing', 'Other'],
-    'Wedding Cake': ['Main Cake', 'Dessert Table', 'Cupcakes', 'Other'],
-    'Transportation': ['Bridal Car', 'Guest Transport', 'Valet Service', 'Other'],
-    'Accommodation': ['Guest Rooms', 'Bridal Suite', 'Groom Suite', 'Other'],
-    'Favors & Gifts': ['Guest Favors', 'Return Gifts', 'Welcome Kits', 'Other']
-};
+let allExpenses = [];
 
 // DOM Elements
 const budgetInput = document.getElementById('budgetInput');
@@ -91,14 +73,99 @@ function setupEventListeners() {
     expenseForm.addEventListener('submit', handleFormSubmit);
     cancelEditBtn.addEventListener('click', cancelEdit);
     filterCategory.addEventListener('input', filterExpenses);
+    document.getElementById('filterPaidBy').addEventListener('input', filterExpenses);
     
     // Toggle remaining payment section
     document.getElementById('hasRemaining').addEventListener('change', function(e) {
-        document.getElementById('remainingPaymentSection').style.display = e.target.checked ? 'block' : 'none';
+        const isChecked = e.target.checked;
+        document.getElementById('remainingPaymentSection').style.display = isChecked ? 'block' : 'none';
+        
+        // Update label and show/hide total cost display
+        const costLabel = document.getElementById('costLabel');
+        const totalCostDisplay = document.getElementById('totalCostDisplay');
+        
+        if (isChecked) {
+            costLabel.textContent = 'Advance Payment';
+            totalCostDisplay.style.display = 'block';
+            updateTotalCost();
+        } else {
+            costLabel.textContent = 'Cost';
+            totalCostDisplay.style.display = 'none';
+        }
     });
+    
+    // Update total cost when advance or remaining amounts change
+    document.getElementById('cost').addEventListener('input', updateTotalCost);
+    document.getElementById('remainingAmount').addEventListener('input', updateTotalCost);
     
     // Update subcategory options when category changes
     document.getElementById('category').addEventListener('input', updateSubCategories);
+    
+    // Fix dropdown usability - clear field on click to show all options
+    const dropdownInputs = ['category', 'subCategory', 'paidBy', 'filterPaidBy'];
+    dropdownInputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('click', function() {
+                this.value = '';
+                this.focus();
+            });
+        }
+    });
+}
+
+// Update total cost display
+function updateTotalCost() {
+    const hasRemaining = document.getElementById('hasRemaining').checked;
+    if (hasRemaining) {
+        const advance = parseFloat(document.getElementById('cost').value) || 0;
+        const remaining = parseFloat(document.getElementById('remainingAmount').value) || 0;
+        const total = advance + remaining;
+        document.getElementById('totalCost').value = formatCurrency(total);
+    }
+}
+
+// Populate dropdowns from actual expense data
+function populateDropdowns() {
+    const categories = [...new Set(allExpenses.map(e => e.category).filter(c => c))];
+    const subCategories = [...new Set(allExpenses.map(e => e.subCategory).filter(c => c))];
+    const paidByOptions = [...new Set(allExpenses.map(e => e.paidBy).filter(c => c))];
+    
+    // Populate category dropdown
+    const categoryList = document.getElementById('categoryList');
+    categoryList.innerHTML = '';
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        categoryList.appendChild(option);
+    });
+    
+    // Populate subcategory dropdown
+    const subCategoryList = document.getElementById('subCategoryList');
+    subCategoryList.innerHTML = '';
+    subCategories.forEach(subCat => {
+        const option = document.createElement('option');
+        option.value = subCat;
+        subCategoryList.appendChild(option);
+    });
+    
+    // Populate paidBy dropdown
+    const paidByList = document.getElementById('paidByList');
+    paidByList.innerHTML = '';
+    paidByOptions.forEach(person => {
+        const option = document.createElement('option');
+        option.value = person;
+        paidByList.appendChild(option);
+    });
+    
+    // Populate paidBy filter dropdown
+    const paidByFilterList = document.getElementById('paidByFilterList');
+    paidByFilterList.innerHTML = '';
+    paidByOptions.forEach(person => {
+        const option = document.createElement('option');
+        option.value = person;
+        paidByFilterList.appendChild(option);
+    });
 }
 
 // Update subcategory datalist based on selected category
@@ -107,12 +174,19 @@ function updateSubCategories() {
     const subCategoryList = document.getElementById('subCategoryList');
     const subCategoryInput = document.getElementById('subCategory');
     
+    // Filter subcategories by selected category from actual data
+    const relevantSubCategories = [...new Set(
+        allExpenses
+            .filter(e => e.category === category && e.subCategory)
+            .map(e => e.subCategory)
+    )];
+    
     // Clear existing options
     subCategoryList.innerHTML = '';
     
-    // If category has predefined subcategories, populate them
-    if (categorySubCategories[category]) {
-        categorySubCategories[category].forEach(subCat => {
+    // Populate with relevant subcategories
+    if (relevantSubCategories.length > 0) {
+        relevantSubCategories.forEach(subCat => {
             const option = document.createElement('option');
             option.value = subCat;
             subCategoryList.appendChild(option);
@@ -129,7 +203,11 @@ async function loadData() {
         const response = await fetch(`${API_URL}/expenses`);
         const data = await response.json();
         
+        allExpenses = data.expenses || [];
         budgetInput.value = data.budget;
+        
+        // Populate dropdowns from actual data
+        populateDropdowns();
         
         // Load money received values if they exist
         if (data.moneyReceived) {
@@ -163,8 +241,8 @@ async function loadSummary() {
             if (!paidByPerson[payer]) {
                 paidByPerson[payer] = 0;
             }
-            // Only count the paid amount (cost - remaining)
-            const paidAmount = expense.cost - (expense.remainingPayment?.amount || 0);
+            // Count only the advance payment (what they've actually paid)
+            const paidAmount = expense.cost;
             paidByPerson[payer] += paidAmount;
         });
         
@@ -228,16 +306,31 @@ async function loadSummary() {
 }
 
 // Load expenses
-async function loadExpenses(filterCat = '') {
+async function loadExpenses(searchKeyword = '', paidByFilter = '') {
     try {
         const response = await fetch(`${API_URL}/expenses`);
         const data = await response.json();
         
         let expenses = data.expenses;
         
-        // Filter by category if specified
-        if (filterCat) {
-            expenses = expenses.filter(e => e.category === filterCat);
+        // Filter by keyword search across all fields
+        if (searchKeyword) {
+            const keyword = searchKeyword.toLowerCase();
+            expenses = expenses.filter(e => {
+                return (
+                    (e.category && e.category.toLowerCase().includes(keyword)) ||
+                    (e.subCategory && e.subCategory.toLowerCase().includes(keyword)) ||
+                    (e.description && e.description.toLowerCase().includes(keyword)) ||
+                    (e.paidBy && e.paidBy.toLowerCase().includes(keyword)) ||
+                    (e.cost && e.cost.toString().includes(keyword))
+                );
+            });
+        }
+        
+        // Filter by Paid By
+        if (paidByFilter) {
+            const paidBy = paidByFilter.toLowerCase();
+            expenses = expenses.filter(e => e.paidBy && e.paidBy.toLowerCase().includes(paidBy));
         }
         
         displayExpenses(expenses);
@@ -273,10 +366,10 @@ function displayExpenses(expenses) {
                 <div style="min-width: 0;">
                     <div style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${expense.description}</div>
                     <div style="font-size: 0.7rem; color: var(--text-light);">${expense.paidBy} • ${formatDate(expense.date)}</div>
-                    ${expense.hasRemaining && expense.remainingPayment ? `<div style="font-size: 0.7rem; color: var(--secondary-color);">Bal: ${formatCurrency(expense.remainingPayment.amount)}</div>` : ''}
+                    ${expense.hasRemaining && expense.remainingPayment ? `<div style="font-size: 0.7rem; color: var(--secondary-color);">Remaining: ${formatCurrency(expense.remainingPayment.amount)}</div>` : ''}
                 </div>
                 <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary-color); white-space: nowrap;">
-                    ${formatCurrency(expense.cost)}
+                    ${expense.hasRemaining ? `<div style="font-size: 0.65rem; color: var(--text-light);">Advance</div>${formatCurrency(expense.cost)}` : formatCurrency(expense.cost)}
                 </div>
                 <div style="display: flex; gap: 3px;">
                     <button class="btn btn-icon btn-edit" onclick="editExpense('${expense.id}')" title="Edit" style="padding: 4px 6px; font-size: 0.85rem;">✏️</button>
@@ -432,7 +525,33 @@ async function editExpense(id) {
         document.getElementById('subCategory').value = expense.subCategory || '';
         
         // Toggle remaining payment section if needed
-        document.getElementById('remainingPaymentSection').style.display = expense.hasRemaining ? 'block' : 'none';
+        const hasRemaining = expense.hasRemaining;
+        document.getElementById('remainingPaymentSection').style.display = hasRemaining ? 'block' : 'none';
+        
+        // Update labels and total cost display
+        const costLabel = document.getElementById('costLabel');
+        const totalCostDisplay = document.getElementById('totalCostDisplay');
+        
+        if (hasRemaining) {
+            costLabel.textContent = 'Advance Payment';
+            totalCostDisplay.style.display = 'block';
+        } else {
+            costLabel.textContent = 'Cost';
+            totalCostDisplay.style.display = 'none';
+        }
+        
+        // Populate remaining payment details if they exist
+        if (hasRemaining && expense.remainingPayment) {
+            document.getElementById('remainingAmount').value = expense.remainingPayment.amount || '';
+            document.getElementById('remainingDate').value = expense.remainingPayment.date || '';
+            document.getElementById('remainingNotes').value = expense.remainingPayment.notes || '';
+            updateTotalCost();
+        } else {
+            // Clear remaining payment fields if no remaining payment
+            document.getElementById('remainingAmount').value = '';
+            document.getElementById('remainingDate').value = '';
+            document.getElementById('remainingNotes').value = '';
+        }
         
         currentEditId = id;
         cancelEditBtn.style.display = 'inline-block';
@@ -442,7 +561,7 @@ async function editExpense(id) {
         submitBtn.textContent = 'Update Expense';
         
         // Expand the Add New Expense section if collapsed
-        const addExpenseSection = document.querySelector('.collapsible-section:nth-child(2)');
+        const addExpenseSection = expenseForm.closest('.collapsible-section');
         const sectionHeader = addExpenseSection.querySelector('.section-header');
         const sectionContent = addExpenseSection.querySelector('.section-content');
         if (sectionContent.classList.contains('collapsed')) {
@@ -464,6 +583,10 @@ function cancelEdit() {
     document.getElementById('remainingPaymentSection').style.display = 'none';
     currentEditId = null;
     cancelEditBtn.style.display = 'none';
+    
+    // Reset labels and total cost display
+    document.getElementById('costLabel').textContent = 'Cost';
+    document.getElementById('totalCostDisplay').style.display = 'none';
     
     // Reset submit button text to "Add Expense"
     const submitBtn = expenseForm.querySelector('button[type="submit"]');
@@ -495,8 +618,9 @@ async function deleteExpense(id) {
 
 // Filter expenses
 function filterExpenses() {
-    const category = filterCategory.value;
-    loadExpenses(category);
+    const keyword = filterCategory.value;
+    const paidBy = document.getElementById('filterPaidBy').value;
+    loadExpenses(keyword, paidBy);
 }
 
 // Utility functions

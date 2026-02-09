@@ -189,7 +189,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500018",
+      "id": "1707500019",
       "category": "Bag",
       "subCategory": "Suitcase",
       "paidBy": "Mummy",
@@ -200,7 +200,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500019",
+      "id": "1707500020",
       "category": "Footwear",
       "subCategory": "Others",
       "paidBy": "Choti",
@@ -211,7 +211,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500020",
+      "id": "1707500021",
       "category": "Venue",
       "subCategory": "",
       "paidBy": "Ranjana",
@@ -222,7 +222,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500021",
+      "id": "1707500022",
       "category": "Misc",
       "subCategory": "",
       "paidBy": "Ranjana",
@@ -230,10 +230,11 @@
       "cost": 23000,
       "paid": true,
       "hasRemaining": false,
-      "date": "2026-02-09"
+      "date": "2026-02-09",
+      "parentId": null
     },
     {
-      "id": "1707500022",
+      "id": "1707500023",
       "category": "Wedding",
       "subCategory": "Invite",
       "paidBy": "Ranjana",
@@ -244,7 +245,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500023",
+      "id": "1707500024",
       "category": "Wedding",
       "subCategory": "Invite",
       "paidBy": "Mummy",
@@ -255,7 +256,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500024",
+      "id": "1707500025",
       "category": "Gift",
       "subCategory": "Groom",
       "paidBy": "Mummy",
@@ -266,7 +267,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500025",
+      "id": "1707500026",
       "category": "Gift",
       "subCategory": "Others",
       "paidBy": "Mummy",
@@ -277,7 +278,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500026",
+      "id": "1707500027",
       "category": "Outfit",
       "subCategory": "Bride",
       "paidBy": "Mummy",
@@ -288,7 +289,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500027",
+      "id": "1707500028",
       "category": "Outfit",
       "subCategory": "Bride",
       "paidBy": "Mummy",
@@ -299,7 +300,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500028",
+      "id": "1707500029",
       "category": "Outfit",
       "subCategory": "Bride",
       "paidBy": "Mummy",
@@ -310,7 +311,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500029",
+      "id": "1707500030",
       "category": "Outfit",
       "subCategory": "Bride",
       "paidBy": "Mummy",
@@ -321,7 +322,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500030",
+      "id": "1707500031",
       "category": "Outfit",
       "subCategory": "Bride",
       "paidBy": "Mummy",
@@ -332,7 +333,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500031",
+      "id": "1707500032",
       "category": "Footwear",
       "subCategory": "Bride",
       "paidBy": "Choti",
@@ -343,7 +344,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500032",
+      "id": "1707500033",
       "category": "Footwear",
       "subCategory": "Bride",
       "paidBy": "Choti",
@@ -354,7 +355,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500033",
+      "id": "1707500034",
       "category": "Outfit",
       "subCategory": "Groom",
       "paidBy": "Mummy",
@@ -365,7 +366,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500034",
+      "id": "1707500035",
       "category": "Outfit",
       "subCategory": "Others",
       "paidBy": "Mummy",
@@ -376,7 +377,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500035",
+      "id": "1707500036",
       "category": "Outfit",
       "subCategory": "Groom",
       "paidBy": "Mummy",
@@ -387,7 +388,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500036",
+      "id": "1707500037",
       "category": "Outfit",
       "subCategory": "Groom",
       "paidBy": "Mummy",
@@ -398,7 +399,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500037",
+      "id": "1707500038",
       "category": "Footwear",
       "subCategory": "Groom",
       "paidBy": "Choti",
@@ -409,7 +410,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500038",
+      "id": "1707500039",
       "category": "Outfit",
       "subCategory": "Groom",
       "paidBy": "Mummy",
@@ -420,7 +421,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500039",
+      "id": "1707500040",
       "category": "Outfit",
       "subCategory": "Others",
       "paidBy": "Mummy",
@@ -431,7 +432,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500040",
+      "id": "1707500041",
       "category": "Stiching",
       "subCategory": "Bride",
       "paidBy": "Choti",
@@ -442,7 +443,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500041",
+      "id": "1707500042",
       "category": "Stiching",
       "subCategory": "Others",
       "paidBy": "Mummy",
@@ -453,7 +454,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500042",
+      "id": "1707500043",
       "category": "Jwellery",
       "subCategory": "Artificial",
       "paidBy": "Choti",
@@ -464,7 +465,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500043",
+      "id": "1707500044",
       "category": "Gift",
       "subCategory": "Bride",
       "paidBy": "Ranjana",
@@ -475,7 +476,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500044",
+      "id": "1707500045",
       "category": "Bag",
       "subCategory": "Bride",
       "paidBy": "Ranjana",
@@ -486,7 +487,7 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500045",
+      "id": "1707500046",
       "category": "Misc",
       "subCategory": "",
       "paidBy": "Ranjana",
@@ -497,12 +498,12 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500046",
+      "id": "1707500047",
       "category": "Venue",
       "subCategory": "Venue",
       "paidBy": "Mummy",
       "description": "Rising Surya Hotel",
-      "cost": 15000,
+      "cost": 76000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -513,12 +514,12 @@
       }
     },
     {
-      "id": "1707500047",
+      "id": "1707500048",
       "category": "Venue",
       "subCategory": "Venue",
       "paidBy": "Mummy",
       "description": "Raaga Banquet Hall",
-      "cost": 50000,
+      "cost": 250680,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -529,7 +530,7 @@
       }
     },
     {
-      "id": "1707500048",
+      "id": "1707500049",
       "category": "Venue",
       "subCategory": "Venue",
       "paidBy": "Mummy",
@@ -540,12 +541,12 @@
       "date": "2026-02-09"
     },
     {
-      "id": "1707500049",
+      "id": "1707500050",
       "category": "Venue",
       "subCategory": "Food",
       "paidBy": "Mummy",
       "description": "Caterer",
-      "cost": 5000,
+      "cost": 105000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -556,12 +557,12 @@
       }
     },
     {
-      "id": "1707500050",
+      "id": "1707500051",
       "category": "Venue",
       "subCategory": "Decor",
       "paidBy": "Mummy",
       "description": "Pandal/Decoration/home/clubhouseGadda/Panka/Paani",
-      "cost": 5000,
+      "cost": 65200,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -572,12 +573,12 @@
       }
     },
     {
-      "id": "1707500051",
+      "id": "1707500052",
       "category": "Venue",
       "subCategory": "Decor",
       "paidBy": "Other",
       "description": "Decoration Raaga",
-      "cost": 0,
+      "cost": 100000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -588,12 +589,12 @@
       }
     },
     {
-      "id": "1707500052",
+      "id": "1707500053",
       "category": "Wedding",
       "subCategory": "Photography",
       "paidBy": "Mummy",
       "description": "Photography",
-      "cost": 18000,
+      "cost": 98000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -604,12 +605,12 @@
       }
     },
     {
-      "id": "1707500053",
+      "id": "1707500054",
       "category": "Venue",
       "subCategory": "Stay",
       "paidBy": "Other",
       "description": "Stay for Family",
-      "cost": 0,
+      "cost": 60000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -620,12 +621,12 @@
       }
     },
     {
-      "id": "1707500054",
+      "id": "1707500055",
       "category": "Wedding",
       "subCategory": "Mehndi",
       "paidBy": "Mummy",
       "description": "Mehendi Artist",
-      "cost": 1000,
+      "cost": 13000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -633,15 +634,16 @@
         "amount": 12000,
         "date": "",
         "notes": ""
-      }
+      },
+      "parentId": null
     },
     {
-      "id": "1707500055",
+      "id": "1707500056",
       "category": "Travel",
       "subCategory": "Car",
       "paidBy": "Other",
       "description": "Gaadi",
-      "cost": 0,
+      "cost": 15000,
       "paid": false,
       "hasRemaining": true,
       "date": "2026-02-09",
@@ -652,7 +654,7 @@
       }
     },
     {
-      "id": "1707500056",
+      "id": "1707500057",
       "category": "Wedding",
       "subCategory": "Misc",
       "paidBy": "Ranjana",
@@ -665,7 +667,7 @@
   ],
   "moneyReceived": {
     "ranjana": 350000,
-    "mummy": 0,
+    "mummy": 718554,
     "choti": 0
   },
   "guests": [
