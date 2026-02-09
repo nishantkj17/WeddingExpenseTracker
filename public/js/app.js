@@ -32,6 +32,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // Collapsible section functionality
 function toggleSection(header) {
     const content = header.nextElementSibling;
+    const isCurrentlyCollapsed = header.classList.contains('collapsed');
+    
+    // If opening this section, close all other sections first
+    if (isCurrentlyCollapsed) {
+        const allHeaders = document.querySelectorAll('.section-header');
+        allHeaders.forEach(h => {
+            if (h !== header) {
+                h.classList.add('collapsed');
+                h.nextElementSibling.classList.add('collapsed');
+            }
+        });
+    }
+    
+    // Toggle current section
     header.classList.toggle('collapsed');
     content.classList.toggle('collapsed');
 }
@@ -371,10 +385,10 @@ function displayExpenses(expenses) {
                     </div>
                 </div>
                 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-                    <div style="display: flex; gap: 2px;">
-                        ${!expense.fullyPaid ? `<button class="btn btn-icon" onclick="openPaymentModal('${expense.id}')" title="Add Payment" style="padding: 3px 5px; font-size: 0.75rem; background: var(--success-color); color: white; min-width: 24px; height: 24px;">💰</button>` : ''}
-                        ${payments.length === 1 && expense.fullyPaid ? `<button class="btn btn-icon" onclick="editPayment('${expense.id}', 0)" title="Edit Payment" style="padding: 3px 5px; font-size: 0.75rem; background: var(--primary-color); color: white; min-width: 24px; height: 24px;">✏️</button>` : ''}
-                        <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 3px 5px; font-size: 0.75rem; min-width: 24px; height: 24px;">🗑️</button>
+                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                        ${!expense.fullyPaid ? `<button class="btn btn-icon" onclick="openPaymentModal('${expense.id}')" title="Add Payment" style="padding: 4px 6px; font-size: 0.85rem; background: var(--success-color); color: white; min-width: 28px; height: 28px;">💰</button>` : ''}
+                        ${payments.length === 1 && expense.fullyPaid ? `<button class="btn btn-icon" onclick="editPayment('${expense.id}', 0)" title="Edit Payment" style="padding: 4px 6px; font-size: 0.85rem; background: var(--primary-color); color: white; min-width: 28px; height: 28px;">✏️</button>` : ''}
+                        <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 4px 6px; font-size: 0.85rem; min-width: 28px; height: 28px;">🗑️</button>
                     </div>
                     ${payments.length > 1 || (payments.length === 1 && !expense.fullyPaid) ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" style="font-size: 0.6rem; color: var(--primary-color); text-decoration: none; white-space: nowrap;">▶ ${payments.length}p</a>` : ''}
                 </div>
@@ -571,49 +585,59 @@ function togglePaymentHistory(expenseId) {
 }
 
 // Open payment modal
-function openPaymentModal(expenseId, paymentIndex = null) {
+async function openPaymentModal(expenseId, paymentIndex = null) {
     const modal = document.getElementById('paymentModal');
-    const expense = allExpenses.find(e => e.id === expenseId);
     
-    if (!expense) return;
-    
-    // Store the expense ID and payment index on the modal
-    modal.dataset.expenseId = expenseId;
-    modal.dataset.paymentIndex = paymentIndex !== null ? paymentIndex : '';
-    
-    // Calculate total paid from payments array
-    const payments = expense.payments || [];
-    const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
-    
-    // Populate expense details
-    document.getElementById('paymentExpenseDetails').innerHTML = `
-        <strong>${expense.description}</strong><br>
-        Category: ${expense.category}${expense.subCategory ? ' > ' + expense.subCategory : ''}<br>
-        Total Cost: ${formatCurrency(expense.totalCost)}<br>
-        Paid: ${formatCurrency(totalPaid)}<br>
-        Remaining: ${formatCurrency(expense.remainingBalance || 0)}
-    `;
-    
-    // Update modal title
-    document.getElementById('paymentModalTitle').textContent = paymentIndex !== null ? '✏️ Edit Payment' : '💰 Add Payment';
-    
-    // If editing, populate with existing payment data
-    if (paymentIndex !== null && payments[paymentIndex]) {
-        const payment = payments[paymentIndex];
-        document.getElementById('paymentDate').value = payment.date;
-        document.getElementById('paymentAmount').value = payment.amount;
-        document.getElementById('paymentPaidBy').value = payment.paidBy;
-        document.getElementById('paymentNotes').value = payment.notes || '';
-    } else {
-        // Set default values for new payment
-        document.getElementById('paymentDate').valueAsDate = new Date();
-        document.getElementById('paymentAmount').value = '';
-        document.getElementById('paymentPaidBy').value = '';
-        document.getElementById('paymentNotes').value = '';
+    // Fetch fresh expense data from API
+    try {
+        const response = await fetch(`${API_URL}/expenses/${expenseId}`);
+        if (!response.ok) {
+            showNotification('Failed to load expense data', 'error');
+            return;
+        }
+        const expense = await response.json();
+        
+        // Store the expense ID and payment index on the modal
+        modal.dataset.expenseId = expenseId;
+        modal.dataset.paymentIndex = paymentIndex !== null ? paymentIndex : '';
+        
+        // Calculate total paid from payments array
+        const payments = expense.payments || [];
+        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+        
+        // Populate expense details
+        document.getElementById('paymentExpenseDetails').innerHTML = `
+            <strong>${expense.description}</strong><br>
+            Category: ${expense.category}${expense.subCategory ? ' > ' + expense.subCategory : ''}<br>
+            Total Cost: ${formatCurrency(expense.totalCost)}<br>
+            Paid: ${formatCurrency(totalPaid)}<br>
+            Remaining: ${formatCurrency(expense.remainingBalance || 0)}
+        `;
+        
+        // Update modal title
+        document.getElementById('paymentModalTitle').textContent = paymentIndex !== null ? '✏️ Edit Payment' : '💰 Add Payment';
+        
+        // If editing, populate with existing payment data
+        if (paymentIndex !== null && payments[paymentIndex]) {
+            const payment = payments[paymentIndex];
+            document.getElementById('paymentDate').value = payment.date;
+            document.getElementById('paymentAmount').value = payment.amount;
+            document.getElementById('paymentPaidBy').value = payment.paidBy;
+            document.getElementById('paymentNotes').value = payment.notes || '';
+        } else {
+            // Set default values for new payment
+            document.getElementById('paymentDate').valueAsDate = new Date();
+            document.getElementById('paymentAmount').value = '';
+            document.getElementById('paymentPaidBy').value = '';
+            document.getElementById('paymentNotes').value = '';
+        }
+        
+        // Show modal
+        modal.style.display = 'flex';
+    } catch (error) {
+        console.error('Error opening payment modal:', error);
+        showNotification('Failed to open payment modal', 'error');
     }
-    
-    // Show modal
-    modal.style.display = 'flex';
 }
 
 // Close payment modal
@@ -670,7 +694,7 @@ async function submitPayment(event) {
             showNotification(isEditing ? 'Payment updated successfully!' : 'Payment added successfully!', 'success');
             closePaymentModal();
             await loadSummary();
-            await loadExpenses();
+            filterExpenses();
             updateCharts();
         } else {
             const error = await response.json();
@@ -701,7 +725,7 @@ async function deletePayment(expenseId, paymentIndex) {
         if (response.ok) {
             showNotification('Payment deleted successfully!', 'success');
             await loadSummary();
-            await loadExpenses();
+            filterExpenses();
             updateCharts();
         } else {
             const error = await response.json();
@@ -726,7 +750,7 @@ async function deleteExpense(id) {
         if (response.ok) {
             showNotification('Expense deleted successfully!', 'success');
             await loadSummary();
-            await loadExpenses();
+            filterExpenses();
             updateCharts();
         }
     } catch (error) {
