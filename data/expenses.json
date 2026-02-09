@@ -1,645 +1,63 @@
 {
   "budget": 1600000,
   "expenses": [
-    {
-      "id": "1707500001",
-      "category": "Jwellery",
-      "subCategory": "Silver",
-      "paidBy": "Mummy",
-      "description": "Payal",
-      "cost": 21000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500002",
-      "category": "Jwellery",
-      "subCategory": "Gold",
-      "paidBy": "Mummy",
-      "description": "Gold Ring - KK",
-      "cost": 55000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500003",
-      "category": "Jwellery",
-      "subCategory": "Gold",
-      "paidBy": "Mummy",
-      "description": "Chain - KK",
-      "cost": 149000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500004",
-      "category": "Jwellery",
-      "subCategory": "Gold",
-      "paidBy": "Mummy",
-      "description": "Earring - KK",
-      "cost": 18000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500005",
-      "category": "Jwellery",
-      "subCategory": "Gold",
-      "paidBy": "Mummy",
-      "description": "Jhumka - Choti",
-      "cost": 109514,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500006",
-      "category": "Jwellery",
-      "subCategory": "Gold",
-      "paidBy": "Mummy",
-      "description": "Jhumka - add length",
-      "cost": 4250,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500007",
-      "category": "Outfit",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Manyawar - KK Kurta",
-      "cost": 2624,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500008",
-      "category": "Outfit",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Moolchand (Ma lehnga +Didi saree)",
-      "cost": 21730,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500009",
-      "category": "Outfit",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Daddy Suit",
-      "cost": 18799,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500010",
-      "category": "Outfit",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Nitesh Suit",
-      "cost": 22422,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500011",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Mummy",
-      "description": "Kishore - Blouse, Dupatta",
-      "cost": 6419,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500012",
-      "category": "Gift",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Modi Sons - Towel, bedsheet",
-      "cost": 1260,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500013",
-      "category": "Gift",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Mahendra Company - Dhoti",
-      "cost": 5538,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500014",
-      "category": "Gift",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Saree cover & bangle box & organizer",
-      "cost": 3100,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500015",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Mummy",
-      "description": "Chudi - Lehthi mom, choti",
-      "cost": 3000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500016",
-      "category": "Utensil",
-      "subCategory": "",
-      "paidBy": "Mummy",
-      "description": "Bartan",
-      "cost": 15370,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500017",
-      "category": "Travel",
-      "subCategory": "Train",
-      "paidBy": "Ranjana",
-      "description": "Train Tickets",
-      "cost": 36425,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500018",
-      "category": "Misc",
-      "subCategory": "",
-      "paidBy": "Ranjana",
-      "description": "myntra",
-      "cost": 2022,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500019",
-      "category": "Bag",
-      "subCategory": "Suitcase",
-      "paidBy": "Ranjana",
-      "description": "Suit Case",
-      "cost": 8303,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500020",
-      "category": "Footwear",
-      "subCategory": "Others",
-      "paidBy": "Ranjana",
-      "description": "Daddy Shoe",
-      "cost": 1655,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500021",
-      "category": "Venue",
-      "subCategory": "",
-      "paidBy": "Ranjana",
-      "description": "Kunal Iconia Club house",
-      "cost": 7000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500022",
-      "category": "Misc",
-      "subCategory": "",
-      "paidBy": "Ranjana",
-      "description": "Paint",
-      "cost": 23000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500023",
-      "category": "Wedding",
-      "subCategory": "Invite",
-      "paidBy": "Ranjana",
-      "description": "Invitation",
-      "cost": 1899,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500024",
-      "category": "Gift",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Roka Expenses",
-      "cost": 17400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500025",
-      "category": "Gift",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Raipur Kapde (5 kapda)",
-      "cost": 10000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500026",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Mummy",
-      "description": "Virdi - 6 sarees",
-      "cost": 40000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500027",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Mummy",
-      "description": "Shree Shivam Saree",
-      "cost": 3220,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500028",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Mehendi dress",
-      "cost": 15350,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500029",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Saroj fabrics - Fabric",
-      "cost": 2087,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500030",
-      "category": "Outfit",
-      "subCategory": "Bride",
-      "paidBy": "Mummy",
-      "description": "manyavar - Bride's lehnga",
-      "cost": 44999,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500031",
-      "category": "Footwear",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Footwear Lehenga",
-      "cost": 2213,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500032",
-      "category": "Footwear",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Sandal - choti",
-      "cost": 1352,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500033",
-      "category": "Outfit",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Suit KK - suit",
-      "cost": 23500,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500034",
-      "category": "Outfit",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Dress - daddy pant and 2 shirts",
-      "cost": 9798,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500035",
-      "category": "Outfit",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Mewar - KK kurta",
-      "cost": 3445,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500036",
-      "category": "Outfit",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "KK UG",
-      "cost": 1457,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500037",
-      "category": "Footwear",
-      "subCategory": "Groom",
-      "paidBy": "Ranjana",
-      "description": "KK Shoe",
-      "cost": 5518,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500038",
-      "category": "Outfit",
-      "subCategory": "Groom",
-      "paidBy": "Mummy",
-      "description": "Manyawar - KK 2 kurta",
-      "cost": 3723,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500039",
-      "category": "Outfit",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Manyawar - Daddy - 1 bandi",
-      "cost": 4400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500040",
-      "category": "Stiching",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Blouse n lehnga",
-      "cost": 10400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500041",
-      "category": "Stiching",
-      "subCategory": "Others",
-      "paidBy": "Mummy",
-      "description": "Label Manjusha - Mummy lehnga",
-      "cost": 2800,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500042",
-      "category": "Jwellery",
-      "subCategory": "Artificial",
-      "paidBy": "Ranjana",
-      "description": "Jwellery Delhi",
-      "cost": 4860,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500043",
-      "category": "Gift",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Nyka didi",
-      "cost": 8275,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500044",
-      "category": "Bag",
-      "subCategory": "Bride",
-      "paidBy": "Ranjana",
-      "description": "Potli Didi",
-      "cost": 1210,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500045",
-      "category": "Misc",
-      "subCategory": "",
-      "paidBy": "Ranjana",
-      "description": "Basics Didi",
-      "cost": 1276,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
-    },
-    {
-      "id": "1707500046",
-      "category": "Venue",
-      "subCategory": "Venue",
-      "paidBy": "Mummy",
-      "description": "Rising Surya Hotel",
-      "cost": 76000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 61000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500047",
-      "category": "Venue",
-      "subCategory": "Venue",
-      "paidBy": "Ranjana",
-      "description": "Raaga Banquet Hall",
-      "cost": 250680,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 188180,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500048",
-      "category": "Venue",
-      "subCategory": "Food",
-      "paidBy": "Mummy",
-      "description": "Caterer",
-      "cost": 105000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 100000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500049",
-      "category": "Venue",
-      "subCategory": "Decor",
-      "paidBy": "Mummy",
-      "description": "Pandal/Decoration/home/clubhouseGadda/Panka/Paani",
-      "cost": 65200,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 60200,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500050",
-      "category": "Venue",
-      "subCategory": "Decor",
-      "paidBy": "Other",
-      "description": "Decoration Raaga",
-      "cost": 100000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 100000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500051",
-      "category": "Wedding",
-      "subCategory": "Photography",
-      "paidBy": "Mummy",
-      "description": "Photography",
-      "cost": 98000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 80000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500052",
-      "category": "Venue",
-      "subCategory": "Stay",
-      "paidBy": "Other",
-      "description": "Stay for Family",
-      "cost": 60000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 60000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500053",
-      "category": "Wedding",
-      "subCategory": "Mehndi",
-      "paidBy": "Mummy",
-      "description": "Mehendi Artist",
-      "cost": 13000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 12000,
-        "date": "",
-        "notes": ""
-      }
-    },
-    {
-      "id": "1707500054",
-      "category": "Travel",
-      "subCategory": "Car",
-      "paidBy": "Other",
-      "description": "Gaadi",
-      "cost": 15000,
-      "paid": false,
-      "hasRemaining": true,
-      "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 15000,
-        "date": "",
-        "notes": ""
-      }
-    }
+    {"id": "1707500001", "category": "Jwellery", "subCategory": "Silver", "paidBy": "Mummy", "description": "Payal", "cost": 21000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500002", "category": "Jwellery", "subCategory": "Gold", "paidBy": "Mummy", "description": "Gold Ring - KK", "cost": 55000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500003", "category": "Jwellery", "subCategory": "Gold", "paidBy": "Mummy", "description": "Chain - KK", "cost": 149000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500004", "category": "Jwellery", "subCategory": "Gold", "paidBy": "Mummy", "description": "Earring - KK", "cost": 18000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500005", "category": "Jwellery", "subCategory": "Gold", "paidBy": "Mummy", "description": "Jhumka - Choti", "cost": 109514, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500006", "category": "Jwellery", "subCategory": "Gold", "paidBy": "Mummy", "description": "Jhumka - add length", "cost": 4250, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500007", "category": "Outfit", "subCategory": "Groom", "paidBy": "Mummy", "description": "Manyawar - KK Kurta", "cost": 2624, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500008", "category": "Outfit", "subCategory": "Others", "paidBy": "Mummy", "description": "Moolchand (Ma lehnga +Didi saree)", "cost": 21730, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500009", "category": "Outfit", "subCategory": "Others", "paidBy": "Mummy", "description": "Daddy Suit", "cost": 18799, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500010", "category": "Outfit", "subCategory": "Others", "paidBy": "Mummy", "description": "Nitesh Suit", "cost": 22422, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500011", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Kishore - Blouse, Dupatta", "cost": 6419, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500012", "category": "Gift", "subCategory": "Groom", "paidBy": "Mummy", "description": "Modi Sons - Towel, bedsheet", "cost": 1260, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500013", "category": "Gift", "subCategory": "Others", "paidBy": "Mummy", "description": "Mahendra Company - Dhoti", "cost": 5538, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500014", "category": "Gift", "subCategory": "Bride", "paidBy": "Mummy", "description": "Saree cover & bangle box & organizer", "cost": 3100, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500015", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Chudi - Lehthi mom, choti", "cost": 3000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500016", "category": "Utensil", "subCategory": "", "paidBy": "Mummy", "description": "Bartan", "cost": 15370, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500017", "category": "Travel", "subCategory": "Train", "paidBy": "Mummy", "description": "Train Tickets", "cost": 36425, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500018", "category": "Misc", "subCategory": "", "paidBy": "Choti", "description": "myntra", "cost": 2022, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500019", "category": "Bag", "subCategory": "Suitcase", "paidBy": "Mummy", "description": "Suit Case", "cost": 8303, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500020", "category": "Footwear", "subCategory": "Others", "paidBy": "Choti", "description": "Daddy Shoe", "cost": 1655, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500021", "category": "Venue", "subCategory": "", "paidBy": "Ranjana", "description": "Kunal Iconia Club house", "cost": 7000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500022", "category": "Misc", "subCategory": "", "paidBy": "Choti", "description": "Paint", "cost": 23000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500023", "category": "Wedding", "subCategory": "Invite", "paidBy": "Ranjana", "description": "Invitation", "cost": 450, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500024", "category": "Wedding", "subCategory": "Invite", "paidBy": "Mummy", "description": "Invitation", "cost": 1449, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500025", "category": "Gift", "subCategory": "Groom", "paidBy": "Mummy", "description": "Roka Expenses", "cost": 17400, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500026", "category": "Gift", "subCategory": "Others", "paidBy": "Mummy", "description": "Raipur Kapde (5 kapda)", "cost": 10000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500027", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Virdi - 6 sarees", "cost": 40000, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500028", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Shree Shivam Saree", "cost": 3220, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500029", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Mehendi dress", "cost": 15350, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500030", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "Saroj fabrics - Fabric", "cost": 2087, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500031", "category": "Outfit", "subCategory": "Bride", "paidBy": "Mummy", "description": "manyavar - Bride's lehnga", "cost": 44999, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500032", "category": "Footwear", "subCategory": "Bride", "paidBy": "Choti", "description": "Footwear Lehenga", "cost": 2213, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500033", "category": "Footwear", "subCategory": "Bride", "paidBy": "Choti", "description": "Sandal - choti", "cost": 1352, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500034", "category": "Outfit", "subCategory": "Groom", "paidBy": "Mummy", "description": "Suit KK - suit", "cost": 23500, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500035", "category": "Outfit", "subCategory": "Others", "paidBy": "Mummy", "description": "Dress - daddy pant and 2 shirts", "cost": 9798, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500036", "category": "Outfit", "subCategory": "Groom", "paidBy": "Mummy", "description": "Mewar - KK kurta", "cost": 3445, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500037", "category": "Outfit", "subCategory": "Groom", "paidBy": "Mummy", "description": "KK UG", "cost": 1457, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500038", "category": "Footwear", "subCategory": "Groom", "paidBy": "Choti", "description": "KK Shoe", "cost": 5518, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500039", "category": "Outfit", "subCategory": "Groom", "paidBy": "Mummy", "description": "Manyawar - KK 2 kurta", "cost": 3723, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500040", "category": "Outfit", "subCategory": "Others", "paidBy": "Mummy", "description": "Manyawar - Daddy - 1 bandi", "cost": 4400, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500041", "category": "Stiching", "subCategory": "Bride", "paidBy": "Choti", "description": "Blouse n lehnga", "cost": 10400, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500042", "category": "Stiching", "subCategory": "Others", "paidBy": "Mummy", "description": "Label Manjusha - Mummy lehnga", "cost": 2800, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500043", "category": "Jwellery", "subCategory": "Artificial", "paidBy": "Choti", "description": "Jwellery Delhi", "cost": 4860, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500044", "category": "Gift", "subCategory": "Bride", "paidBy": "Ranjana", "description": "Nyka didi", "cost": 8275, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500045", "category": "Bag", "subCategory": "Bride", "paidBy": "Ranjana", "description": "Potli Didi", "cost": 1210, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500046", "category": "Misc", "subCategory": "", "paidBy": "Ranjana", "description": "Basics Didi", "cost": 1276, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500047", "category": "Venue", "subCategory": "Venue", "paidBy": "Mummy", "description": "Rising Surya Hotel", "cost": 76000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 61000, "date": "", "notes": ""}},
+    {"id": "1707500048", "category": "Venue", "subCategory": "Venue", "paidBy": "Mummy", "description": "Raaga Banquet Hall", "cost": 250680, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 188180, "date": "", "notes": ""}},
+    {"id": "1707500049", "category": "Venue", "subCategory": "Venue", "paidBy": "Mummy", "description": "Raaga Banquet Hall", "cost": 12500, "paid": true, "hasRemaining": false, "date": "2026-02-09"},
+    {"id": "1707500050", "category": "Venue", "subCategory": "Food", "paidBy": "Mummy", "description": "Caterer", "cost": 105000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 100000, "date": "", "notes": ""}},
+    {"id": "1707500051", "category": "Venue", "subCategory": "Decor", "paidBy": "Mummy", "description": "Pandal/Decoration/home/clubhouseGadda/Panka/Paani", "cost": 65200, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 60200, "date": "", "notes": ""}},
+    {"id": "1707500052", "category": "Venue", "subCategory": "Decor", "paidBy": "Other", "description": "Decoration Raaga", "cost": 100000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 100000, "date": "", "notes": ""}},
+    {"id": "1707500053", "category": "Wedding", "subCategory": "Photography", "paidBy": "Mummy", "description": "Photography", "cost": 98000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 80000, "date": "", "notes": ""}},
+    {"id": "1707500054", "category": "Venue", "subCategory": "Stay", "paidBy": "Other", "description": "Stay for Family", "cost": 60000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 60000, "date": "", "notes": ""}},
+    {"id": "1707500055", "category": "Wedding", "subCategory": "Mehndi", "paidBy": "Mummy", "description": "Mehendi Artist", "cost": 13000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 12000, "date": "", "notes": ""}},
+    {"id": "1707500056", "category": "Travel", "subCategory": "Car", "paidBy": "Other", "description": "Gaadi", "cost": 15000, "paid": false, "hasRemaining": true, "date": "2026-02-09", "remainingPayment": {"amount": 15000, "date": "", "notes": ""}},
+    {"id": "1707500057", "category": "Wedding", "subCategory": "Misc", "paidBy": "Ranjana", "description": "Gaon Se aane wala Samaan", "cost": 5000, "paid": true, "hasRemaining": false, "date": "2026-02-09"}
   ],
   "moneyReceived": {
     "ranjana": 350000,
@@ -647,250 +65,54 @@
     "choti": 0
   },
   "guests": [
-    {
-      "id": "1",
-      "name": "Vicky Bhaiya",
-      "room": ""
-    },
-    {
-      "id": "2",
-      "name": "Bade Chacha",
-      "room": ""
-    },
-    {
-      "id": "3",
-      "name": "Chote Chacha",
-      "room": ""
-    },
-    {
-      "id": "4",
-      "name": "Bauaa Bhaiya",
-      "room": ""
-    },
-    {
-      "id": "5",
-      "name": "Vinit Bhaiya",
-      "room": ""
-    },
-    {
-      "id": "6",
-      "name": "Vikas Bhaiya (Family of 4)",
-      "room": ""
-    },
-    {
-      "id": "7",
-      "name": "Golu Bhaiya",
-      "room": ""
-    },
-    {
-      "id": "8",
-      "name": "Rani Didi (Family of 3)",
-      "room": ""
-    },
-    {
-      "id": "9",
-      "name": "Chotan Chacha (Family of 4)",
-      "room": ""
-    },
-    {
-      "id": "10",
-      "name": "Ranjeet Bhaiya (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "11",
-      "name": "Munna Bhaiya (Family of 6)",
-      "room": ""
-    },
-    {
-      "id": "12",
-      "name": "Naval Mama (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "13",
-      "name": "Nana ji (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "14",
-      "name": "Deepak Mama",
-      "room": ""
-    },
-    {
-      "id": "15",
-      "name": "Raju Mama",
-      "room": ""
-    },
-    {
-      "id": "16",
-      "name": "Pawan Mama",
-      "room": ""
-    },
-    {
-      "id": "17",
-      "name": "Neeta Mausi",
-      "room": ""
-    },
-    {
-      "id": "18",
-      "name": "Mitu Mausi (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "19",
-      "name": "Soni Mausi (Family of 3)",
-      "room": ""
-    },
-    {
-      "id": "20",
-      "name": "Badi Mausi (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "21",
-      "name": "Renu Aunty (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "22",
-      "name": "Anu Aunty (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "23",
-      "name": "Dr Uncle n Aunty",
-      "room": ""
-    },
-    {
-      "id": "24",
-      "name": "Nitesh (Group of 10)",
-      "room": ""
-    },
-    {
-      "id": "25",
-      "name": "Amruta (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "26",
-      "name": "Daga (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "27",
-      "name": "Akhilesh (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "28",
-      "name": "Shashtri ji",
-      "room": ""
-    },
-    {
-      "id": "29",
-      "name": "Maa Papa, Driver",
-      "room": ""
-    },
-    {
-      "id": "30",
-      "name": "Mummy Daddy",
-      "room": ""
-    },
-    {
-      "id": "31",
-      "name": "Ranju n Nishant",
-      "room": ""
-    },
-    {
-      "id": "32",
-      "name": "Suyog (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "33",
-      "name": "Ankit (Family of 3)",
-      "room": ""
-    },
-    {
-      "id": "34",
-      "name": "Vaibhav (Family of 3)",
-      "room": ""
-    },
-    {
-      "id": "35",
-      "name": "Shameer (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "36",
-      "name": "Neha (Family of 4)",
-      "room": ""
-    },
-    {
-      "id": "37",
-      "name": "Barati (Group of 55)",
-      "room": ""
-    },
-    {
-      "id": "38",
-      "name": "Saurabh Gupta (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "39",
-      "name": "Sumit",
-      "room": ""
-    },
-    {
-      "id": "40",
-      "name": "Poojitha",
-      "room": ""
-    },
-    {
-      "id": "41",
-      "name": "Yahya",
-      "room": ""
-    },
-    {
-      "id": "42",
-      "name": "Abhishek",
-      "room": ""
-    },
-    {
-      "id": "43",
-      "name": "Mausami",
-      "room": ""
-    },
-    {
-      "id": "44",
-      "name": "Sukanya (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "45",
-      "name": "Jaju (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "46",
-      "name": "Nikita (Family of 2)",
-      "room": ""
-    },
-    {
-      "id": "47",
-      "name": "Varsha",
-      "room": ""
-    },
-    {
-      "id": "48",
-      "name": "Cycle Gang (Group of 10)",
-      "room": ""
-    },
-    {
-      "id": "49",
-      "name": "Photographer (Team of 5)",
-      "room": ""
-    }
+    {"id": "1", "name": "Vicky Bhaiya", "room": ""},
+    {"id": "2", "name": "Bade Chacha", "room": ""},
+    {"id": "3", "name": "Chote Chacha", "room": ""},
+    {"id": "4", "name": "Bauaa Bhaiya", "room": ""},
+    {"id": "5", "name": "Vinit Bhaiya", "room": ""},
+    {"id": "6", "name": "Vikas Bhaiya (Family of 4)", "room": ""},
+    {"id": "7", "name": "Golu Bhaiya", "room": ""},
+    {"id": "8", "name": "Rani Didi (Family of 3)", "room": ""},
+    {"id": "9", "name": "Chotan Chacha (Family of 4)", "room": ""},
+    {"id": "10", "name": "Ranjeet Bhaiya (Family of 2)", "room": ""},
+    {"id": "11", "name": "Munna Bhaiya (Family of 6)", "room": ""},
+    {"id": "12", "name": "Naval Mama (Family of 2)", "room": ""},
+    {"id": "13", "name": "Nana ji (Family of 2)", "room": ""},
+    {"id": "14", "name": "Deepak Mama", "room": ""},
+    {"id": "15", "name": "Raju Mama", "room": ""},
+    {"id": "16", "name": "Pawan Mama", "room": ""},
+    {"id": "17", "name": "Neeta Mausi", "room": ""},
+    {"id": "18", "name": "Mitu Mausi (Family of 2)", "room": ""},
+    {"id": "19", "name": "Soni Mausi (Family of 3)", "room": ""},
+    {"id": "20", "name": "Badi Mausi (Family of 2)", "room": ""},
+    {"id": "21", "name": "Renu Aunty (Family of 2)", "room": ""},
+    {"id": "22", "name": "Anu Aunty (Family of 2)", "room": ""},
+    {"id": "23", "name": "Dr Uncle n Aunty", "room": ""},
+    {"id": "24", "name": "Nitesh (Group of 10)", "room": ""},
+    {"id": "25", "name": "Amruta (Family of 2)", "room": ""},
+    {"id": "26", "name": "Daga (Family of 2)", "room": ""},
+    {"id": "27", "name": "Akhilesh (Family of 2)", "room": ""},
+    {"id": "28", "name": "Shashtri ji", "room": ""},
+    {"id": "29", "name": "Maa Papa, Driver", "room": ""},
+    {"id": "30", "name": "Mummy Daddy", "room": ""},
+    {"id": "31", "name": "Ranju n Nishant", "room": ""},
+    {"id": "32", "name": "Suyog (Family of 2)", "room": ""},
+    {"id": "33", "name": "Ankit (Family of 3)", "room": ""},
+    {"id": "34", "name": "Vaibhav (Family of 3)", "room": ""},
+    {"id": "35", "name": "Shameer (Family of 2)", "room": ""},
+    {"id": "36", "name": "Neha (Family of 4)", "room": ""},
+    {"id": "37", "name": "Barati (Group of 55)", "room": ""},
+    {"id": "38", "name": "Saurabh Gupta (Family of 2)", "room": ""},
+    {"id": "39", "name": "Sumit", "room": ""},
+    {"id": "40", "name": "Poojitha", "room": ""},
+    {"id": "41", "name": "Yahya", "room": ""},
+    {"id": "42", "name": "Abhishek", "room": ""},
+    {"id": "43", "name": "Mausami", "room": ""},
+    {"id": "44", "name": "Sukanya (Family of 2)", "room": ""},
+    {"id": "45", "name": "Jaju (Family of 2)", "room": ""},
+    {"id": "46", "name": "Nikita (Family of 2)", "room": ""},
+    {"id": "47", "name": "Varsha", "room": ""},
+    {"id": "48", "name": "Cycle Gang (Group of 10)", "room": ""},
+    {"id": "49", "name": "Photographer (Team of 5)", "room": ""}
   ]
 }
