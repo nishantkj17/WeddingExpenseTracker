@@ -85,33 +85,40 @@ app.get('/api/expenses/:id', async (req, res) => {
 app.post('/api/expenses', async (req, res) => {
     try {
         const data = await readData();
+        
+        const hasRemaining = req.body.hasRemaining || false;
+        const advancePayment = parseFloat(req.body.cost) || 0;
+        const remainingAmount = hasRemaining && req.body.remainingPayment ? parseFloat(req.body.remainingPayment.amount) || 0 : 0;
+        const totalCost = advancePayment + remainingAmount;
+        const paidBy = req.body.paidBy;
+        
+        // Create initial payment array
+        const payments = [{
+            date: req.body.date || new Date().toISOString().split('T')[0],
+            amount: advancePayment,
+            paidBy: paidBy,
+            notes: hasRemaining ? 'Initial advance payment' : 'Full payment'
+        }];
+        
         const newExpense = {
             id: Date.now().toString(),
             category: req.body.category,
             subCategory: req.body.subCategory || '',
-            paidBy: req.body.paidBy,
             description: req.body.description,
-            cost: parseFloat(req.body.cost) || 0,
-            paid: req.body.paid || false,
-            hasRemaining: req.body.hasRemaining || false,
+            totalCost: totalCost,
+            payments: payments,
+            remainingBalance: remainingAmount,
+            fullyPaid: remainingAmount <= 0,
             date: req.body.date || new Date().toISOString().split('T')[0]
         };
-        
-        // Store remaining payment details if provided
-        if (req.body.hasRemaining && req.body.remainingPayment) {
-            newExpense.remainingPayment = {
-                amount: parseFloat(req.body.remainingPayment.amount) || 0,
-                date: req.body.remainingPayment.date || '',
-                notes: req.body.remainingPayment.notes || ''
-            };
-        }
         
         data.expenses.push(newExpense);
         
         await writeData(data);
         res.status(201).json(newExpense);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create expense' });
+        console.error('Error creating expense:', error);
+        res.status(500).json({ error: 'Failed to create expense', message: error.message });
     }
 });
 
@@ -140,6 +147,44 @@ app.put('/api/expenses/:id', async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ error: 'Failed to update expense' });
+    }
+});
+
+// Add a payment to an existing expense
+app.post('/api/expenses/:id/payment', async (req, res) => {
+    try {
+        const data = await readData();
+        const expense = data.expenses.find(e => e.id === req.params.id);
+        
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        
+        // Initialize payments array if it doesn't exist
+        if (!expense.payments) {
+            expense.payments = [];
+        }
+        
+        // Add new payment
+        const newPayment = {
+            date: req.body.date || new Date().toISOString().split('T')[0],
+            amount: parseFloat(req.body.amount) || 0,
+            paidBy: req.body.paidBy,
+            notes: req.body.notes || ''
+        };
+        
+        expense.payments.push(newPayment);
+        
+        // Recalculate remaining balance
+        const totalPaid = expense.payments.reduce((sum, p) => sum + p.amount, 0);
+        expense.remainingBalance = expense.totalCost - totalPaid;
+        expense.fullyPaid = expense.remainingBalance <= 0;
+        
+        await writeData(data);
+        res.json(expense);
+    } catch (error) {
+        console.error('Error adding payment:', error);
+        res.status(500).json({ error: 'Failed to add payment', message: error.message });
     }
 });
 

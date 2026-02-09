@@ -101,8 +101,8 @@ function setupEventListeners() {
     // Update subcategory options when category changes
     document.getElementById('category').addEventListener('input', updateSubCategories);
     
-    // Fix dropdown usability - clear field on click to show all options
-    const dropdownInputs = ['category', 'subCategory', 'paidBy', 'filterPaidBy'];
+    // Fix dropdown usability - clear field on click to show all options (only for text inputs with datalist)
+    const dropdownInputs = ['category', 'subCategory'];
     dropdownInputs.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -129,7 +129,6 @@ function updateTotalCost() {
 function populateDropdowns() {
     const categories = [...new Set(allExpenses.map(e => e.category).filter(c => c))];
     const subCategories = [...new Set(allExpenses.map(e => e.subCategory).filter(c => c))];
-    const paidByOptions = [...new Set(allExpenses.map(e => e.paidBy).filter(c => c))];
     
     // Populate category dropdown
     const categoryList = document.getElementById('categoryList');
@@ -149,23 +148,7 @@ function populateDropdowns() {
         subCategoryList.appendChild(option);
     });
     
-    // Populate paidBy dropdown
-    const paidByList = document.getElementById('paidByList');
-    paidByList.innerHTML = '';
-    paidByOptions.forEach(person => {
-        const option = document.createElement('option');
-        option.value = person;
-        paidByList.appendChild(option);
-    });
-    
-    // Populate paidBy filter dropdown
-    const paidByFilterList = document.getElementById('paidByFilterList');
-    paidByFilterList.innerHTML = '';
-    paidByOptions.forEach(person => {
-        const option = document.createElement('option');
-        option.value = person;
-        paidByFilterList.appendChild(option);
-    });
+    // Note: Paid By dropdowns are now hardcoded with Ranjana, Mummy, Choti in HTML
 }
 
 // Update subcategory datalist based on selected category
@@ -237,13 +220,15 @@ async function loadSummary() {
         // Section 1: Calculate Who Paid How Much (from expense data)
         const paidByPerson = {};
         expenses.forEach(expense => {
-            const payer = expense.paidBy;
-            if (!paidByPerson[payer]) {
-                paidByPerson[payer] = 0;
-            }
-            // Count only the advance payment (what they've actually paid)
-            const paidAmount = expense.cost;
-            paidByPerson[payer] += paidAmount;
+            // Sum all payments made for this expense
+            const payments = expense.payments || [];
+            payments.forEach(payment => {
+                const payer = payment.paidBy;
+                if (!paidByPerson[payer]) {
+                    paidByPerson[payer] = 0;
+                }
+                paidByPerson[payer] += payment.amount;
+            });
         });
         
         // Display Who Paid How Much
@@ -264,12 +249,13 @@ async function loadSummary() {
         
         // Section 3: Calculate Balances
         const totalPaidExpenses = expenses.reduce((sum, exp) => {
-            const paidAmount = exp.cost - (exp.remainingPayment?.amount || 0);
-            return sum + paidAmount;
+            const payments = exp.payments || [];
+            const totalPaid = payments.reduce((pSum, p) => pSum + p.amount, 0);
+            return sum + totalPaid;
         }, 0);
         
         const totalRemainingPayments = expenses.reduce((sum, exp) => {
-            return sum + (exp.remainingPayment?.amount || 0);
+            return sum + (exp.remainingBalance || 0);
         }, 0);
         
         const remainingCash = totalReceived - totalPaidExpenses;
@@ -317,12 +303,15 @@ async function loadExpenses(searchKeyword = '', paidByFilter = '') {
         if (searchKeyword) {
             const keyword = searchKeyword.toLowerCase();
             expenses = expenses.filter(e => {
+                const hasPaymentByKeyword = e.payments && e.payments.some(p => 
+                    p.paidBy && p.paidBy.toLowerCase().includes(keyword)
+                );
                 return (
                     (e.category && e.category.toLowerCase().includes(keyword)) ||
                     (e.subCategory && e.subCategory.toLowerCase().includes(keyword)) ||
                     (e.description && e.description.toLowerCase().includes(keyword)) ||
-                    (e.paidBy && e.paidBy.toLowerCase().includes(keyword)) ||
-                    (e.cost && e.cost.toString().includes(keyword))
+                    hasPaymentByKeyword ||
+                    (e.totalCost && e.totalCost.toString().includes(keyword))
                 );
             });
         }
@@ -330,7 +319,9 @@ async function loadExpenses(searchKeyword = '', paidByFilter = '') {
         // Filter by Paid By
         if (paidByFilter) {
             const paidBy = paidByFilter.toLowerCase();
-            expenses = expenses.filter(e => e.paidBy && e.paidBy.toLowerCase().includes(paidBy));
+            expenses = expenses.filter(e => 
+                e.payments && e.payments.some(p => p.paidBy && p.paidBy.toLowerCase().includes(paidBy))
+            );
         }
         
         displayExpenses(expenses);
@@ -354,30 +345,51 @@ function displayExpenses(expenses) {
     // Sort by date (newest first)
     expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
     
-    expensesList.innerHTML = expenses.map(expense => `
-        <div class="expense-item ${expense.paid && !expense.hasRemaining ? 'paid' : ''}" style="margin-bottom: 6px; padding: 8px;">
-            <div style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 8px; align-items: center; font-size: 0.85rem;">
-                <div style="min-width: 80px;">
-                    <div style="font-weight: 600; color: var(--primary-color); font-size: 0.8rem;">${expense.category}</div>
-                    ${expense.subCategory ? `<div style="font-size: 0.7rem; color: var(--text-light);">${expense.subCategory}</div>` : ''}
-                    ${expense.paid && !expense.hasRemaining ? '<div style="font-size: 0.65rem; padding: 1px 4px; background: var(--success-color); color: white; border-radius: 8px; display: inline-block; margin-top: 2px;">✓</div>' : ''}
-                    ${expense.hasRemaining ? '<div style="font-size: 0.65rem; padding: 1px 4px; background: var(--warning-color); color: var(--text-dark); border-radius: 8px; display: inline-block; margin-top: 2px;">⏳</div>' : ''}
+    expensesList.innerHTML = expenses.map(expense => {
+        const payments = expense.payments || [];
+        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+        const remaining = expense.remainingBalance || 0;
+        const totalCost = expense.totalCost || 0;
+        
+        return `
+        <div class="expense-item ${expense.fullyPaid ? 'paid' : ''}" style="margin-bottom: 4px; padding: 6px 8px; background: white; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: start; gap: 6px;">
+                <div style="flex: 1; min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                        <span style="font-weight: 600; color: var(--primary-color); font-size: 0.75rem;">${expense.category}</span>
+                        ${expense.subCategory ? `<span style="font-size: 0.65rem; color: var(--text-light);">• ${expense.subCategory}</span>` : ''}
+                        ${expense.fullyPaid ? '<span style="font-size: 0.6rem; padding: 1px 3px; background: var(--success-color); color: white; border-radius: 4px;">✓</span>' : '<span style="font-size: 0.6rem; padding: 1px 3px; background: var(--warning-color); color: var(--text-dark); border-radius: 4px;">⏳</span>'}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-dark); font-weight: 500; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${expense.description}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.65rem; color: var(--text-light);">
+                        <span>Total: ${formatCurrency(totalCost)}</span>
+                        <span>•</span>
+                        <span style="color: var(--success-color);">Paid: ${formatCurrency(totalPaid)}</span>
+                        ${remaining > 0 ? `<span>•</span><span style="color: var(--secondary-color);">Rem: ${formatCurrency(remaining)}</span>` : ''}
+                        <span>•</span>
+                        <span>${formatDate(expense.date)}</span>
+                    </div>
                 </div>
-                <div style="min-width: 0;">
-                    <div style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${expense.description}</div>
-                    <div style="font-size: 0.7rem; color: var(--text-light);">${expense.paidBy} • ${formatDate(expense.date)}</div>
-                    ${expense.hasRemaining && expense.remainingPayment ? `<div style="font-size: 0.7rem; color: var(--secondary-color);">Remaining: ${formatCurrency(expense.remainingPayment.amount)}</div>` : ''}
-                </div>
-                <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary-color); white-space: nowrap;">
-                    ${expense.hasRemaining ? `<div style="font-size: 0.65rem; color: var(--text-light);">Advance</div>${formatCurrency(expense.cost)}` : formatCurrency(expense.cost)}
-                </div>
-                <div style="display: flex; gap: 3px;">
-                    <button class="btn btn-icon btn-edit" onclick="editExpense('${expense.id}')" title="Edit" style="padding: 4px 6px; font-size: 0.85rem;">✏️</button>
-                    <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 4px 6px; font-size: 0.85rem;">🗑️</button>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                    <div style="display: flex; gap: 2px;">
+                        ${!expense.fullyPaid ? `<button class="btn btn-icon" onclick="openPaymentModal('${expense.id}')" title="Add Payment" style="padding: 3px 5px; font-size: 0.75rem; background: var(--success-color); color: white; min-width: 24px; height: 24px;">💰</button>` : ''}
+                        <button class="btn btn-icon btn-edit" onclick="editExpense('${expense.id}')" title="Edit" style="padding: 3px 5px; font-size: 0.75rem; min-width: 24px; height: 24px;">✏️</button>
+                        <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 3px 5px; font-size: 0.75rem; min-width: 24px; height: 24px;">🗑️</button>
+                    </div>
+                    ${payments.length > 0 ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" style="font-size: 0.6rem; color: var(--primary-color); text-decoration: none; white-space: nowrap;">▶ ${payments.length}p</a>` : ''}
                 </div>
             </div>
+            <div id="payment-history-${expense.id}" style="display: none; margin-top: 4px; padding: 4px 6px; background: var(--light-bg); border-radius: 4px; font-size: 0.65rem;">
+                ${payments.map(p => `
+                    <div style="padding: 2px 0; border-bottom: 1px solid #eee;">
+                        ${formatDate(p.date)} • ${formatCurrency(p.amount)} • ${p.paidBy}
+                        ${p.notes ? `<div style="font-style: italic; color: var(--text-light); font-size: 0.6rem;">${p.notes}</div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Toggle sub-payments visibility
@@ -594,6 +606,102 @@ function cancelEdit() {
 }
 
 // Delete expense
+// Toggle payment history display
+function togglePaymentHistory(expenseId) {
+    const historyDiv = document.getElementById(`payment-history-${expenseId}`);
+    if (historyDiv) {
+        historyDiv.style.display = historyDiv.style.display === 'none' ? 'block' : 'none';
+        const link = historyDiv.previousElementSibling;
+        if (link) {
+            link.textContent = historyDiv.style.display === 'none' ? '▶ Payment History' : '▼ Payment History';
+        }
+    }
+}
+
+// Open payment modal
+function openPaymentModal(expenseId) {
+    const modal = document.getElementById('paymentModal');
+    const expense = allExpenses.find(e => e.id === expenseId);
+    
+    if (!expense) return;
+    
+    // Store the expense ID on the modal
+    modal.dataset.expenseId = expenseId;
+    
+    // Calculate total paid from payments array
+    const payments = expense.payments || [];
+    const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+    
+    // Populate expense details
+    document.getElementById('paymentExpenseDetails').innerHTML = `
+        <strong>${expense.description}</strong><br>
+        Category: ${expense.category}${expense.subCategory ? ' > ' + expense.subCategory : ''}<br>
+        Total Cost: ${formatCurrency(expense.totalCost)}<br>
+        Paid: ${formatCurrency(totalPaid)}<br>
+        Remaining: ${formatCurrency(expense.remainingBalance || 0)}
+    `;
+    
+    // Set default values
+    document.getElementById('paymentDate').valueAsDate = new Date();
+    document.getElementById('paymentAmount').value = '';
+    document.getElementById('paymentPaidBy').value = '';
+    document.getElementById('paymentNotes').value = '';
+    
+    // Show modal
+    modal.style.display = 'flex';
+}
+
+// Close payment modal
+function closePaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    modal.style.display = 'none';
+    modal.dataset.expenseId = '';
+}
+
+// Submit payment
+async function submitPayment(event) {
+    event.preventDefault();
+    
+    const modal = document.getElementById('paymentModal');
+    const expenseId = modal.dataset.expenseId;
+    
+    if (!expenseId) return;
+    
+    const paymentData = {
+        date: document.getElementById('paymentDate').value,
+        amount: parseFloat(document.getElementById('paymentAmount').value),
+        paidBy: document.getElementById('paymentPaidBy').value || 'Unknown',
+        notes: document.getElementById('paymentNotes').value || ''
+    };
+    
+    if (!paymentData.amount || paymentData.amount <= 0) {
+        showNotification('Please enter a valid payment amount', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/expenses/${expenseId}/payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(paymentData)
+        });
+        
+        if (response.ok) {
+            showNotification('Payment added successfully!', 'success');
+            closePaymentModal();
+            await loadSummary();
+            await loadExpenses();
+            updateCharts();
+        } else {
+            const error = await response.json();
+            showNotification(error.message || 'Failed to add payment', 'error');
+        }
+    } catch (error) {
+        console.error('Error adding payment:', error);
+        showNotification('Error adding payment', 'error');
+    }
+}
+
 async function deleteExpense(id) {
     if (!confirm('Are you sure you want to delete this expense?')) {
         return;

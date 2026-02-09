@@ -5,661 +5,1038 @@
       "id": "1707500001",
       "category": "Jwellery",
       "subCategory": "Silver",
-      "paidBy": "Mummy",
       "description": "Payal",
-      "cost": 21000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 21000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 21000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500002",
       "category": "Jwellery",
       "subCategory": "Gold",
-      "paidBy": "Mummy",
       "description": "Gold Ring - KK",
-      "cost": 55000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 55000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 55000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500003",
       "category": "Jwellery",
       "subCategory": "Gold",
-      "paidBy": "Mummy",
       "description": "Chain - KK",
-      "cost": 149000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 149000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 149000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500004",
       "category": "Jwellery",
       "subCategory": "Gold",
-      "paidBy": "Mummy",
       "description": "Earring - KK",
-      "cost": 18000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 18000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 18000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500005",
       "category": "Jwellery",
       "subCategory": "Gold",
-      "paidBy": "Mummy",
       "description": "Jhumka - Choti",
-      "cost": 109514,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 109514,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 109514,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500006",
       "category": "Jwellery",
       "subCategory": "Gold",
-      "paidBy": "Mummy",
       "description": "Jhumka - add length",
-      "cost": 4250,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 4250,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 4250,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500007",
       "category": "Outfit",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Manyawar - KK Kurta",
-      "cost": 2624,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 2624,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 2624,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500008",
       "category": "Outfit",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Moolchand (Ma lehnga +Didi saree)",
-      "cost": 21730,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 21730,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 21730,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500009",
       "category": "Outfit",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Daddy Suit",
-      "cost": 18799,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 18799,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 18799,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500010",
       "category": "Outfit",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Nitesh Suit",
-      "cost": 22422,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 22422,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 22422,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500011",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Kishore - Blouse, Dupatta",
-      "cost": 6419,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 6419,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 6419,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500012",
       "category": "Gift",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Modi Sons - Towel, bedsheet",
-      "cost": 1260,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1260,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1260,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500013",
       "category": "Gift",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Mahendra Company - Dhoti",
-      "cost": 5538,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 5538,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5538,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500014",
       "category": "Gift",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Saree cover & bangle box & organizer",
-      "cost": 3100,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 3100,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 3100,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500015",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Chudi - Lehthi mom, choti",
-      "cost": 3000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 3000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 3000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500016",
       "category": "Utensil",
       "subCategory": "",
-      "paidBy": "Mummy",
       "description": "Bartan",
-      "cost": 15370,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 15370,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 15370,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500017",
       "category": "Travel",
       "subCategory": "Train",
-      "paidBy": "Mummy",
       "description": "Train Tickets",
-      "cost": 36425,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 36425,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 36425,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500018",
       "category": "Bag",
       "subCategory": "Suitcase",
-      "paidBy": "Mummy",
       "description": "Suit Case",
-      "cost": 8303,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 8303,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 8303,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500019",
       "category": "Footwear",
       "subCategory": "Others",
-      "paidBy": "Choti",
       "description": "Daddy Shoe",
-      "cost": 1655,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1655,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1655,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500020",
       "category": "Venue",
       "subCategory": "",
-      "paidBy": "Ranjana",
       "description": "Kunal Iconia Club house",
-      "cost": 7000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 7000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 7000,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500021",
       "category": "Misc",
       "subCategory": "",
-      "paidBy": "Ranjana",
       "description": "Paint",
-      "cost": 23000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 23000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 23000,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500022",
       "category": "Wedding",
       "subCategory": "Invite",
-      "paidBy": "Ranjana",
       "description": "Invitation",
-      "cost": 450,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 450,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 450,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500023",
       "category": "Wedding",
       "subCategory": "Invite",
-      "paidBy": "Mummy",
       "description": "Invitation",
-      "cost": 1449,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1449,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1449,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500024",
       "category": "Gift",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Roka Expenses",
-      "cost": 17400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 17400,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 17400,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500025",
       "category": "Gift",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Raipur Kapde (5 kapda)",
-      "cost": 10000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 10000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 10000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500026",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Virdi - 6 sarees",
-      "cost": 40000,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 40000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 40000,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500027",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Shree Shivam Saree",
-      "cost": 3220,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 3220,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 3220,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500028",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Mehendi dress",
-      "cost": 15350,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 15350,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 15350,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500029",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "Saroj fabrics - Fabric",
-      "cost": 2087,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 2087,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 2087,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500030",
       "category": "Outfit",
       "subCategory": "Bride",
-      "paidBy": "Mummy",
       "description": "manyavar - Bride's lehnga",
-      "cost": 44999,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 44999,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 44999,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500031",
       "category": "Footwear",
       "subCategory": "Bride",
-      "paidBy": "Choti",
       "description": "Footwear Lehenga",
-      "cost": 2213,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 2213,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 2213,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500032",
       "category": "Footwear",
       "subCategory": "Bride",
-      "paidBy": "Choti",
       "description": "Sandal - choti",
-      "cost": 1352,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1352,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1352,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500033",
       "category": "Outfit",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Suit KK - suit",
-      "cost": 23500,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 23500,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 23500,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500034",
       "category": "Outfit",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Dress - daddy pant and 2 shirts",
-      "cost": 9798,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 9798,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 9798,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500035",
       "category": "Outfit",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Mewar - KK kurta",
-      "cost": 3445,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 3445,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 3445,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500036",
       "category": "Outfit",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "KK UG",
-      "cost": 1457,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1457,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1457,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500037",
       "category": "Footwear",
       "subCategory": "Groom",
-      "paidBy": "Choti",
       "description": "KK Shoe",
-      "cost": 5518,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 5518,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5518,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500038",
       "category": "Outfit",
       "subCategory": "Groom",
-      "paidBy": "Mummy",
       "description": "Manyawar - KK 2 kurta",
-      "cost": 3723,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 3723,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 3723,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500039",
       "category": "Outfit",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Manyawar - Daddy - 1 bandi",
-      "cost": 4400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 4400,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 4400,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500040",
       "category": "Stiching",
       "subCategory": "Bride",
-      "paidBy": "Choti",
       "description": "Blouse n lehnga",
-      "cost": 10400,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 10400,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 10400,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500041",
       "category": "Stiching",
       "subCategory": "Others",
-      "paidBy": "Mummy",
       "description": "Label Manjusha - Mummy lehnga",
-      "cost": 2800,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 2800,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 2800,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500042",
       "category": "Jwellery",
       "subCategory": "Artificial",
-      "paidBy": "Choti",
       "description": "Jwellery Delhi",
-      "cost": 4860,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 4860,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 4860,
+          "paidBy": "Choti",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500043",
       "category": "Gift",
       "subCategory": "Bride",
-      "paidBy": "Ranjana",
       "description": "Nyka didi",
-      "cost": 8275,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 8275,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 8275,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500044",
       "category": "Bag",
       "subCategory": "Bride",
-      "paidBy": "Ranjana",
       "description": "Potli Didi",
-      "cost": 1210,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1210,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1210,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500045",
       "category": "Misc",
       "subCategory": "",
-      "paidBy": "Ranjana",
       "description": "Basics Didi",
-      "cost": 1276,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 1276,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1276,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500046",
       "category": "Venue",
       "subCategory": "Venue",
-      "paidBy": "Mummy",
       "description": "Rising Surya Hotel",
-      "cost": 15000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 76000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 15000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 61000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 61000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500047",
       "category": "Venue",
       "subCategory": "Venue",
-      "paidBy": "Mummy",
       "description": "Raaga Banquet Hall",
-      "cost": 50000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 238180,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 50000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 188180,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 188180,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500048",
       "category": "Venue",
       "subCategory": "Venue",
-      "paidBy": "Mummy",
       "description": "Raaga Banquet Hall",
-      "cost": 12500,
-      "paid": true,
-      "hasRemaining": false,
-      "date": "2026-02-09"
+      "totalCost": 12500,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 12500,
+          "paidBy": "Mummy",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
     },
     {
       "id": "1707500049",
       "category": "Venue",
       "subCategory": "Food",
-      "paidBy": "Mummy",
       "description": "Caterer",
-      "cost": 5000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 105000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 100000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 100000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500050",
       "category": "Venue",
       "subCategory": "Decor",
-      "paidBy": "Mummy",
       "description": "Pandal/Decoration/home/clubhouseGadda/Panka/Paani",
-      "cost": 5000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 65200,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 60200,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 60200,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500051",
       "category": "Venue",
       "subCategory": "Decor",
-      "paidBy": "Other",
       "description": "Decoration Raaga",
-      "cost": 0,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 100000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 0,
+          "paidBy": "Other",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 100000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 100000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500052",
       "category": "Wedding",
       "subCategory": "Photography",
-      "paidBy": "Mummy",
       "description": "Photography",
-      "cost": 18000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 98000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 18000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 80000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 80000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500053",
       "category": "Venue",
       "subCategory": "Stay",
-      "paidBy": "Other",
       "description": "Stay for Family",
-      "cost": 0,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 60000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 0,
+          "paidBy": "Other",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 60000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 60000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500054",
       "category": "Wedding",
       "subCategory": "Mehndi",
-      "paidBy": "Mummy",
       "description": "Mehendi Artist",
-      "cost": 1000,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 13000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 1000,
+          "paidBy": "Mummy",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 12000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 12000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500055",
       "category": "Travel",
       "subCategory": "Car",
-      "paidBy": "Other",
       "description": "Gaadi",
-      "cost": 0,
-      "paid": false,
-      "hasRemaining": true,
+      "totalCost": 15000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 0,
+          "paidBy": "Other",
+          "notes": "Initial advance payment"
+        }
+      ],
+      "remainingBalance": 15000,
       "date": "2026-02-09",
-      "remainingPayment": {
-        "amount": 15000,
-        "date": "",
-        "notes": ""
-      }
+      "fullyPaid": false
     },
     {
       "id": "1707500056",
       "category": "Wedding",
       "subCategory": "Misc",
-      "paidBy": "Ranjana",
       "description": "Gaon Se aane wala Samaan",
-      "cost": 5000,
-      "paid": true,
-      "hasRemaining": false,
+      "totalCost": 5000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5000,
+          "paidBy": "Ranjana",
+          "notes": "Full payment"
+        }
+      ],
+      "remainingBalance": 0,
+      "date": "2026-02-09",
+      "fullyPaid": true
+    },
+    {
+      "id": "1770643598446",
+      "category": "Testing",
+      "subCategory": "Testones",
+      "description": "Ones",
+      "totalCost": 15000,
+      "payments": [
+        {
+          "date": "2026-02-09",
+          "amount": 5000,
+          "paidBy": "Ranjana",
+          "notes": "Initial advance payment"
+        },
+        {
+          "date": "2026-02-09",
+          "amount": 2000,
+          "paidBy": "Mummy",
+          "notes": ""
+        },
+        {
+          "date": "2026-02-09",
+          "amount": 1000,
+          "paidBy": "Choti",
+          "notes": ""
+        }
+      ],
+      "remainingBalance": 7000,
+      "fullyPaid": false,
       "date": "2026-02-09"
     }
   ],
