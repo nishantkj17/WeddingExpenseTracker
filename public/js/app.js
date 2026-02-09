@@ -373,17 +373,23 @@ function displayExpenses(expenses) {
                 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
                     <div style="display: flex; gap: 2px;">
                         ${!expense.fullyPaid ? `<button class="btn btn-icon" onclick="openPaymentModal('${expense.id}')" title="Add Payment" style="padding: 3px 5px; font-size: 0.75rem; background: var(--success-color); color: white; min-width: 24px; height: 24px;">💰</button>` : ''}
-                        <button class="btn btn-icon btn-edit" onclick="editExpense('${expense.id}')" title="Edit" style="padding: 3px 5px; font-size: 0.75rem; min-width: 24px; height: 24px;">✏️</button>
+                        ${payments.length === 1 && expense.fullyPaid ? `<button class="btn btn-icon" onclick="editPayment('${expense.id}', 0)" title="Edit Payment" style="padding: 3px 5px; font-size: 0.75rem; background: var(--primary-color); color: white; min-width: 24px; height: 24px;">✏️</button>` : ''}
                         <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 3px 5px; font-size: 0.75rem; min-width: 24px; height: 24px;">🗑️</button>
                     </div>
-                    ${payments.length > 0 ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" style="font-size: 0.6rem; color: var(--primary-color); text-decoration: none; white-space: nowrap;">▶ ${payments.length}p</a>` : ''}
+                    ${payments.length > 1 || (payments.length === 1 && !expense.fullyPaid) ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" style="font-size: 0.6rem; color: var(--primary-color); text-decoration: none; white-space: nowrap;">▶ ${payments.length}p</a>` : ''}
                 </div>
             </div>
             <div id="payment-history-${expense.id}" style="display: none; margin-top: 4px; padding: 4px 6px; background: var(--light-bg); border-radius: 4px; font-size: 0.65rem;">
-                ${payments.map(p => `
-                    <div style="padding: 2px 0; border-bottom: 1px solid #eee;">
-                        ${formatDate(p.date)} • ${formatCurrency(p.amount)} • ${p.paidBy}
-                        ${p.notes ? `<div style="font-style: italic; color: var(--text-light); font-size: 0.6rem;">${p.notes}</div>` : ''}
+                ${payments.map((p, index) => `
+                    <div style="padding: 2px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            ${formatDate(p.date)} • ${formatCurrency(p.amount)} • ${p.paidBy}
+                            ${p.notes ? `<div style="font-style: italic; color: var(--text-light); font-size: 0.6rem;">${p.notes}</div>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 2px;">
+                            <button class="btn btn-icon" onclick="editPayment('${expense.id}', ${index})" title="Edit Payment" style="padding: 2px 4px; font-size: 0.6rem; min-width: 20px; height: 20px; background: var(--primary-color); color: white;">✏️</button>
+                            <button class="btn btn-icon" onclick="deletePayment('${expense.id}', ${index})" title="Delete Payment" style="padding: 2px 4px; font-size: 0.6rem; min-width: 20px; height: 20px; background: var(--danger-color); color: white;">🗑️</button>
+                        </div>
                     </div>
                 `).join('')}
             </div>
@@ -521,72 +527,11 @@ async function handleFormSubmit(e) {
 
 // Edit expense
 async function editExpense(id) {
-    try {
-        const response = await fetch(`${API_URL}/expenses/${id}`);
-        const expense = await response.json();
-        
-        document.getElementById('category').value = expense.category;
-        document.getElementById('expenseDate').value = expense.date || '';
-        document.getElementById('paidBy').value = expense.paidBy;
-        document.getElementById('description').value = expense.description;
-        document.getElementById('cost').value = expense.cost;
-        document.getElementById('hasRemaining').checked = expense.hasRemaining;
-        
-        // Update subcategories and set value
-        updateSubCategories();
-        document.getElementById('subCategory').value = expense.subCategory || '';
-        
-        // Toggle remaining payment section if needed
-        const hasRemaining = expense.hasRemaining;
-        document.getElementById('remainingPaymentSection').style.display = hasRemaining ? 'block' : 'none';
-        
-        // Update labels and total cost display
-        const costLabel = document.getElementById('costLabel');
-        const totalCostDisplay = document.getElementById('totalCostDisplay');
-        
-        if (hasRemaining) {
-            costLabel.textContent = 'Advance Payment';
-            totalCostDisplay.style.display = 'block';
-        } else {
-            costLabel.textContent = 'Cost';
-            totalCostDisplay.style.display = 'none';
-        }
-        
-        // Populate remaining payment details if they exist
-        if (hasRemaining && expense.remainingPayment) {
-            document.getElementById('remainingAmount').value = expense.remainingPayment.amount || '';
-            document.getElementById('remainingDate').value = expense.remainingPayment.date || '';
-            document.getElementById('remainingNotes').value = expense.remainingPayment.notes || '';
-            updateTotalCost();
-        } else {
-            // Clear remaining payment fields if no remaining payment
-            document.getElementById('remainingAmount').value = '';
-            document.getElementById('remainingDate').value = '';
-            document.getElementById('remainingNotes').value = '';
-        }
-        
-        currentEditId = id;
-        cancelEditBtn.style.display = 'inline-block';
-        
-        // Change submit button text to "Update Expense"
-        const submitBtn = expenseForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Update Expense';
-        
-        // Expand the Add New Expense section if collapsed
-        const addExpenseSection = expenseForm.closest('.collapsible-section');
-        const sectionHeader = addExpenseSection.querySelector('.section-header');
-        const sectionContent = addExpenseSection.querySelector('.section-content');
-        if (sectionContent.classList.contains('collapsed')) {
-            sectionHeader.classList.remove('collapsed');
-            sectionContent.classList.remove('collapsed');
-        }
-        
-        // Scroll to form
-        addExpenseSection.scrollIntoView({ behavior: 'smooth' });
-    } catch (error) {
-        console.error('Error loading expense for edit:', error);
-        showNotification('Failed to load expense', 'error');
-    }
+    alert('Note: Expense editing is currently disabled with the new payment history system.\n\nTo modify payments:\n- Use the 💰 button to add new payments\n- Delete and recreate the expense if needed');
+    return;
+    
+    // Edit functionality disabled - use payment modal for adding payments
+    // Delete and recreate expense if major changes are needed
 }
 
 // Cancel edit
@@ -610,23 +555,31 @@ function cancelEdit() {
 function togglePaymentHistory(expenseId) {
     const historyDiv = document.getElementById(`payment-history-${expenseId}`);
     if (historyDiv) {
-        historyDiv.style.display = historyDiv.style.display === 'none' ? 'block' : 'none';
+        const isCurrentlyHidden = historyDiv.style.display === 'none' || historyDiv.style.display === '';
+        historyDiv.style.display = isCurrentlyHidden ? 'block' : 'none';
+        
         const link = historyDiv.previousElementSibling;
-        if (link) {
-            link.textContent = historyDiv.style.display === 'none' ? '▶ Payment History' : '▼ Payment History';
+        if (link && link.tagName === 'A') {
+            // Extract payment count from current text (e.g., "▶ 2p" -> "2")
+            const match = link.textContent.match(/(\d+)p/);
+            if (match) {
+                const count = match[1];
+                link.textContent = isCurrentlyHidden ? `▼ ${count}p` : `▶ ${count}p`;
+            }
         }
     }
 }
 
 // Open payment modal
-function openPaymentModal(expenseId) {
+function openPaymentModal(expenseId, paymentIndex = null) {
     const modal = document.getElementById('paymentModal');
     const expense = allExpenses.find(e => e.id === expenseId);
     
     if (!expense) return;
     
-    // Store the expense ID on the modal
+    // Store the expense ID and payment index on the modal
     modal.dataset.expenseId = expenseId;
+    modal.dataset.paymentIndex = paymentIndex !== null ? paymentIndex : '';
     
     // Calculate total paid from payments array
     const payments = expense.payments || [];
@@ -641,11 +594,23 @@ function openPaymentModal(expenseId) {
         Remaining: ${formatCurrency(expense.remainingBalance || 0)}
     `;
     
-    // Set default values
-    document.getElementById('paymentDate').valueAsDate = new Date();
-    document.getElementById('paymentAmount').value = '';
-    document.getElementById('paymentPaidBy').value = '';
-    document.getElementById('paymentNotes').value = '';
+    // Update modal title
+    document.getElementById('paymentModalTitle').textContent = paymentIndex !== null ? '✏️ Edit Payment' : '💰 Add Payment';
+    
+    // If editing, populate with existing payment data
+    if (paymentIndex !== null && payments[paymentIndex]) {
+        const payment = payments[paymentIndex];
+        document.getElementById('paymentDate').value = payment.date;
+        document.getElementById('paymentAmount').value = payment.amount;
+        document.getElementById('paymentPaidBy').value = payment.paidBy;
+        document.getElementById('paymentNotes').value = payment.notes || '';
+    } else {
+        // Set default values for new payment
+        document.getElementById('paymentDate').valueAsDate = new Date();
+        document.getElementById('paymentAmount').value = '';
+        document.getElementById('paymentPaidBy').value = '';
+        document.getElementById('paymentNotes').value = '';
+    }
     
     // Show modal
     modal.style.display = 'flex';
@@ -656,6 +621,7 @@ function closePaymentModal() {
     const modal = document.getElementById('paymentModal');
     modal.style.display = 'none';
     modal.dataset.expenseId = '';
+    modal.dataset.paymentIndex = '';
 }
 
 // Submit payment
@@ -664,6 +630,7 @@ async function submitPayment(event) {
     
     const modal = document.getElementById('paymentModal');
     const expenseId = modal.dataset.expenseId;
+    const paymentIndex = modal.dataset.paymentIndex;
     
     if (!expenseId) return;
     
@@ -680,25 +647,69 @@ async function submitPayment(event) {
     }
     
     try {
-        const response = await fetch(`${API_URL}/expenses/${expenseId}/payment`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(paymentData)
-        });
+        let response;
+        const isEditing = paymentIndex !== '' && paymentIndex !== null;
+        
+        if (isEditing) {
+            // Update existing payment
+            response = await fetch(`${API_URL}/expenses/${expenseId}/payment/${paymentIndex}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(paymentData)
+            });
+        } else {
+            // Add new payment
+            response = await fetch(`${API_URL}/expenses/${expenseId}/payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(paymentData)
+            });
+        }
         
         if (response.ok) {
-            showNotification('Payment added successfully!', 'success');
+            showNotification(isEditing ? 'Payment updated successfully!' : 'Payment added successfully!', 'success');
             closePaymentModal();
             await loadSummary();
             await loadExpenses();
             updateCharts();
         } else {
             const error = await response.json();
-            showNotification(error.message || 'Failed to add payment', 'error');
+            showNotification(error.message || `Failed to ${isEditing ? 'update' : 'add'} payment`, 'error');
         }
     } catch (error) {
-        console.error('Error adding payment:', error);
-        showNotification('Error adding payment', 'error');
+        console.error('Error saving payment:', error);
+        showNotification('Error saving payment', 'error');
+    }
+}
+
+// Edit payment
+function editPayment(expenseId, paymentIndex) {
+    openPaymentModal(expenseId, paymentIndex);
+}
+
+// Delete payment
+async function deletePayment(expenseId, paymentIndex) {
+    if (!confirm('Are you sure you want to delete this payment?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/expenses/${expenseId}/payment/${paymentIndex}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification('Payment deleted successfully!', 'success');
+            await loadSummary();
+            await loadExpenses();
+            updateCharts();
+        } else {
+            const error = await response.json();
+            showNotification(error.message || 'Failed to delete payment', 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting payment:', error);
+        showNotification('Failed to delete payment', 'error');
     }
 }
 
@@ -901,7 +912,8 @@ async function updateCharts() {
             const key = expense.subCategory ? 
                 `${expense.category} - ${expense.subCategory}` : 
                 expense.category;
-            categoryData[key] = (categoryData[key] || 0) + expense.cost;
+            const totalCost = expense.totalCost || 0;
+            categoryData[key] = (categoryData[key] || 0) + totalCost;
         });
         
         // Sort by amount (highest to lowest)
@@ -918,7 +930,8 @@ async function updateCharts() {
         
         let cumulativeAmount = 0;
         const journeyData = sortedExpenses.map(expense => {
-            cumulativeAmount += expense.cost;
+            const totalCost = expense.totalCost || 0;
+            cumulativeAmount += totalCost;
             return {
                 date: new Date(expense.date).toLocaleDateString('en-US', { 
                     month: 'short', 

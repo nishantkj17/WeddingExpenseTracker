@@ -188,6 +188,73 @@ app.post('/api/expenses/:id/payment', async (req, res) => {
     }
 });
 
+// Update a payment in an existing expense
+app.put('/api/expenses/:id/payment/:paymentIndex', async (req, res) => {
+    try {
+        const data = await readData();
+        const expense = data.expenses.find(e => e.id === req.params.id);
+        
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        
+        const paymentIndex = parseInt(req.params.paymentIndex);
+        if (!expense.payments || paymentIndex < 0 || paymentIndex >= expense.payments.length) {
+            return res.status(404).json({ error: 'Payment not found' });
+        }
+        
+        // Update payment
+        expense.payments[paymentIndex] = {
+            date: req.body.date || expense.payments[paymentIndex].date,
+            amount: parseFloat(req.body.amount) || expense.payments[paymentIndex].amount,
+            paidBy: req.body.paidBy || expense.payments[paymentIndex].paidBy,
+            notes: req.body.notes !== undefined ? req.body.notes : expense.payments[paymentIndex].notes
+        };
+        
+        // Recalculate remaining balance
+        const totalPaid = expense.payments.reduce((sum, p) => sum + p.amount, 0);
+        expense.remainingBalance = expense.totalCost - totalPaid;
+        expense.fullyPaid = expense.remainingBalance <= 0;
+        
+        await writeData(data);
+        res.json(expense);
+    } catch (error) {
+        console.error('Error updating payment:', error);
+        res.status(500).json({ error: 'Failed to update payment', message: error.message });
+    }
+});
+
+// Delete a payment from an existing expense
+app.delete('/api/expenses/:id/payment/:paymentIndex', async (req, res) => {
+    try {
+        const data = await readData();
+        const expense = data.expenses.find(e => e.id === req.params.id);
+        
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        
+        const paymentIndex = parseInt(req.params.paymentIndex);
+        if (!expense.payments || paymentIndex < 0 || paymentIndex >= expense.payments.length) {
+            return res.status(404).json({ error: 'Payment not found' });
+        }
+        
+        // Remove payment
+        expense.payments.splice(paymentIndex, 1);
+        
+        // Recalculate remaining balance
+        const totalPaid = expense.payments.reduce((sum, p) => sum + p.amount, 0);
+        expense.remainingBalance = expense.totalCost - totalPaid;
+        expense.fullyPaid = expense.remainingBalance <= 0;
+        
+        await writeData(data);
+        res.json(expense);
+    } catch (error) {
+        console.error('Error deleting payment:', error);
+        res.status(500).json({ error: 'Failed to delete payment', message: error.message });
+    }
+});
+
 // Delete an expense
 app.delete('/api/expenses/:id', async (req, res) => {
     try {

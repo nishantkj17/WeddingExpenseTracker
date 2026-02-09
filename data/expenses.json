@@ -1008,36 +1008,6 @@
       "remainingBalance": 0,
       "date": "2026-02-09",
       "fullyPaid": true
-    },
-    {
-      "id": "1770643598446",
-      "category": "Testing",
-      "subCategory": "Testones",
-      "description": "Ones",
-      "totalCost": 15000,
-      "payments": [
-        {
-          "date": "2026-02-09",
-          "amount": 5000,
-          "paidBy": "Ranjana",
-          "notes": "Initial advance payment"
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 2000,
-          "paidBy": "Mummy",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 1000,
-          "paidBy": "Choti",
-          "notes": ""
-        }
-      ],
-      "remainingBalance": 7000,
-      "fullyPaid": false,
-      "date": "2026-02-09"
     }
   ],
   "moneyReceived": {
