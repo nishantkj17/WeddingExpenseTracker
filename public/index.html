@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💒</h1>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">Expenses</a>
+                <a href="guests.html" class="nav-link">Guest List</a>
+            </nav>
+        </header>
+
+        <!-- Charts Section -->
+        <section class="collapsible-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>📊 Charts & Analytics</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="chart-carousel">
+                    <button class="carousel-btn prev" onclick="previousChart()">‹</button>
+                    <div class="chart-container active" id="chart1" style="height: 400px;">
+                        <h3>Spending by Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="chart-container" id="chart2">
+                        <h3>Expense Journey</h3>
+                        <canvas id="journeyChart"></canvas>
+                    </div>
+                    <button class="carousel-btn next" onclick="nextChart()">›</button>
+                </div>
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="showChart(0)"></span>
+                    <span class="dot" onclick="showChart(1)"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Section -->
+        <section class="collapsible-section collapsed">
+            <div class="section-header collapsed" onclick="toggleSection(this)">
+                <h2>💰 Budget</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content collapsed">
+                <!-- Section 1: Who Paid How Much -->
+                <div class="budget-subsection">
+                    <h3>💳 Who Paid How Much</h3>
+                    <div class="summary-cards" id="whoPaidSection">
+                        <!-- Dynamically populated from expense data -->
+                    </div>
+                </div>
+
+                <!-- Section 2: Total Money Received -->
+                <div class="budget-subsection">
+                    <h3>💰 Total Money Received (Manual Entry)</h3>
+                    <div class="money-received-form">
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div class="form-group">
+                                <label for="ranjanaReceived">Ranjana</label>
+                                <input type="number" id="ranjanaReceived" placeholder="₹0" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="mummyReceived">Mummy</label>
+                                <input type="number" id="mummyReceived" placeholder="₹0" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="chotiReceived">Choti</label>
+                                <input type="number" id="chotiReceived" placeholder="₹0" step="0.01">
+                            </div>
+                        </div>
+                        <button id="saveReceivedBtn" class="btn btn-primary" style="margin-top: 10px;">Save Money Received</button>
+                    </div>
+                </div>
+
+                <!-- Section 3: Balances -->
+                <div class="budget-subsection">
+                    <h3>📊 Balances</h3>
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h3>Remaining Cash</h3>
+                            <p class="amount" id="remainingCash">₹0.00</p>
+                            <small style="color: var(--text-light); font-size: 0.8rem;">Paid expenses only</small>
+                        </div>
+                        <div class="summary-card">
+                            <h3>To Be Paid Later</h3>
+                            <p class="amount" id="toBePaidLater">₹0.00</p>
+                            <small style="color: var(--text-light); font-size: 0.8rem;">Remaining amounts</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Initial Budget & Progress -->
+                <div class="budget-subsection">
+                    <h3>🎯 Initial Budget</h3>
+                    <div class="budget-card">
+                        <div class="budget-input-group">
+                            <span class="currency">₹</span>
+                            <input type="number" id="budgetInput" placeholder="Enter your budget">
+                            <button id="updateBudgetBtn" class="btn btn-primary">Update Budget</button>
+                        </div>
+                    </div>
+                    <div class="progress-bar" style="margin-top: 20px;">
+                        <div class="progress-fill" id="progressFill"></div>
+                        <span class="progress-text" id="progressText">0% of budget spent</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Expense Section -->
+        <section class="collapsible-section collapsed">
+            <div class="section-header collapsed" onclick="toggleSection(this)">
+                <h2>➕ Add New Expense</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content collapsed">
+                <form id="expenseForm" class="expense-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" list="categoryList" required placeholder="Select or type new category">
+                        <datalist id="categoryList">
+                            <option value="Venue">
+                            <option value="Catering">
+                            <option value="Photography">
+                            <option value="Videography">
+                            <option value="Flowers & Decorations">
+                            <option value="Music & Entertainment">
+                            <option value="Wedding Dress">
+                            <option value="Suit/Tuxedo">
+                            <option value="Rings">
+                            <option value="Jewellery">
+                            <option value="Invitations">
+                            <option value="Wedding Cake">
+                            <option value="Transportation">
+                            <option value="Accommodation">
+                            <option value="Favors & Gifts">
+                            <option value="Other">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="subCategory">Sub Category</label>
+                        <input type="text" id="subCategory" list="subCategoryList" placeholder="Select or type sub category">
+                        <datalist id="subCategoryList">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paidBy">Paid By</label>
+                        <input type="text" id="paidBy" list="paidByList" required placeholder="Who paid?">
+                        <datalist id="paidByList">
+                            <option value="Bride">
+                            <option value="Groom">
+                            <option value="Bride's Family">
+                            <option value="Groom's Family">
+                            <option value="Joint">
+                            <option value="Other">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" required placeholder="e.g., Downtown Ballroom">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDate">Date (Optional)</label>
+                        <input type="date" id="expenseDate" placeholder="Leave blank for today">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cost">Cost</label>
+                        <input type="number" id="cost" step="0.01" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="hasRemaining">
+                        <span>Has Remaining Payment</span>
+                    </label>
+                </div>
+
+                <div id="remainingPaymentSection" style="display: none;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary-color);">Remaining Payment Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="remainingAmount">Remaining Amount</label>
+                            <input type="number" id="remainingAmount" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="remainingDate">Payment Due Date</label>
+                            <input type="date" id="remainingDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remainingNotes">Remaining Payment Notes</label>
+                        <textarea id="remainingNotes" rows="2" placeholder="Notes for remaining payment..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Add Expense</button>
+                <button type="button" id="cancelEditBtn" class="btn btn-secondary" style="display: none;">Cancel Edit</button>
+            </form>
+            </div>
+        </section>
+
+        <!-- Expenses List Section -->
+        <section class="collapsible-section collapsed">
+            <div class="section-header collapsed" onclick="toggleSection(this)">
+                <h2>📋 Expense List</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content collapsed">
+                <div class="filter-section">
+                    <input type="text" id="filterCategory" list="filterCategoryList" placeholder="Filter by category...">
+                    <datalist id="filterCategoryList">
+                        <option value="">
+                        <option value="Venue">
+                        <option value="Catering">
+                        <option value="Photography">
+                        <option value="Videography">
+                        <option value="Flowers & Decorations">
+                        <option value="Music & Entertainment">
+                        <option value="Wedding Dress">
+                        <option value="Suit/Tuxedo">
+                        <option value="Rings">
+                        <option value="Invitations">
+                        <option value="Wedding Cake">
+                        <option value="Transportation">
+                        <option value="Accommodation">
+                        <option value="Favors & Gifts">
+                        <option value="Other">
+                    </datalist>
+                </div>
+                <div id="expensesList" class="expenses-list" style="max-height: 65vh; overflow-y: auto;">
+                    <!-- Expenses will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

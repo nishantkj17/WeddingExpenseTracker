@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest List - Wedding Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💒</h1>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Expenses</a>
+                <a href="guests.html" class="nav-link active">Guest List</a>
+            </nav>
+        </header>
+
+        <!-- Guest List -->
+        <section class="collapsible-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>👥 Guest List</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <!-- Add Guest Form -->
+                <form id="guestForm" style="margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 8px; align-items: center;">
+                    <input type="text" id="guestName" required placeholder="Guest Name" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                    <input type="text" id="roomStay" placeholder="Room/Stay" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                    <button type="submit" class="btn btn-success" style="white-space: nowrap; padding: 10px 16px; font-size: 0.9rem;">Add</button>
+                    <button type="button" id="cancelGuestEditBtn" class="btn btn-secondary" style="display: none; white-space: nowrap; padding: 10px 16px; font-size: 0.9rem;">Cancel</button>
+                </form>
+
+                <!-- Guest List Table -->
+                <div id="guestsList" style="max-height: 60vh; overflow-y: auto;">
+                    <!-- Guests will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/guests.js"></script>
+</body>
+</html>
