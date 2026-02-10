@@ -40,8 +40,23 @@ function initializeMaterialize() {
     });
     
     // Initialize select dropdowns
+    // Use native dropdowns on mobile for better touch support
     var selects = document.querySelectorAll('select');
-    M.FormSelect.init(selects);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (!isMobile) {
+        M.FormSelect.init(selects);
+    } else {
+        // For mobile, add class to use native select
+        selects.forEach(select => {
+            select.classList.add('browser-default');
+            select.style.display = 'block';
+            select.style.height = '35px';
+            select.style.border = '1px solid #9e9e9e';
+            select.style.borderRadius = '4px';
+            select.style.padding = '0 8px';
+        });
+    }
     
     // Initialize modals
     var modals = document.querySelectorAll('.modal');
