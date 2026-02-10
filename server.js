@@ -211,10 +211,17 @@ app.put('/api/expenses/:id/payment/:paymentIndex', async (req, res) => {
             notes: req.body.notes !== undefined ? req.body.notes : expense.payments[paymentIndex].notes
         };
         
-        // Recalculate remaining balance
-        const totalPaid = expense.payments.reduce((sum, p) => sum + p.amount, 0);
-        expense.remainingBalance = expense.totalCost - totalPaid;
-        expense.fullyPaid = expense.remainingBalance <= 0;
+        // If there's only one payment, update totalCost to match the payment amount
+        if (expense.payments.length === 1) {
+            expense.totalCost = expense.payments[0].amount;
+            expense.remainingBalance = 0;
+            expense.fullyPaid = true;
+        } else {
+            // Recalculate remaining balance for multiple payments
+            const totalPaid = expense.payments.reduce((sum, p) => sum + p.amount, 0);
+            expense.remainingBalance = expense.totalCost - totalPaid;
+            expense.fullyPaid = expense.remainingBalance <= 0;
+        }
         
         await writeData(data);
         res.json(expense);

@@ -6,31 +6,67 @@ let currentEditId = null;
 const guestForm = document.getElementById('guestForm');
 const cancelGuestEditBtn = document.getElementById('cancelGuestEditBtn');
 const guestsList = document.getElementById('guestsList');
+const searchGuest = document.getElementById('searchGuest');
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Materialize components
+    initializeMaterialize();
     loadGuests();
     setupEventListeners();
 });
 
-// Collapsible section functionality
+// Initialize Materialize components
+function initializeMaterialize() {
+    // Initialize collapsibles
+    var elems = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(elems, {
+        accordion: false
+    });
+    
+    // Initialize select dropdowns
+    var selects = document.querySelectorAll('select');
+    M.FormSelect.init(selects);
+    
+    // Initialize modals
+    var modals = document.querySelectorAll('.modal');
+    M.Modal.init(modals);
+    
+    // Update labels for pre-filled inputs
+    M.updateTextFields();
+}
+
+// Collapsible section functionality (Materialize handles this)
 function toggleSection(header) {
-    const content = header.nextElementSibling;
-    header.classList.toggle('collapsed');
-    content.classList.toggle('collapsed');
+    // Material UI handles this automatically
 }
 
 // Setup event listeners
 function setupEventListeners() {
     guestForm.addEventListener('submit', handleFormSubmit);
     cancelGuestEditBtn.addEventListener('click', cancelEdit);
+    searchGuest.addEventListener('input', handleSearch);
+}
+
+// Handle search
+function handleSearch() {
+    const searchTerm = searchGuest.value.toLowerCase();
+    loadGuests(searchTerm);
 }
 
 // Load guests
-async function loadGuests() {
+async function loadGuests(searchTerm = '') {
     try {
         const response = await fetch(`${API_URL}/guests`);
-        const guests = await response.json();
+        let guests = await response.json();
+        
+        // Filter by search term
+        if (searchTerm) {
+            guests = guests.filter(guest => 
+                guest.name.toLowerCase().includes(searchTerm) ||
+                (guest.room && guest.room.toLowerCase().includes(searchTerm))
+            );
+        }
         
         displayGuests(guests);
     } catch (error) {
@@ -43,8 +79,9 @@ async function loadGuests() {
 function displayGuests(guests) {
     if (guests.length === 0) {
         guestsList.innerHTML = `
-            <div class="empty-state">
-                <h3>👥 No guests yet</h3>
+            <div class="card-panel center-align grey lighten-4">
+                <i class="material-icons large grey-text text-darken-1">people</i>
+                <h5>No guests yet</h5>
                 <p>Start adding your wedding guests!</p>
             </div>
         `;
@@ -55,17 +92,32 @@ function displayGuests(guests) {
     guests.sort((a, b) => a.name.localeCompare(b.name));
     
     guestsList.innerHTML = guests.map(guest => `
-        <div class="expense-item" style="margin-bottom: 8px; padding: 10px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center;">
-                <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark);">
-                    ${guest.name}
+        <div class="card hoverable" style="margin-bottom: 8px;">
+            <div class="card-content" style="padding: 8px;">
+                <div class="row" style="margin-bottom: 3px;">
+                    <div class="col s8">
+                        <span style="font-weight: 500; font-size: 0.95rem;">
+                            <i class="material-icons tiny grey-text text-darken-1">person</i>
+                            ${guest.name}
+                        </span>
+                    </div>
+                    <div class="col s4 right-align">
+                        <span style="color: grey; font-size: 0.85rem;">
+                            <i class="material-icons tiny">hotel</i>
+                            ${guest.room || 'N/A'}
+                        </span>
+                    </div>
                 </div>
-                <div style="font-size: 0.85rem; color: var(--secondary-color);">
-                    ${guest.room || '-'}
-                </div>
-                <div class="expense-actions" style="display: flex; gap: 5px;">
-                    <button class="btn btn-icon btn-edit" onclick="editGuest('${guest.id}')" title="Edit" style="padding: 6px 10px; font-size: 1rem;">✏️</button>
-                    <button class="btn btn-icon btn-danger" onclick="deleteGuest('${guest.id}')" title="Delete" style="padding: 6px 10px; font-size: 1rem;">🗑️</button>
+                <div class="row" style="margin: 0;">
+                    <div class="col s12" style="display: flex; justify-content: flex-end; gap: 5px;">
+                        <a href="#" onclick="editGuest('${guest.id}'); return false;" class="btn-small waves-effect waves-light blue-grey darken-1" style="margin: 0; padding: 0 6px; height: 24px; line-height: 24px;">
+                            <i class="material-icons left" style="font-size: 0.85rem; margin-right: 2px;">edit</i>
+                            <span style="font-size: 0.7rem;">Edit</span>
+                        </a>
+                        <a href="#" onclick="deleteGuest('${guest.id}'); return false;" class="btn-small waves-effect waves-light grey lighten-2 grey-text text-darken-2" style="margin: 0; padding: 0 6px; height: 24px; line-height: 24px;">
+                            <i class="material-icons" style="font-size: 0.85rem;">delete</i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,9 +158,12 @@ async function handleFormSubmit(e) {
             currentEditId = null;
             cancelGuestEditBtn.style.display = 'none';
             
-            // Reset submit button text
+            // Reset submit button text and icon
             const submitBtn = guestForm.querySelector('button[type="submit"]');
-            submitBtn.textContent = 'Add Guest';
+            submitBtn.innerHTML = '<i class="material-icons left">add</i>Add';
+            
+            // Reinitialize Material UI components
+            M.updateTextFields();
             
             await loadGuests();
         }
@@ -127,12 +182,15 @@ async function editGuest(id) {
         document.getElementById('guestName').value = guest.name;
         document.getElementById('roomStay').value = guest.room || '';
         
+        // Update Material UI labels
+        M.updateTextFields();
+        
         currentEditId = id;
         cancelGuestEditBtn.style.display = 'inline-block';
         
         // Change submit button text
         const submitBtn = guestForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Update Guest';
+        submitBtn.innerHTML = '<i class="material-icons left">save</i>Update Guest';
         
         // Scroll to form
         guestForm.scrollIntoView({ behavior: 'smooth' });
@@ -150,53 +208,65 @@ function cancelEdit() {
     
     // Reset submit button text
     const submitBtn = guestForm.querySelector('button[type="submit"]');
-    submitBtn.textContent = 'Add Guest';
-}
-
-// Delete guest
-async function deleteGuest(id) {
-    if (!confirm('Are you sure you want to delete this guest?')) {
-        return;
-    }
+    submitBtn.innerHTML = '<i class="material-icons left">add</i>Add';
     
-    try {
-        const response = await fetch(`${API_URL}/guests/${id}`, {
-            method: 'DELETE'
-        });
-        
-        if (response.ok) {
-            showNotification('Guest deleted successfully!', 'success');
-            await loadGuests();
-        }
-    } catch (error) {
-        console.error('Error deleting guest:', error);
-        showNotification('Failed to delete guest', 'error');
-    }
+    // Update Material UI labels
+    M.updateTextFields();
 }
 
 // Show notification
 function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        background: ${type === 'success' ? '#6b9080' : '#e07a5f'};
-        color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        animation: slideIn 0.3s ease;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    // Use Materialize toast
+    const color = type === 'success' ? 'green' : 'red';
+    M.toast({
+        html: message,
+        classes: color,
+        displayLength: 3000
+    });
+}
+
+// Confirmation modal helper
+let confirmCallback = null;
+
+function showConfirm(title, message, onConfirm, btnText = 'Delete', btnClass = 'red') {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    const confirmBtn = document.getElementById('confirmActionBtn');
+    confirmBtn.textContent = btnText;
+    confirmBtn.className = `modal-close waves-effect waves-${btnClass} btn ${btnClass}`;
+    confirmCallback = onConfirm;
+    const modal = M.Modal.getInstance(document.getElementById('confirmModal'));
+    modal.open();
+}
+
+function executeConfirmAction() {
+    if (confirmCallback) {
+        confirmCallback();
+        confirmCallback = null;
+    }
+}
+
+// Delete guest
+async function deleteGuest(id) {
+    showConfirm(
+        'Delete Guest',
+        'Are you sure you want to delete this guest?',
+        async () => {
+            try {
+                const response = await fetch(`${API_URL}/guests/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showNotification('Guest deleted successfully!', 'success');
+                    await loadGuests();
+                }
+            } catch (error) {
+                console.error('Error deleting guest:', error);
+                showNotification('Failed to delete guest', 'error');
+            }
+        }
+    );
 }
 
 // Add CSS animations

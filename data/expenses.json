@@ -1045,16 +1045,28 @@
           "amount": 1000,
           "paidBy": "Ranjana",
           "notes": ""
+        },
+        {
+          "date": "2026-02-10",
+          "amount": 1000,
+          "paidBy": "Mummy",
+          "notes": ""
+        },
+        {
+          "date": "2026-02-10",
+          "amount": 100,
+          "paidBy": "Mummy",
+          "notes": ""
         }
       ],
-      "remainingBalance": 3000,
+      "remainingBalance": 1900,
       "fullyPaid": false,
       "date": "2026-02-09"
     }
   ],
   "moneyReceived": {
     "ranjana": 350000,
-    "mummy": 0,
+    "mummy": 730000,
     "choti": 0
   },
   "guests": [
@@ -1190,7 +1202,7 @@
     },
     {
       "id": "27",
-      "name": "Akhilesh (Family of 2)",
+      "name": "Akhilesh (Family of 4)",
       "room": ""
     },
     {

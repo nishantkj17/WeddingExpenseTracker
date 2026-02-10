@@ -24,60 +24,68 @@ const progressText = document.getElementById('progressText');
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Materialize components
+    initializeMaterialize();
     loadData();
     setupEventListeners();
     initializeCharts();
 });
 
-// Collapsible section functionality
-function toggleSection(header) {
-    const content = header.nextElementSibling;
-    const isCurrentlyCollapsed = header.classList.contains('collapsed');
+// Initialize Materialize components
+function initializeMaterialize() {
+    // Initialize collapsibles with accordion behavior (only one open at a time)
+    var elems = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(elems, {
+        accordion: true
+    });
     
-    // If opening this section, close all other sections first
-    if (isCurrentlyCollapsed) {
-        const allHeaders = document.querySelectorAll('.section-header');
-        allHeaders.forEach(h => {
-            if (h !== header) {
-                h.classList.add('collapsed');
-                h.nextElementSibling.classList.add('collapsed');
-            }
-        });
-    }
+    // Initialize select dropdowns
+    var selects = document.querySelectorAll('select');
+    M.FormSelect.init(selects);
     
-    // Toggle current section
-    header.classList.toggle('collapsed');
-    content.classList.toggle('collapsed');
+    // Initialize modals
+    var modals = document.querySelectorAll('.modal');
+    M.Modal.init(modals);
+    
+    // Initialize dashboard carousel
+    var dashboardCarousel = document.querySelector('#dashboardCarousel');
+    M.Carousel.init(dashboardCarousel, {
+        fullWidth: true,
+        indicators: true,
+        duration: 200
+    });
+    
+    // Initialize charts carousel
+    var carousels = document.querySelectorAll('.carousel-slider');
+    M.Carousel.init(carousels, {
+        fullWidth: true,
+        indicators: true
+    });
+    
+    // Update labels for pre-filled inputs
+    M.updateTextFields();
 }
 
-// Chart carousel functionality
+// Collapsible section functionality (not needed with Materialize, but keeping for compatibility)
+function toggleSection(header) {
+    // Material UI handles this automatically
+}
+
+// Chart carousel functionality (Materialize handles this)
 let currentChartIndex = 0;
 let categoryChartInstance = null;
 let journeyChartInstance = null;
 
 function showChart(index) {
-    const charts = document.querySelectorAll('.chart-container');
-    const dots = document.querySelectorAll('.dot');
-    
-    charts.forEach((chart, i) => {
-        chart.classList.toggle('active', i === index);
-    });
-    
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-    });
-    
-    currentChartIndex = index;
+    // Materialize carousel handles this
 }
 
 function nextChart() {
-    currentChartIndex = (currentChartIndex + 1) % 2;
-    showChart(currentChartIndex);
+    // Materialize carousel handles this
 }
 
 function previousChart() {
-    currentChartIndex = (currentChartIndex - 1 + 2) % 2;
-    showChart(currentChartIndex);
+    // Materialize carousel handles this
 }
 
 // Setup event listeners
@@ -87,7 +95,8 @@ function setupEventListeners() {
     expenseForm.addEventListener('submit', handleFormSubmit);
     cancelEditBtn.addEventListener('click', cancelEdit);
     filterCategory.addEventListener('input', filterExpenses);
-    document.getElementById('filterPaidBy').addEventListener('input', filterExpenses);
+    document.getElementById('filterPaidBy').addEventListener('change', filterExpenses);
+    document.getElementById('filterPendingOnly').addEventListener('change', handlePendingFilter);
     
     // Toggle remaining payment section
     document.getElementById('hasRemaining').addEventListener('change', function(e) {
@@ -99,12 +108,14 @@ function setupEventListeners() {
         const totalCostDisplay = document.getElementById('totalCostDisplay');
         
         if (isChecked) {
-            costLabel.textContent = 'Advance Payment';
-            totalCostDisplay.style.display = 'block';
-            updateTotalCost();
+            if (costLabel) costLabel.textContent = 'Advance Payment';
+            if (totalCostDisplay) {
+                totalCostDisplay.style.display = 'block';
+                updateTotalCost();
+            }
         } else {
-            costLabel.textContent = 'Cost';
-            totalCostDisplay.style.display = 'none';
+            if (costLabel) costLabel.textContent = 'Cost';
+            if (totalCostDisplay) totalCostDisplay.style.display = 'none';
         }
     });
     
@@ -213,6 +224,9 @@ async function loadData() {
             chotiReceivedInput.value = data.moneyReceived.choti || '';
         }
         
+        // Update Material UI labels
+        M.updateTextFields();
+        
         await loadSummary();
         await loadExpenses();
     } catch (error) {
@@ -245,15 +259,15 @@ async function loadSummary() {
             });
         });
         
-        // Display Who Paid How Much
+        // Display Who Paid How Much - Compact version
         whoPaidSection.innerHTML = Object.keys(paidByPerson).length > 0 ? 
             Object.entries(paidByPerson).map(([person, amount]) => `
-                <div class="summary-card">
-                    <h3>${person}</h3>
-                    <p class="amount">${formatCurrency(amount)}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #e0e0e0;">
+                    <span style="font-weight: 500; color: #424242; font-size: 0.85rem;">${person}</span>
+                    <span style="font-weight: 600; color: #607d8b; font-size: 0.95rem;">${formatCurrency(amount)}</span>
                 </div>
             `).join('') : 
-            '<div class="summary-card"><h3>No Payments Yet</h3><p class="amount">₹0.00</p></div>';
+            '<div class="center-align grey-text" style="padding: 15px 0;"><i class="material-icons" style="font-size: 1.5rem;">money_off</i><p style="margin: 3px 0; font-size: 0.8rem;">No payments yet</p></div>';
         
         // Section 2: Total Money Received (already in form inputs)
         const totalReceived = 
@@ -279,11 +293,14 @@ async function loadSummary() {
         
         // Color coding for remaining cash
         if (remainingCash < 0) {
-            remainingCashEl.style.color = 'var(--danger-color)';
+            remainingCashEl.classList.remove('blue-text', 'green-text', 'grey-text');
+            remainingCashEl.classList.add('red-text', 'text-darken-1');
         } else if (remainingCash > 0) {
-            remainingCashEl.style.color = 'var(--success-color)';
+            remainingCashEl.classList.remove('blue-text', 'red-text', 'grey-text');
+            remainingCashEl.classList.add('green-text', 'text-darken-1');
         } else {
-            remainingCashEl.style.color = 'var(--text-dark)';
+            remainingCashEl.classList.remove('red-text', 'green-text');
+            remainingCashEl.classList.add('grey-text', 'text-darken-2');
         }
         
         // Section 4: Budget Progress (include remaining amount to be paid later)
@@ -295,9 +312,11 @@ async function loadSummary() {
         
         // Change color if over budget
         if (percent > 100) {
-            progressFill.style.background = 'linear-gradient(90deg, #e07a5f 0%, #d62828 100%)';
+            progressFill.classList.remove('blue-grey');
+            progressFill.classList.add('red', 'darken-1');
         } else {
-            progressFill.style.background = 'linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%)';
+            progressFill.classList.remove('red', 'darken-1');
+            progressFill.classList.add('blue-grey', 'darken-1');
         }
         
     } catch (error) {
@@ -306,12 +325,17 @@ async function loadSummary() {
 }
 
 // Load expenses
-async function loadExpenses(searchKeyword = '', paidByFilter = '') {
+async function loadExpenses(searchKeyword = '', paidByFilter = '', pendingOnly = false) {
     try {
         const response = await fetch(`${API_URL}/expenses`);
         const data = await response.json();
         
         let expenses = data.expenses;
+        
+        // Apply pending filter first if checked
+        if (pendingOnly) {
+            expenses = expenses.filter(e => !e.fullyPaid);
+        }
         
         // Filter by keyword search across all fields
         if (searchKeyword) {
@@ -330,7 +354,7 @@ async function loadExpenses(searchKeyword = '', paidByFilter = '') {
             });
         }
         
-        // Filter by Paid By
+        // Filter by Paid By (can work together with pending filter)
         if (paidByFilter) {
             const paidBy = paidByFilter.toLowerCase();
             expenses = expenses.filter(e => 
@@ -348,64 +372,85 @@ async function loadExpenses(searchKeyword = '', paidByFilter = '') {
 function displayExpenses(expenses) {
     if (expenses.length === 0) {
         expensesList.innerHTML = `
-            <div class="empty-state">
-                <h3>💐 No expenses yet</h3>
-                <p>Start adding your wedding expenses to track your budget!</p>
+            <div class="card-panel center-align grey lighten-4">
+                <i class="material-icons medium grey-text">receipt_long</i>
+                <p style="margin: 5px 0;">No expenses yet. Add your first expense!</p>
             </div>
         `;
         return;
     }
     
-    // Sort by date (newest first)
-    expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Sort by ID (newest created first) - IDs are timestamps
+    expenses.sort((a, b) => b.id.localeCompare(a.id));
     
     expensesList.innerHTML = expenses.map(expense => {
         const payments = expense.payments || [];
         const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
         const remaining = expense.remainingBalance || 0;
         const totalCost = expense.totalCost || 0;
+        const paidBy = payments.length > 0 ? payments[0].paidBy : (expense.paidBy || '');
         
         return `
-        <div class="expense-item ${expense.fullyPaid ? 'paid' : ''}" style="margin-bottom: 4px; padding: 6px 8px; background: white; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.08);">
-            <div style="display: flex; justify-content: space-between; align-items: start; gap: 6px;">
-                <div style="flex: 1; min-width: 0;">
-                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
-                        <span style="font-weight: 600; color: var(--primary-color); font-size: 0.75rem;">${expense.category}</span>
-                        ${expense.subCategory ? `<span style="font-size: 0.65rem; color: var(--text-light);">• ${expense.subCategory}</span>` : ''}
-                        ${expense.fullyPaid ? '<span style="font-size: 0.6rem; padding: 1px 3px; background: var(--success-color); color: white; border-radius: 4px;">✓</span>' : '<span style="font-size: 0.6rem; padding: 1px 3px; background: var(--warning-color); color: var(--text-dark); border-radius: 4px;">⏳</span>'}
-                    </div>
-                    <div style="font-size: 0.8rem; color: var(--text-dark); font-weight: 500; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${expense.description}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.65rem; color: var(--text-light);">
-                        <span>Total: ${formatCurrency(totalCost)}</span>
-                        <span>•</span>
-                        <span style="color: var(--success-color);">Paid: ${formatCurrency(totalPaid)}</span>
-                        ${remaining > 0 ? `<span>•</span><span style="color: var(--secondary-color);">Rem: ${formatCurrency(remaining)}</span>` : ''}
-                        <span>•</span>
-                        <span>${formatDate(expense.date)}</span>
-                    </div>
-                </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                        ${!expense.fullyPaid ? `<button class="btn btn-icon" onclick="openPaymentModal('${expense.id}')" title="Add Payment" style="padding: 4px 6px; font-size: 0.85rem; background: var(--success-color); color: white; min-width: 28px; height: 28px;">💰</button>` : ''}
-                        ${payments.length === 1 && expense.fullyPaid ? `<button class="btn btn-icon" onclick="editPayment('${expense.id}', 0)" title="Edit Payment" style="padding: 4px 6px; font-size: 0.85rem; background: var(--primary-color); color: white; min-width: 28px; height: 28px;">✏️</button>` : ''}
-                        <button class="btn btn-icon btn-danger" onclick="deleteExpense('${expense.id}')" title="Delete" style="padding: 4px 6px; font-size: 0.85rem; min-width: 28px; height: 28px;">🗑️</button>
-                    </div>
-                    ${payments.length > 1 || (payments.length === 1 && !expense.fullyPaid) ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" style="font-size: 0.6rem; color: var(--primary-color); text-decoration: none; white-space: nowrap;">▶ ${payments.length}p</a>` : ''}
-                </div>
-            </div>
-            <div id="payment-history-${expense.id}" style="display: none; margin-top: 4px; padding: 4px 6px; background: var(--light-bg); border-radius: 4px; font-size: 0.65rem;">
-                ${payments.map((p, index) => `
-                    <div style="padding: 2px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                        <div style="flex: 1;">
-                            ${formatDate(p.date)} • ${formatCurrency(p.amount)} • ${p.paidBy}
-                            ${p.notes ? `<div style="font-style: italic; color: var(--text-light); font-size: 0.6rem;">${p.notes}</div>` : ''}
+        <div class="card ${expense.fullyPaid ? 'grey lighten-5' : ''}" style="margin: 5px 0;">
+            <div class="card-content" style="padding: 8px;">
+                <div class="row" style="margin: 0;">
+                    <div class="col s7">
+                        <div style="font-weight: 500; font-size: 0.95rem; color: #424242;">
+                            ${expense.description}
                         </div>
-                        <div style="display: flex; gap: 2px;">
-                            <button class="btn btn-icon" onclick="editPayment('${expense.id}', ${index})" title="Edit Payment" style="padding: 2px 4px; font-size: 0.6rem; min-width: 20px; height: 20px; background: var(--primary-color); color: white;">✏️</button>
-                            <button class="btn btn-icon" onclick="deletePayment('${expense.id}', ${index})" title="Delete Payment" style="padding: 2px 4px; font-size: 0.6rem; min-width: 20px; height: 20px; background: var(--danger-color); color: white;">🗑️</button>
+                        <div style="margin-top: 2px;">
+                            <span class="chip grey lighten-3 grey-text text-darken-2" style="height: 20px; line-height: 20px; padding: 0 8px; font-size: 0.7rem; margin: 2px;">
+                                ${expense.category}
+                            </span>
+                            ${expense.subCategory ? `<span class="chip grey lighten-4 grey-text text-darken-1" style="height: 20px; line-height: 20px; padding: 0 8px; font-size: 0.7rem; margin: 2px;">${expense.subCategory}</span>` : ''}
+                        </div>
+                        <div style="font-size: 0.75rem; color: #757575; margin-top: 2px;">
+                            <i class="material-icons" style="font-size: 12px; vertical-align: middle;">event</i> ${formatDate(expense.date)}
+                            ${paidBy ? `<span class="grey-text" style="margin-left: 5px;">${paidBy}</span>` : ''}
                         </div>
                     </div>
-                `).join('')}
+                    <div class="col s5 right-align">
+                        <div style="font-weight: 500; font-size: 1.1rem; color: #424242;">${formatCurrency(totalCost)}</div>
+                        ${remaining > 0 ? `<div style="font-size: 0.7rem; color: #757575; margin-top: 2px;">
+                            Paid: ${formatCurrency(totalPaid)}<br>
+                            Rem: <span class="orange-text text-darken-2">${formatCurrency(remaining)}</span>
+                        </div>` : ''}
+                        <div style="margin-top: 3px;">
+                            ${expense.fullyPaid ? '<span class="chip grey lighten-3 grey-text text-darken-3" style="height: 18px; line-height: 18px; padding: 0 6px; font-size: 0.65rem;"><i class="material-icons" style="font-size: 11px;">check</i> Paid</span>' : '<span class="chip blue-grey lighten-4 blue-grey-text text-darken-2" style="height: 18px; line-height: 18px; padding: 0 6px; font-size: 0.65rem;"><i class="material-icons" style="font-size: 11px;">schedule</i> Pending</span>'}
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px 0 0 0;">
+                    <div class="col s12" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            ${!expense.fullyPaid ? `<a href="#" onclick="openPaymentModal('${expense.id}'); return false;" class="btn-small waves-effect waves-light blue-grey lighten-1" style="margin: 0; padding: 0 8px; height: 28px; line-height: 28px;"><i class="material-icons left" style="font-size: 0.9rem; margin-right: 3px;">payment</i><span style="font-size: 0.75rem;">Pay</span></a>` : ''}
+                            ${payments.length === 1 && expense.fullyPaid ? `<a href="#" onclick="editPayment('${expense.id}', 0); return false;" class="btn-small waves-effect waves-light blue-grey lighten-1" style="margin: 0 0 0 3px; padding: 0 8px; height: 28px; line-height: 28px;"><i class="material-icons left" style="font-size: 0.9rem; margin-right: 3px;">edit</i><span style="font-size: 0.75rem;">Edit</span></a>` : ''}
+                            ${payments.length > 1 || (payments.length === 1 && !expense.fullyPaid) ? `<a href="#" onclick="togglePaymentHistory('${expense.id}'); return false;" class="btn-small waves-effect waves-light grey lighten-1 grey-text text-darken-2" style="margin: 0 0 0 3px; padding: 0 8px; height: 28px; line-height: 28px;"><i class="material-icons left" style="font-size: 0.9rem; margin-right: 3px;">history</i><span style="font-size: 0.75rem;">${payments.length}</span></a>` : ''}
+                        </div>
+                        <a href="#" onclick="deleteExpense('${expense.id}'); return false;" class="btn-small waves-effect waves-light grey lighten-2 grey-text text-darken-2" style="margin: 0; padding: 0 8px; height: 28px; line-height: 28px;">
+                            <i class="material-icons" style="font-size: 0.9rem;">delete</i>
+                        </a>
+                    </div>
+                </div>
+                <div id="payment-history-${expense.id}" style="display: none; margin-top: 8px; padding: 8px; background: #fafafa; border-radius: 4px;">
+                    <div style="font-weight: 500; font-size: 0.85rem; color: #424242; margin-bottom: 5px;">Payment History</div>
+                    ${payments.map((p, index) => `
+                        <div style="padding: 5px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                            <div style="flex: 1;">
+                                <strong>${formatDate(p.date)}</strong> • ${formatCurrency(p.amount)} • ${p.paidBy}
+                                ${p.notes ? `<div style="font-style: italic; color: #757575; font-size: 0.75rem; margin-top: 2px;">${p.notes}</div>` : ''}
+                            </div>
+                            <div style="display: flex; gap: 3px;">
+                                <a href="#" onclick="editPayment('${expense.id}', ${index}); return false;" class="btn-small waves-effect waves-light blue-grey lighten-1" style="padding: 0 6px; height: 26px; line-height: 26px;">
+                                    <i class="material-icons" style="font-size: 0.85rem;">edit</i>
+                                </a>
+                                <a href="#" onclick="deletePayment('${expense.id}', ${index}); return false;" class="btn-small waves-effect waves-light grey lighten-2 grey-text text-darken-2" style="padding: 0 6px; height: 26px; line-height: 26px;">
+                                    <i class="material-icons" style="font-size: 0.85rem;">delete</i>
+                                </a>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         </div>
         `;
@@ -525,9 +570,13 @@ async function handleFormSubmit(e) {
             currentEditId = null;
             cancelEditBtn.style.display = 'none';
             
-            // Reset submit button text to "Add Expense"
+            // Reset submit button text and icon
             const submitBtn = expenseForm.querySelector('button[type="submit"]');
-            submitBtn.textContent = 'Add Expense';
+            submitBtn.innerHTML = '<i class="material-icons left">add</i>Add Expense';
+            
+            // Reinitialize Material UI components
+            M.FormSelect.init(document.querySelectorAll('select'));
+            M.updateTextFields();
             
             await loadSummary();
             await loadExpenses();
@@ -541,7 +590,7 @@ async function handleFormSubmit(e) {
 
 // Edit expense
 async function editExpense(id) {
-    alert('Note: Expense editing is currently disabled with the new payment history system.\n\nTo modify payments:\n- Use the 💰 button to add new payments\n- Delete and recreate the expense if needed');
+    showInfo('Expense Editing Disabled', 'Note: Expense editing is currently disabled with the new payment history system.\n\nTo modify payments:\n- Use the 💰 button to add new payments\n- Delete and recreate the expense if needed');
     return;
     
     // Edit functionality disabled - use payment modal for adding payments
@@ -561,7 +610,11 @@ function cancelEdit() {
     
     // Reset submit button text to "Add Expense"
     const submitBtn = expenseForm.querySelector('button[type="submit"]');
-    submitBtn.textContent = 'Add Expense';
+    submitBtn.innerHTML = '<i class="material-icons left">add</i>Add Expense';
+    
+    // Update Material UI labels
+    M.updateTextFields();
+    M.FormSelect.init(document.querySelectorAll('select'));
 }
 
 // Delete expense
@@ -586,7 +639,8 @@ function togglePaymentHistory(expenseId) {
 
 // Open payment modal
 async function openPaymentModal(expenseId, paymentIndex = null) {
-    const modal = document.getElementById('paymentModal');
+    const modalElem = document.getElementById('paymentModal');
+    const modal = M.Modal.getInstance(modalElem);
     
     // Fetch fresh expense data from API
     try {
@@ -598,24 +652,24 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
         const expense = await response.json();
         
         // Store the expense ID and payment index on the modal
-        modal.dataset.expenseId = expenseId;
-        modal.dataset.paymentIndex = paymentIndex !== null ? paymentIndex : '';
+        modalElem.dataset.expenseId = expenseId;
+        modalElem.dataset.paymentIndex = paymentIndex !== null ? paymentIndex : '';
         
         // Calculate total paid from payments array
         const payments = expense.payments || [];
         const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
         
         // Populate expense details
+        const remaining = (expense.remainingBalance || 0);
         document.getElementById('paymentExpenseDetails').innerHTML = `
             <strong>${expense.description}</strong><br>
             Category: ${expense.category}${expense.subCategory ? ' > ' + expense.subCategory : ''}<br>
-            Total Cost: ${formatCurrency(expense.totalCost)}<br>
-            Paid: ${formatCurrency(totalPaid)}<br>
-            Remaining: ${formatCurrency(expense.remainingBalance || 0)}
+            Total Cost: ${formatCurrency(expense.totalCost)}
+            ${remaining > 0 ? `<br>Paid: ${formatCurrency(totalPaid)}<br>Remaining: ${formatCurrency(remaining)}` : ''}
         `;
         
         // Update modal title
-        document.getElementById('paymentModalTitle').textContent = paymentIndex !== null ? '✏️ Edit Payment' : '💰 Add Payment';
+        document.getElementById('paymentModalTitle').innerHTML = paymentIndex !== null ? '<i class="material-icons">edit</i> Edit Payment' : '<i class="material-icons">payment</i> Add Payment';
         
         // If editing, populate with existing payment data
         if (paymentIndex !== null && payments[paymentIndex]) {
@@ -632,8 +686,16 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
             document.getElementById('paymentNotes').value = '';
         }
         
+        // Reinitialize form select and update labels
+        M.FormSelect.init(document.querySelectorAll('#paymentModal select'));
+        M.updateTextFields();
+        const notesTextarea = document.getElementById('paymentNotes');
+        if (notesTextarea) {
+            M.textareaAutoResize(notesTextarea);
+        }
+        
         // Show modal
-        modal.style.display = 'flex';
+        modal.open();
     } catch (error) {
         console.error('Error opening payment modal:', error);
         showNotification('Failed to open payment modal', 'error');
@@ -642,10 +704,11 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
 
 // Close payment modal
 function closePaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    modal.style.display = 'none';
-    modal.dataset.expenseId = '';
-    modal.dataset.paymentIndex = '';
+    const modalElem = document.getElementById('paymentModal');
+    const modal = M.Modal.getInstance(modalElem);
+    modal.close();
+    modalElem.dataset.expenseId = '';
+    modalElem.dataset.paymentIndex = '';
 }
 
 // Submit payment
@@ -694,7 +757,7 @@ async function submitPayment(event) {
             showNotification(isEditing ? 'Payment updated successfully!' : 'Payment added successfully!', 'success');
             closePaymentModal();
             await loadSummary();
-            filterExpenses();
+            await loadExpenses(); // Reload all expenses to get updated totalCost
             updateCharts();
         } else {
             const error = await response.json();
@@ -713,57 +776,75 @@ function editPayment(expenseId, paymentIndex) {
 
 // Delete payment
 async function deletePayment(expenseId, paymentIndex) {
-    if (!confirm('Are you sure you want to delete this payment?')) {
-        return;
-    }
-    
-    try {
-        const response = await fetch(`${API_URL}/expenses/${expenseId}/payment/${paymentIndex}`, {
-            method: 'DELETE'
-        });
-        
-        if (response.ok) {
-            showNotification('Payment deleted successfully!', 'success');
-            await loadSummary();
-            filterExpenses();
-            updateCharts();
-        } else {
-            const error = await response.json();
-            showNotification(error.message || 'Failed to delete payment', 'error');
+    showConfirm(
+        'Delete Payment',
+        'Are you sure you want to delete this payment?',
+        async () => {
+            try {
+                const response = await fetch(`${API_URL}/expenses/${expenseId}/payment/${paymentIndex}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showNotification('Payment deleted successfully!', 'success');
+                    await loadSummary();
+                    filterExpenses();
+                    updateCharts();
+                } else {
+                    const error = await response.json();
+                    showNotification(error.message || 'Failed to delete payment', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting payment:', error);
+                showNotification('Failed to delete payment', 'error');
+            }
         }
-    } catch (error) {
-        console.error('Error deleting payment:', error);
-        showNotification('Failed to delete payment', 'error');
-    }
+    );
 }
 
 async function deleteExpense(id) {
-    if (!confirm('Are you sure you want to delete this expense?')) {
-        return;
+    showConfirm(
+        'Delete Expense',
+        'Are you sure you want to delete this expense?',
+        async () => {
+            try {
+                const response = await fetch(`${API_URL}/expenses/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showNotification('Expense deleted successfully!', 'success');
+                    await loadSummary();
+                    filterExpenses();
+                    updateCharts();
+                }
+            } catch (error) {
+                console.error('Error deleting expense:', error);
+                showNotification('Failed to delete expense', 'error');
+            }
+        }
+    );
+}
+
+// Handle pending filter checkbox
+function handlePendingFilter() {
+    const isPendingChecked = document.getElementById('filterPendingOnly').checked;
+    
+    if (isPendingChecked) {
+        // Only clear search filter when pending is checked
+        filterCategory.value = '';
+        // Keep the dropdown filter intact so it can be used with pending filter
     }
     
-    try {
-        const response = await fetch(`${API_URL}/expenses/${id}`, {
-            method: 'DELETE'
-        });
-        
-        if (response.ok) {
-            showNotification('Expense deleted successfully!', 'success');
-            await loadSummary();
-            filterExpenses();
-            updateCharts();
-        }
-    } catch (error) {
-        console.error('Error deleting expense:', error);
-        showNotification('Failed to delete expense', 'error');
-    }
+    filterExpenses();
 }
 
 // Filter expenses
 function filterExpenses() {
     const keyword = filterCategory.value;
     const paidBy = document.getElementById('filterPaidBy').value;
-    loadExpenses(keyword, paidBy);
+    const pendingOnly = document.getElementById('filterPendingOnly').checked;
+    loadExpenses(keyword, paidBy, pendingOnly);
 }
 
 // Utility functions
@@ -784,29 +865,42 @@ function formatDate(dateString) {
 }
 
 function showNotification(message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        background: ${type === 'success' ? '#6b9080' : '#e07a5f'};
-        color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        animation: slideIn 0.3s ease;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    // Use Materialize toast
+    const color = type === 'success' ? 'green' : 'red';
+    M.toast({
+        html: message,
+        classes: color,
+        displayLength: 3000
+    });
+}
+
+// Confirmation modal helper
+let confirmCallback = null;
+
+function showConfirm(title, message, onConfirm, btnText = 'Delete', btnClass = 'red') {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    const confirmBtn = document.getElementById('confirmActionBtn');
+    confirmBtn.textContent = btnText;
+    confirmBtn.className = `modal-close waves-effect waves-${btnClass} btn ${btnClass}`;
+    confirmCallback = onConfirm;
+    const modal = M.Modal.getInstance(document.getElementById('confirmModal'));
+    modal.open();
+}
+
+function executeConfirmAction() {
+    if (confirmCallback) {
+        confirmCallback();
+        confirmCallback = null;
+    }
+}
+
+// Info modal helper
+function showInfo(title, message) {
+    document.getElementById('infoTitle').textContent = title;
+    document.getElementById('infoMessage').textContent = message;
+    const modal = M.Modal.getInstance(document.getElementById('infoModal'));
+    modal.open();
 }
 
 // Add CSS animations
@@ -823,19 +917,78 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 // Initialize Charts
+let topExpensesChartInstance;
+let paymentStatusChartInstance;
+
 function initializeCharts() {
     const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-    const journeyCtx = document.getElementById('journeyChart').getContext('2d');
+    const topExpensesCtx = document.getElementById('topExpensesChart').getContext('2d');
+    const paymentStatusCtx = document.getElementById('paymentStatusChart').getContext('2d');
     
+    // Colorful palette for wedding theme
+    const colorPalette = [
+        '#FF6B9D', // Pink
+        '#C44569', // Deep Rose
+        '#A8E6CF', // Mint Green
+        '#FFD93D', // Golden Yellow
+        '#6BCF7F', // Fresh Green
+        '#95E1D3', // Turquoise
+        '#F38181', // Coral
+        '#AA96DA', // Lavender
+        '#FCBAD3', // Light Pink
+        '#FEC8D8', // Blush
+        '#957DAD', // Purple
+        '#D4A5A5', // Dusty Rose
+        '#FFAAA5', // Peach
+        '#90CCF4', // Sky Blue
+        '#FF8A5B'  // Orange
+    ];
+    
+    // 1. Doughnut Chart - Category-wise Spending
     categoryChartInstance = new Chart(categoryCtx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
             labels: [],
             datasets: [{
                 label: 'Spending',
                 data: [],
-                backgroundColor: 'rgba(212, 165, 165, 0.8)',
-                borderColor: '#d4a5a5',
+                backgroundColor: colorPalette,
+                borderColor: '#ffffff',
+                borderWidth: 2,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `₹${value.toLocaleString('en-IN')} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // 2. Horizontal Bar Chart - Top 10 Expenses
+    topExpensesChartInstance = new Chart(topExpensesCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Amount',
+                data: [],
+                backgroundColor: colorPalette,
+                borderColor: colorPalette.map(c => c),
                 borderWidth: 1
             }]
         },
@@ -850,8 +1003,7 @@ function initializeCharts() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            const value = context.parsed.x || 0;
-                            return `₹${value.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
+                            return `₹${context.parsed.x.toLocaleString('en-IN')}`;
                         }
                     }
                 }
@@ -862,36 +1014,36 @@ function initializeCharts() {
                     ticks: {
                         callback: function(value) {
                             return '₹' + (value/1000).toFixed(0) + 'k';
-                        },
-                        font: { size: 10 }
-                    }
-                },
-                y: {
-                    ticks: {
-                        font: { size: 11 },
-                        autoSkip: false
+                        }
                     }
                 }
             }
         }
     });
     
-    journeyChartInstance = new Chart(journeyCtx, {
-        type: 'line',
+    // 3. Stacked Bar Chart - Payment Status by Category
+    paymentStatusChartInstance = new Chart(paymentStatusCtx, {
+        type: 'bar',
         data: {
             labels: [],
-            datasets: [{
-                label: 'Cumulative Spending',
-                data: [],
-                borderColor: '#d4a5a5',
-                backgroundColor: 'rgba(212, 165, 165, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
+            datasets: [
+                {
+                    label: 'Paid',
+                    data: [],
+                    backgroundColor: '#6BCF7F',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Unpaid',
+                    data: [],
+                    backgroundColor: '#F38181',
+                    borderWidth: 1
+                }
+            ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,
@@ -900,17 +1052,21 @@ function initializeCharts() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return `Total: ₹${context.parsed.y.toFixed(2)}`;
+                            return `${context.dataset.label}: ₹${context.parsed.y.toLocaleString('en-IN')}`;
                         }
                     }
                 }
             },
             scales: {
+                x: {
+                    stacked: true
+                },
                 y: {
+                    stacked: true,
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '₹' + value.toFixed(0);
+                            return '₹' + (value/1000).toFixed(0) + 'k';
                         }
                     }
                 }
@@ -922,6 +1078,9 @@ function initializeCharts() {
 }
 
 // Update Charts with current data
+let allCategoryData = {}; // Store all category data
+let previousSelections = []; // Track previous dropdown selections
+
 async function updateCharts() {
     try {
         const response = await fetch(`${API_URL}/expenses`);
@@ -940,36 +1099,136 @@ async function updateCharts() {
             categoryData[key] = (categoryData[key] || 0) + totalCost;
         });
         
+        // Store all category data globally
+        allCategoryData = categoryData;
+        
         // Sort by amount (highest to lowest)
         const sortedEntries = Object.entries(categoryData).sort((a, b) => b[1] - a[1]);
         
-        categoryChartInstance.data.labels = sortedEntries.map(e => e[0]);
-        categoryChartInstance.data.datasets[0].data = sortedEntries.map(e => e[1]);
-        categoryChartInstance.update();
+        // Update the category filter dropdown
+        const filterDropdown = document.getElementById('categoryChartFilter');
+        if (filterDropdown) {
+            // Store current selections
+            const currentSelections = Array.from(filterDropdown.selectedOptions).map(opt => opt.value);
+            
+            // Clear and repopulate options with "Show All" at top
+            filterDropdown.innerHTML = `<option value="SHOW_ALL">Show All</option>` +
+                sortedEntries.map(([label]) => 
+                    `<option value="${label}">${label}</option>`
+                ).join('');
+            
+            // Restore previous selections if any
+            if (currentSelections.length > 0) {
+                Array.from(filterDropdown.options).forEach(opt => {
+                    if (currentSelections.includes(opt.value)) {
+                        opt.selected = true;
+                    }
+                });
+            }
+            // Note: By default, nothing is selected
+            
+            // Re-initialize Material select
+            M.FormSelect.init(filterDropdown);
+            
+            // Add change event listener
+            filterDropdown.removeEventListener('change', handleCategoryFilterChange);
+            filterDropdown.addEventListener('change', handleCategoryFilterChange);
+        }
         
-        // Update Journey Line Chart
-        const sortedExpenses = [...expenses].sort((a, b) => 
-            new Date(a.date) - new Date(b.date)
+        updateCategoryChart();
+        
+        // Update Top 10 Expenses Chart
+        const sortedExpensesByAmount = [...expenses]
+            .sort((a, b) => (b.totalCost || 0) - (a.totalCost || 0))
+            .slice(0, 10);
+        
+        topExpensesChartInstance.data.labels = sortedExpensesByAmount.map(e => 
+            e.description.length > 20 ? e.description.substring(0, 20) + '...' : e.description
         );
+        topExpensesChartInstance.data.datasets[0].data = sortedExpensesByAmount.map(e => e.totalCost || 0);
+        topExpensesChartInstance.update();
         
-        let cumulativeAmount = 0;
-        const journeyData = sortedExpenses.map(expense => {
+        // Update Payment Status Chart
+        const paymentStatusData = {};
+        expenses.forEach(expense => {
+            const category = expense.category;
+            if (!paymentStatusData[category]) {
+                paymentStatusData[category] = { paid: 0, unpaid: 0 };
+            }
+            
             const totalCost = expense.totalCost || 0;
-            cumulativeAmount += totalCost;
-            return {
-                date: new Date(expense.date).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric' 
-                }),
-                amount: cumulativeAmount
-            };
+            const totalPaid = expense.payments ? expense.payments.reduce((sum, p) => sum + (p.amount || 0), 0) : 0;
+            const unpaid = Math.max(0, totalCost - totalPaid);
+            
+            paymentStatusData[category].paid += totalPaid;
+            paymentStatusData[category].unpaid += unpaid;
         });
         
-        journeyChartInstance.data.labels = journeyData.map(d => d.date);
-        journeyChartInstance.data.datasets[0].data = journeyData.map(d => d.amount);
-        journeyChartInstance.update();
+        const paymentCategories = Object.keys(paymentStatusData).sort();
+        paymentStatusChartInstance.data.labels = paymentCategories;
+        paymentStatusChartInstance.data.datasets[0].data = paymentCategories.map(c => paymentStatusData[c].paid);
+        paymentStatusChartInstance.data.datasets[1].data = paymentCategories.map(c => paymentStatusData[c].unpaid);
+        paymentStatusChartInstance.update();
         
     } catch (error) {
         console.error('Error updating charts:', error);
     }
+}
+
+function handleCategoryFilterChange() {
+    const filterDropdown = document.getElementById('categoryChartFilter');
+    const selectedValues = Array.from(filterDropdown.selectedOptions).map(opt => opt.value);
+    
+    // If both "Show All" and categories are selected, determine which was just clicked
+    if (selectedValues.includes('SHOW_ALL') && selectedValues.length > 1) {
+        const showAllWasPreviouslySelected = previousSelections.includes('SHOW_ALL');
+        
+        if (showAllWasPreviouslySelected) {
+            // "Show All" was already checked, user just clicked a category - uncheck "Show All"
+            filterDropdown.querySelector('option[value="SHOW_ALL"]').selected = false;
+        } else {
+            // User just clicked "Show All" - uncheck everything else
+            Array.from(filterDropdown.options).forEach(opt => {
+                opt.selected = opt.value === 'SHOW_ALL';
+            });
+        }
+        M.FormSelect.init(filterDropdown);
+    }
+    
+    // Update previous selections for next time
+    previousSelections = Array.from(filterDropdown.selectedOptions).map(opt => opt.value);
+    
+    updateCategoryChart();
+}
+
+function updateCategoryChart() {
+    const filterDropdown = document.getElementById('categoryChartFilter');
+    if (!filterDropdown) return;
+    
+    const selectedValues = Array.from(filterDropdown.selectedOptions).map(opt => opt.value);
+    
+    // Filter out "SHOW_ALL" from categories
+    const selectedCategories = selectedValues.filter(v => v !== 'SHOW_ALL');
+    
+    // If nothing selected or "Show All" is selected, show all
+    if (selectedValues.length === 0 || selectedValues.includes('SHOW_ALL')) {
+        const sortedEntries = Object.entries(allCategoryData).sort((a, b) => b[1] - a[1]);
+        categoryChartInstance.data.labels = sortedEntries.map(e => e[0]);
+        categoryChartInstance.data.datasets[0].data = sortedEntries.map(e => e[1]);
+        categoryChartInstance.update();
+        return;
+    }
+    
+    // Filter data based on selected categories
+    const filteredData = {};
+    selectedCategories.forEach(cat => {
+        if (allCategoryData[cat]) {
+            filteredData[cat] = allCategoryData[cat];
+        }
+    });
+    
+    const sortedEntries = Object.entries(filteredData).sort((a, b) => b[1] - a[1]);
+    categoryChartInstance.data.labels = sortedEntries.map(e => e[0]);
+    categoryChartInstance.data.datasets[0].data = sortedEntries.map(e => e[1]);
+    categoryChartInstance.update();
 }

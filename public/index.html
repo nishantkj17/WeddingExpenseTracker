@@ -4,265 +4,343 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Expense Tracker</title>
-    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Material UI CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Material Styles -->
+    <link rel="stylesheet" href="css/material-custom.css">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>💒</h1>
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link active">Expenses</a>
-                <a href="guests.html" class="nav-link">Guest List</a>
-            </nav>
-        </header>
+<body class="grey lighten-4">
+<body class="grey lighten-5">
+    <!-- Navigation Bar -->
+    <nav class="white">
+        <div class="nav-wrapper container">
+            <ul id="nav-mobile" class="left">
+                <li class="active"><a href="index.html" class="grey-text text-darken-2"><i class="material-icons left">payment</i>Expenses</a></li>
+                <li><a href="guests.html" class="grey-text text-darken-2"><i class="material-icons left">people</i>Guests</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <!-- Charts Section -->
-        <section class="collapsible-section collapsed">
-            <div class="section-header collapsed" onclick="toggleSection(this)">
-                <h2>📊 Charts & Analytics</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content collapsed">
-                <div class="chart-carousel">
-                    <button class="carousel-btn prev" onclick="previousChart()">‹</button>
-                    <div class="chart-container active" id="chart1" style="height: 400px;">
-                        <h3>Spending by Category</h3>
-                        <canvas id="categoryChart"></canvas>
-                    </div>
-                    <div class="chart-container" id="chart2">
-                        <h3>Expense Journey</h3>
-                        <canvas id="journeyChart"></canvas>
-                    </div>
-                    <button class="carousel-btn next" onclick="nextChart()">›</button>
+    <div class="container" style="margin-top: 10px;">
+        <!-- All Collapsible Sections Combined -->
+        <ul class="collapsible" style="margin-top: 0;">
+            <!-- Dashboard & Charts -->
+            <li class="active">
+                <div class="collapsible-header" style="padding: 8px 12px;">
+                    <i class="material-icons">dashboard</i>
+                    Dashboard & Charts
                 </div>
-                <div class="carousel-dots">
-                    <span class="dot active" onclick="showChart(0)"></span>
-                    <span class="dot" onclick="showChart(1)"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Budget Section -->
-        <section class="collapsible-section collapsed">
-            <div class="section-header collapsed" onclick="toggleSection(this)">
-                <h2>💰 Budget</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content collapsed">
-                <!-- Section 1: Who Paid How Much -->
-                <div class="budget-subsection">
-                    <h3>💳 Who Paid How Much</h3>
-                    <div class="summary-cards" id="whoPaidSection">
-                        <!-- Dynamically populated from expense data -->
-                    </div>
-                </div>
-
-                <!-- Section 2: Total Money Received -->
-                <div class="budget-subsection">
-                    <h3>💰 Total Money Received (Manual Entry)</h3>
-                    <div class="money-received-form">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                            <div class="form-group">
-                                <label for="ranjanaReceived">Ranjana</label>
-                                <input type="number" id="ranjanaReceived" placeholder="₹0" step="0.01">
+                <div class="collapsible-body white" style="padding: 0;">
+                    <!-- Summary Dashboard Carousel - Swipe through Dashboard Summary and Charts -->
+                    <div class="carousel carousel-slider" style="margin-bottom: 0; border: none; border-radius: 0; overflow: hidden;" id="dashboardCarousel">
+                        <!-- Combined Dashboard Summary Slide -->
+                        <div class="carousel-item white">
+                            <div class="card-content" style="padding: 12px;">
+                                <div class="row" style="margin: 0;">
+                                    <!-- Budget Overview -->
+                                    <div class="col s12 m6" style="padding: 5px;">
+                                        <span class="card-title grey-text text-darken-2" style="font-size: 0.9rem; margin-bottom: 5px; display: block; font-weight: 500;">💰 Budget Overview</span>
+                                        <div class="row" style="margin-bottom: 5px;">
+                                            <div class="input-field col s8" style="margin: 0;">
+                                                <input id="budgetInput" type="number" placeholder="Enter budget" style="margin-bottom: 0; font-size: 0.8rem; height: 1.8rem;">
+                                            </div>
+                                            <div class="col s4" style="padding-top: 0;">
+                                                <button id="updateBudgetBtn" class="btn-small waves-effect waves-light blue-grey darken-1" style="margin: 0; width: 100%; height: 26px; line-height: 26px;">
+                                                    <i class="material-icons" style="font-size: 0.85rem;">update</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="progress grey lighten-3" style="margin: 5px 0; height: 5px;">
+                                            <div id="progressFill" class="determinate blue-grey darken-1" style="width: 0%"></div>
+                                        </div>
+                                        <p id="progressText" class="center-align grey-text" style="margin: 2px 0 0 0; font-size: 0.75rem;">0% spent</p>
+                                    </div>
+                                    
+                                    <!-- Balances -->
+                                    <div class="col s12 m6" style="padding: 5px;">
+                                        <span class="card-title grey-text text-darken-2" style="font-size: 0.9rem; margin-bottom: 5px; display: block; font-weight: 500;">📊 Balances</span>
+                                        <div class="row" style="margin: 0;">
+                                            <div class="col s6 center-align" style="border-right: 1px solid #e0e0e0; padding: 5px;">
+                                                <small class="grey-text" style="font-size: 0.7rem;">Cash Left</small>
+                                                <h6 id="remainingCash" class="grey-text text-darken-2" style="margin: 3px 0; font-size: 1.1rem; font-weight: 500;">₹0.00</h6>
+                                                <small class="grey-text" style="font-size: 0.6rem;">Paid expenses</small>
+                                            </div>
+                                            <div class="col s6 center-align" style="padding: 5px;">
+                                                <small class="grey-text" style="font-size: 0.7rem;">To Pay</small>
+                                                <h6 id="toBePaidLater" class="orange-text text-darken-2" style="margin: 3px 0; font-size: 1.1rem; font-weight: 500;">₹0.00</h6>
+                                                <small class="grey-text" style="font-size: 0.6rem;">Remaining</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="divider" style="margin: 8px 0;"></div>
+                                
+                                <div class="row" style="margin: 0;">
+                                    <!-- Who Paid -->
+                                    <div class="col s12 m6" style="padding: 5px;">
+                                        <span class="card-title grey-text text-darken-2" style="font-size: 0.9rem; margin-bottom: 5px; display: block; font-weight: 500;">👥 Who Paid</span>
+                                        <div id="whoPaidSection" style="font-size: 0.8rem;">
+                                            <!-- Dynamically populated -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Money Received -->
+                                    <div class="col s12 m6" style="padding: 5px; margin-top: 10px;">
+                                        <span class="card-title grey-text text-darken-2" style="font-size: 0.9rem; margin-bottom: 5px; display: block; font-weight: 500;">💵 Money Received</span>
+                                        <div class="row" style="margin: 3px 0;">
+                                            <div class="col s4" style="padding: 0 5px;">
+                                                <small class="grey-text" style="font-size: 0.65rem; display: block; margin-bottom: 2px;">Ranjana</small>
+                                                <input id="ranjanaReceived" type="number" step="0.01" placeholder="0" style="margin: 0; font-size: 0.8rem; height: 1.8rem;">
+                                            </div>
+                                            <div class="col s4" style="padding: 0 5px;">
+                                                <small class="grey-text" style="font-size: 0.65rem; display: block; margin-bottom: 2px;">Mummy</small>
+                                                <input id="mummyReceived" type="number" step="0.01" placeholder="0" style="margin: 0; font-size: 0.8rem; height: 1.8rem;">
+                                            </div>
+                                            <div class="col s4" style="padding: 0 5px;">
+                                                <small class="grey-text" style="font-size: 0.65rem; display: block; margin-bottom: 2px;">Choti</small>
+                                                <input id="chotiReceived" type="number" step="0.01" placeholder="0" style="margin: 0; font-size: 0.8rem; height: 1.8rem;">
+                                            </div>
+                                        </div>
+                                        <button id="saveReceivedBtn" class="btn-small waves-effect waves-light blue-grey darken-1" style="margin-top: 3px; height: 26px; line-height: 26px;">
+                                            <i class="material-icons left tiny" style="font-size: 0.8rem;">save</i><span style="font-size: 0.7rem;">Save</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="mummyReceived">Mummy</label>
-                                <input type="number" id="mummyReceived" placeholder="₹0" step="0.01">
+                        </div>
+                        
+                        <!-- Chart 1: Category-wise Spending -->
+                        <div class="carousel-item white">
+                            <div class="card-content" style="padding: 15px;">
+                                <span class="card-title grey-text text-darken-2" style="font-size: 0.95rem; margin-bottom: 5px; display: block;">💰 Category Spending</span>
+                                <div class="input-field" style="margin: 3px auto; max-width: 300px;">
+                                    <select id="categoryChartFilter" multiple style="font-size: 0.8rem;">
+                                        <option value="" disabled>Select categories</option>
+                                    </select>
+                                </div>
+                                <div style="height: 450px;">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="chotiReceived">Choti</label>
-                                <input type="number" id="chotiReceived" placeholder="₹0" step="0.01">
+                        </div>
+                        
+                        <!-- Chart 2: Top 10 Expenses -->
+                        <div class="carousel-item white">
+                            <div class="card-content" style="padding: 15px;">
+                                <span class="card-title grey-text text-darken-2" style="font-size: 0.95rem; margin-bottom: 5px; display: block.">🏆 Top 10 Expenses</span>
+                                <div style="height: 480px;">
+                                    <canvas id="topExpensesChart"></canvas>
+                                </div>
                             </div>
                         </div>
-                        <button id="saveReceivedBtn" class="btn btn-primary" style="margin-top: 10px;">Save Money Received</button>
+                        
+                        <!-- Chart 3: Payment Status -->
+                        <div class="carousel-item white">
+                            <div class="card-content" style="padding: 15px;">
+                                <span class="card-title grey-text text-darken-2" style="font-size: 0.95rem; margin-bottom: 5px; display: block;">📊 Payment Status</span>
+                                <div style="height: 480px;">
+                                    <canvas id="paymentStatusChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </li>
 
-                <!-- Section 3: Balances -->
-                <div class="budget-subsection">
-                    <h3>📊 Balances</h3>
-                    <div class="summary-cards">
-                        <div class="summary-card">
-                            <h3>Remaining Cash</h3>
-                            <p class="amount" id="remainingCash">₹0.00</p>
-                            <small style="color: var(--text-light); font-size: 0.8rem;">Paid expenses only</small>
-                        </div>
-                        <div class="summary-card">
-                            <h3>To Be Paid Later</h3>
-                            <p class="amount" id="toBePaidLater">₹0.00</p>
-                            <small style="color: var(--text-light); font-size: 0.8rem;">Remaining amounts</small>
-                        </div>
-                    </div>
+            <!-- Add Expense -->
+            <li>
+                <div class="collapsible-header" style="padding: 8px 12px;">
+                    <i class="material-icons">add_circle</i>
+                    Add New Expense
                 </div>
+                <div class="collapsible-body white" style="padding: 12px;">
+                    <form id="expenseForm">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="input-field col s12 m4" style="margin-top: 0;">
+                                <input type="text" id="category" list="categoryList" placeholder="Category" required>
+                                <datalist id="categoryList"></datalist>
+                            </div>
+                            <div class="input-field col s12 m4" style="margin-top: 0;">
+                                <input type="text" id="subCategory" list="subCategoryList" placeholder="Sub Category">
+                                <datalist id="subCategoryList"></datalist>
+                            </div>
+                            <div class="input-field col s12 m4" style="margin-top: 0;">
+                                <input type="text" id="description" placeholder="Description" required>
+                            </div>
+                        </div>
 
-                <!-- Section 4: Initial Budget & Progress -->
-                <div class="budget-subsection">
-                    <h3>🎯 Initial Budget</h3>
-                    <div class="budget-card">
-                        <div class="budget-input-group">
-                            <span class="currency">₹</span>
-                            <input type="number" id="budgetInput" placeholder="Enter your budget">
-                            <button id="updateBudgetBtn" class="btn btn-primary">Update Budget</button>
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="input-field col s6 m3" style="margin-top: 0;">
+                                <select id="paidBy" required>
+                                    <option value="" disabled selected>Paid By</option>
+                                    <option value="Ranjana">Ranjana</option>
+                                    <option value="Mummy">Mummy</option>
+                                    <option value="Choti">Choti</option>
+                                </select>
+                            </div>
+                            <div class="input-field col s6 m3" style="margin-top: 0;">
+                                <input type="number" id="cost" step="0.01" placeholder="Cost" required>
+                            </div>
+                            <div class="input-field col s12 m3" style="margin-top: 0;">
+                                <input type="date" id="expenseDate" placeholder="Date">
+                            </div>
+                            <div class="col s12 m3" style="padding-top: 10px;">
+                                <label>
+                                    <input type="checkbox" id="hasRemaining" />
+                                    <span style="font-size: 0.85rem;">Has Remaining</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row" id="totalCostDisplay" style="display: none; margin-bottom: 5px;">
+                            <div class="input-field col s12" style="margin-top: 0;">
+                                <input type="text" id="totalCost" placeholder="Total Cost" readonly style="background-color: #f5f5f5;">
+                            </div>
+                        </div>
+
+                        <div id="remainingPaymentSection" style="display: none;">
+                            <div class="row" style="margin-bottom: 5px;">
+                                <div class="input-field col s6" style="margin-top: 0;">
+                                    <input type="number" id="remainingAmount" step="0.01" placeholder="Remaining Amount">
+                                </div>
+                                <div class="input-field col s6" style="margin-top: 0;">
+                                    <input type="date" id="remainingDate" placeholder="Due Date">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 5px;">
+                                <div class="input-field col s12" style="margin-top: 0;">
+                                    <textarea id="remainingNotes" class="materialize-textarea" placeholder="Notes" style="min-height: 40px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-small waves-effect waves-light blue-grey darken-1">
+                            <i class="material-icons left">add</i>Add Expense
+                        </button>
+                        <button type="button" id="cancelEditBtn" class="btn-small waves-effect waves-light grey" style="display: none;">
+                            <i class="material-icons left">cancel</i>Cancel
+                        </button>
+                    </form>
+                </div>
+            </li>
+            
+            <!-- Expense List -->
+            <li>
+                <div class="collapsible-header" style="padding: 8px 12px;">
+                    <i class="material-icons">list</i>
+                    Expense List
+                </div>
+                <div class="collapsible-body white" style="padding: 10px;">
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="input-field col s4 m4" style="margin: 0;">
+                            <input type="text" id="filterCategory" placeholder="Search..." style="margin: 0; height: 35px; font-size: 0.85rem;">
+                        </div>
+                        <div class="input-field col s4 m4" style="margin: 0;">
+                            <select id="filterPaidBy" style="height: 35px;">
+                                <option value="">All</option>
+                                <option value="Ranjana">Ranjana</option>
+                                <option value="Mummy">Mummy</option>
+                                <option value="Choti">Choti</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4 m4" style="margin: 0;">
+                            <label>
+                                <input type="checkbox" id="filterPendingOnly" class="filled-in" />
+                                <span style="font-size: 0.8rem; color: #546e7a;">Pending Pmt</span>
+                            </label>
                         </div>
                     </div>
-                    <div class="progress-bar" style="margin-top: 20px;">
-                        <div class="progress-fill" id="progressFill"></div>
-                        <span class="progress-text" id="progressText">0% of budget spent</span>
+                    <div id="expensesList" style="max-height: 60vh; overflow-y: auto;">
+                        <!-- Expenses will be dynamically loaded here -->
                     </div>
                 </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <h4 id="paymentModalTitle" class="grey-text text-darken-2"><i class="material-icons">payment</i> Add Payment</h4>
+            <div id="paymentExpenseDetails" class="card-panel grey lighten-4">
+                <!-- Expense details will be populated here -->
             </div>
-        </section>
-
-        <!-- Add Expense Section -->
-        <section class="collapsible-section collapsed">
-            <div class="section-header collapsed" onclick="toggleSection(this)">
-                <h2>➕ Add New Expense</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content collapsed">
-                <form id="expenseForm" class="expense-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <input type="text" id="category" list="categoryList" required placeholder="Select or type new category">
-                        <datalist id="categoryList">
-                        </datalist>
-                    </div>
-                    <div class="form-group">
-                        <label for="subCategory">Sub Category</label>
-                        <input type="text" id="subCategory" list="subCategoryList" placeholder="Select or type sub category">
-                        <datalist id="subCategoryList">
-                        </datalist>
+            <form id="paymentForm">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">money</i>
+                        <input type="number" id="paymentAmount" step="0.01" required>
+                        <label for="paymentAmount">Payment Amount *</label>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="paidBy">Paid By</label>
-                        <select id="paidBy" required>
-                            <option value="">Select who paid...</option>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="paymentPaidBy" required>
+                            <option value="" disabled selected>Select who paid...</option>
                             <option value="Ranjana">Ranjana</option>
                             <option value="Mummy">Mummy</option>
                             <option value="Choti">Choti</option>
                         </select>
+                        <label>Paid By *</label>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text" id="description" required placeholder="e.g., Downtown Ballroom">
-                    </div>
-                    <div class="form-group">
-                        <label for="expenseDate">Date (Optional)</label>
-                        <input type="date" id="expenseDate" placeholder="Leave blank for today">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">event</i>
+                        <input type="date" id="paymentDate">
+                        <label for="paymentDate">Payment Date</label>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="cost" id="costLabel">Cost</label>
-                        <input type="number" id="cost" step="0.01" required placeholder="0.00">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">notes</i>
+                        <textarea id="paymentNotes" class="materialize-textarea"></textarea>
+                        <label for="paymentNotes">Notes (Optional)</label>
                     </div>
-                    <div class="form-group" id="totalCostDisplay" style="display: none;">
-                        <label>Total Cost</label>
-                        <input type="text" id="totalCost" readonly style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="0.00">
-                    </div>
-                </div>
-
-                <div class="form-group checkbox-group">
-                    <label>
-                        <input type="checkbox" id="hasRemaining">
-                        <span>Has Remaining Payment</span>
-                    </label>
-                </div>
-
-                <div id="remainingPaymentSection" style="display: none;">
-                    <h3 style="margin-bottom: 15px; color: var(--primary-color);">Remaining Payment Details</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="remainingAmount">Remaining Amount</label>
-                            <input type="number" id="remainingAmount" step="0.01" placeholder="0.00">
-                        </div>
-                        <div class="form-group">
-                            <label for="remainingDate">Payment Due Date</label>
-                            <input type="date" id="remainingDate">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="remainingNotes">Remaining Payment Notes</label>
-                        <textarea id="remainingNotes" rows="2" placeholder="Notes for remaining payment..."></textarea>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-success">Add Expense</button>
-                <button type="button" id="cancelEditBtn" class="btn btn-secondary" style="display: none;">Cancel Edit</button>
-            </form>
-            </div>
-        </section>
-
-        <!-- Expenses List Section -->
-        <section class="collapsible-section collapsed">
-            <div class="section-header collapsed" onclick="toggleSection(this)">
-                <h2>📋 Expense List</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content collapsed">
-                <div class="filter-section">
-                    <input type="text" id="filterCategory" placeholder="🔍 Search expenses (description, category, paid by...)">
-                    <select id="filterPaidBy">
-                        <option value="">💰 Filter by Paid By...</option>
-                        <option value="Ranjana">Ranjana</option>
-                        <option value="Mummy">Mummy</option>
-                        <option value="Choti">Choti</option>
-                    </select>
-                </div>
-                <div id="expensesList" class="expenses-list" style="max-height: 65vh; overflow-y: auto;">
-                    <!-- Expenses will be dynamically loaded here -->
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-            <h2 id="paymentModalTitle" style="margin-top: 0; color: var(--primary-color);">💰 Add Payment</h2>
-            <div id="paymentExpenseDetails" style="background: var(--light-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <!-- Expense details will be populated here -->
-            </div>
-            <form id="paymentForm" onsubmit="submitPayment(event)">
-                <div class="form-group">
-                    <label for="paymentAmount">Payment Amount *</label>
-                    <input type="number" id="paymentAmount" step="0.01" required placeholder="Enter amount paid">
-                </div>
-                <div class="form-group">
-                    <label for="paymentPaidBy">Paid By *</label>
-                    <select id="paymentPaidBy" required>
-                        <option value="">Select who paid...</option>
-                        <option value="Ranjana">Ranjana</option>
-                        <option value="Mummy">Mummy</option>
-                        <option value="Choti">Choti</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="paymentDate">Payment Date</label>
-                    <input type="date" id="paymentDate">
-                </div>
-                <div class="form-group">
-                    <label for="paymentNotes">Notes (Optional)</label>
-                    <textarea id="paymentNotes" rows="2" placeholder="Add notes about this payment..."></textarea>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn btn-success" style="flex: 1;">Add Payment</button>
-                    <button type="button" class="btn btn-secondary" onclick="closePaymentModal()" style="flex: 1;">Cancel</button>
                 </div>
             </form>
         </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" class="waves-effect waves-green btn blue-grey darken-1" onclick="submitPayment(event)">
+                <i class="material-icons left">add</i>Add Payment
+            </a>
+        </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h5 id="confirmTitle">Confirm Action</h5>
+            <p id="confirmMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Cancel</a>
+            <a href="#!" id="confirmActionBtn" class="modal-close waves-effect waves-red btn red" onclick="executeConfirmAction()">Delete</a>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h5 id="infoTitle">Information</h5>
+            <p id="infoMessage" style="white-space: pre-line;"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

@@ -4,41 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest List - Wedding Tracker</title>
-    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Material UI CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <!-- Custom Material Styles -->
+    <link rel="stylesheet" href="css/material-custom.css">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>💒</h1>
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link">Expenses</a>
-                <a href="guests.html" class="nav-link active">Guest List</a>
-            </nav>
-        </header>
+<body class="grey lighten-5">
+    <!-- Navigation Bar -->
+    <nav class="white">
+        <div class="nav-wrapper container">
+            <ul id="nav-mobile" class="left">
+                <li><a href="index.html" class="grey-text text-darken-2"><i class="material-icons left">payment</i>Expenses</a></li>
+                <li class="active"><a href="guests.html" class="grey-text text-darken-2"><i class="material-icons left">people</i>Guests</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <div class="container" style="margin-top: 20px;">
         <!-- Guest List -->
-        <section class="collapsible-section">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2>👥 Guest List</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content">
-                <!-- Add Guest Form -->
-                <form id="guestForm" style="margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 8px; align-items: center;">
-                    <input type="text" id="guestName" required placeholder="Guest Name" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
-                    <input type="text" id="roomStay" placeholder="Room/Stay" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
-                    <button type="submit" class="btn btn-success" style="white-space: nowrap; padding: 10px 16px; font-size: 0.9rem;">Add</button>
-                    <button type="button" id="cancelGuestEditBtn" class="btn btn-secondary" style="display: none; white-space: nowrap; padding: 10px 16px; font-size: 0.9rem;">Cancel</button>
-                </form>
-
-                <!-- Guest List Table -->
-                <div id="guestsList" style="max-height: 60vh; overflow-y: auto;">
-                    <!-- Guests will be dynamically loaded here -->
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header">
+                    <i class="material-icons">people</i>
+                    Guest List
                 </div>
-            </div>
-        </section>
+                <div class="collapsible-body white">
+                    <!-- Add Guest Form -->
+                    <form id="guestForm" style="margin-bottom: 20px;">
+                        <div class="row">
+                            <div class="input-field col s12 m4">
+                                <i class="material-icons prefix">person</i>
+                                <input type="text" id="guestName" required>
+                                <label for="guestName">Guest Name</label>
+                            </div>
+                            <div class="input-field col s12 m4">
+                                <i class="material-icons prefix">hotel</i>
+                                <input type="text" id="roomStay">
+                                <label for="roomStay">Room/Stay</label>
+                            </div>
+                            <div class="col s12 m4" style="margin-top: 20px;">
+                                <button type="submit" class="btn waves-effect waves-light blue-grey darken-1">
+                                    <i class="material-icons left">add</i>Add
+                                </button>
+                                <button type="button" id="cancelGuestEditBtn" class="btn waves-effect waves-light grey" style="display: none;">
+                                    <i class="material-icons left">cancel</i>Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Search Filter -->
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="input-field col s12" style="margin: 0;">
+                            <input type="text" id="searchGuest" placeholder="Search guests..." style="margin: 0; height: 35px; font-size: 0.85rem;">
+                        </div>
+                    </div>
+
+                    <!-- Guest List -->
+                    <div id="guestsList" style="max-height: 60vh; overflow-y: auto;">
+                        <!-- Guests will be dynamically loaded here -->
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h5 id="confirmTitle">Confirm Action</h5>
+            <p id="confirmMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Cancel</a>
+            <a href="#!" id="confirmActionBtn" class="modal-close waves-effect waves-red btn red" onclick="executeConfirmAction()">Delete</a>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h5 id="infoTitle">Information</h5>
+            <p id="infoMessage" style="white-space: pre-line;"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="js/guests.js"></script>
 </body>
 </html>
