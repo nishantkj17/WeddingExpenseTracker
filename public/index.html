@@ -16,30 +16,24 @@
     <!-- Custom Material Styles -->
     <link rel="stylesheet" href="css/material-custom.css">
 </head>
-<body class="grey lighten-4">
-<body class="grey lighten-5">
+<body class="grey lighten-5 has-bottom-tabs">
     <!-- Navigation Bar -->
     <nav class="white">
         <div class="nav-wrapper container">
-            <ul id="nav-mobile" class="left">
-                <li class="active"><a href="index.html" class="grey-text text-darken-2"><i class="material-icons left">payment</i>Expenses</a></li>
-                <li><a href="guests.html" class="grey-text text-darken-2"><i class="material-icons left">people</i>Guests</a></li>
-            </ul>
+            <a href="index.html" class="brand-logo grey-text text-darken-2" style="font-size: 1.2rem; font-weight: 500;">
+                Sanjana's Wedding
+            </a>
         </div>
     </nav>
 
     <div class="container" style="margin-top: 10px;">
-        <!-- All Collapsible Sections Combined -->
-        <ul class="collapsible" style="margin-top: 0;">
-            <!-- Dashboard & Charts -->
-            <li class="active">
-                <div class="collapsible-header" style="padding: 8px 12px;">
-                    <i class="material-icons">dashboard</i>
-                    Dashboard & Charts
-                </div>
-                <div class="collapsible-body white" style="padding: 0;">
-                    <!-- Summary Dashboard Carousel - Swipe through Dashboard Summary and Charts -->
-                    <div class="carousel carousel-slider" style="margin-bottom: 0; border: none; border-radius: 0; overflow: hidden;" id="dashboardCarousel">
+        <div id="tab-dashboard" class="tab-section col s12">
+            <div class="section-title">
+                <i class="material-icons">dashboard</i>
+                <span>Dashboard & Charts</span>
+            </div>
+            <!-- Summary Dashboard Carousel - Swipe through Dashboard Summary and Charts -->
+            <div class="carousel carousel-slider" style="margin-bottom: 0; border: none; border-radius: 0; overflow: hidden;" id="dashboardCarousel">
                         <!-- Combined Dashboard Summary Slide -->
                         <div class="carousel-item white">
                             <div class="card-content" style="padding: 12px;">
@@ -151,18 +145,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </li>
+            </div>
+        </div>
 
-            <!-- Add Expense -->
-            <li>
-                <div class="collapsible-header" style="padding: 8px 12px;">
-                    <i class="material-icons">add_circle</i>
-                    Add New Expense
-                </div>
-                <div class="collapsible-body white" style="padding: 12px;">
-                    <form id="expenseForm">
+        <div id="tab-add-expense" class="tab-section col s12">
+            <div class="section-title">
+                <i class="material-icons">add_circle</i>
+                <span>Add New Expense</span>
+            </div>
+            <div class="white" style="padding: 12px;">
+                <form id="expenseForm">
                         <div class="row" style="margin-bottom: 5px;">
                             <div class="input-field col s12 m4" style="margin-top: 0;">
                                 <input type="text" id="category" list="categoryList" placeholder="Category" required>
@@ -228,18 +220,17 @@
                         <button type="button" id="cancelEditBtn" class="btn-small waves-effect waves-light grey" style="display: none;">
                             <i class="material-icons left">cancel</i>Cancel
                         </button>
-                    </form>
-                </div>
-            </li>
-            
-            <!-- Expense List -->
-            <li>
-                <div class="collapsible-header" style="padding: 8px 12px;">
-                    <i class="material-icons">list</i>
-                    Expense List
-                </div>
-                <div class="collapsible-body white" style="padding: 10px;">
-                    <div class="row" style="margin-bottom: 5px;">
+                </form>
+            </div>
+        </div>
+        
+        <div id="tab-expense-list" class="tab-section col s12">
+            <div class="section-title">
+                <i class="material-icons">list</i>
+                <span>Expense List</span>
+            </div>
+            <div class="white" style="padding: 10px;">
+                <div class="row" style="margin-bottom: 5px;">
                         <div class="input-field col s4 m4" style="margin: 0;">
                             <input type="text" id="filterCategory" placeholder="Search..." style="margin: 0; height: 35px; font-size: 0.85rem;">
                         </div>
@@ -258,12 +249,70 @@
                             </label>
                         </div>
                     </div>
-                    <div id="expensesList" style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
-                        <!-- Expenses will be dynamically loaded here -->
-                    </div>
+                <div id="expensesList" style="height: calc(100vh - 170px); overflow-y: auto; overflow-x: hidden;">
+                    <!-- Expenses will be dynamically loaded here -->
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
+
+        <div id="tab-guests" class="tab-section col s12">
+            <div class="section-title">
+                <i class="material-icons">people</i>
+                <span>Guest List</span>
+            </div>
+            <div class="white" style="padding: 12px;">
+                <!-- Add Guest Form -->
+                <form id="guestForm" style="margin-bottom: 20px;">
+                    <div class="row">
+                        <div class="input-field col s6 m4">
+                            <i class="material-icons prefix">person</i>
+                            <input type="text" id="guestName" required>
+                            <label for="guestName">Guest Name</label>
+                        </div>
+                        <div class="input-field col s6 m4">
+                            <i class="material-icons prefix">hotel</i>
+                            <input type="text" id="roomStay">
+                            <label for="roomStay">Room/Stay</label>
+                        </div>
+                        <div class="col s12 m4" style="margin-top: 20px;">
+                            <div class="row guest-actions-row" style="margin: 0;">
+                                <div class="col s6" style="padding: 0 4px;">
+                                    <button type="submit" class="btn waves-effect waves-light blue-grey darken-1 guest-add-btn" style="width: 100%;">
+                                        <i class="material-icons left">add</i>Add
+                                    </button>
+                                    <button type="button" id="cancelGuestEditBtn" class="btn waves-effect waves-light grey" style="display: none; width: 100%; margin-top: 4px;">
+                                        <i class="material-icons left">cancel</i>Cancel
+                                    </button>
+                                </div>
+                                <div class="col s6" style="padding: 0 4px;">
+                                    <div class="input-field guest-search-field" style="margin: 0;">
+                                        <input type="text" id="searchGuest" placeholder="Search guests..." style="margin: 0; font-size: 0.85rem;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Guest List -->
+                <div id="guestsList" style="height: calc(100vh - 170px); overflow-y: auto;">
+                    <!-- Guests will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="bottom-tabs">
+        <div class="container">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab col s3"><a class="active" href="#tab-dashboard"><i class="material-icons">dashboard</i></a></li>
+                <li class="tab col s3"><a href="#tab-add-expense"><i class="material-icons">add_circle</i></a></li>
+                <li class="tab col s3"><a href="#tab-expense-list"><i class="material-icons">list</i></a></li>
+                <li class="tab col s3"><a href="#tab-guests"><i class="material-icons">people</i></a></li>
+            </ul>
+        </div>
     </div>
 
     <!-- Payment Modal -->
@@ -341,6 +390,7 @@
 
     <!-- Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/guests.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

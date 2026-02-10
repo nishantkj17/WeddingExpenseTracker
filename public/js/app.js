@@ -38,6 +38,10 @@ function initializeMaterialize() {
     M.Collapsible.init(elems, {
         accordion: true
     });
+
+    // Initialize tabs
+    var tabs = document.querySelectorAll('.tabs');
+    M.Tabs.init(tabs);
     
     // Initialize select dropdowns
     // Use native dropdowns on mobile for better touch support

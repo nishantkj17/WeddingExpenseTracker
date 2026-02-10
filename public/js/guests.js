@@ -1,6 +1,6 @@
-const API_URL = '/api';
+const API_URL_GUESTS = '/api';
 
-let currentEditId = null;
+let currentGuestEditId = null;
 
 // DOM Elements
 const guestForm = document.getElementById('guestForm');
@@ -11,13 +11,13 @@ const searchGuest = document.getElementById('searchGuest');
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize Materialize components
-    initializeMaterialize();
-    loadGuests();
-    setupEventListeners();
+    initializeGuestMaterialize();
+    loadGuestData();
+    setupGuestEventListeners();
 });
 
 // Initialize Materialize components
-function initializeMaterialize() {
+function initializeGuestMaterialize() {
     // Initialize collapsibles
     var elems = document.querySelectorAll('.collapsible');
     M.Collapsible.init(elems, {
@@ -57,22 +57,22 @@ function toggleSection(header) {
 }
 
 // Setup event listeners
-function setupEventListeners() {
-    guestForm.addEventListener('submit', handleFormSubmit);
-    cancelGuestEditBtn.addEventListener('click', cancelEdit);
-    searchGuest.addEventListener('input', handleSearch);
+function setupGuestEventListeners() {
+    guestForm.addEventListener('submit', handleGuestFormSubmit);
+    cancelGuestEditBtn.addEventListener('click', cancelGuestEdit);
+    searchGuest.addEventListener('input', handleGuestSearch);
 }
 
 // Handle search
-function handleSearch() {
+function handleGuestSearch() {
     const searchTerm = searchGuest.value.toLowerCase();
-    loadGuests(searchTerm);
+    loadGuestData(searchTerm);
 }
 
 // Load guests
-async function loadGuests(searchTerm = '') {
+async function loadGuestData(searchTerm = '') {
     try {
-        const response = await fetch(`${API_URL}/guests`);
+        const response = await fetch(`${API_URL_GUESTS}/guests`);
         let guests = await response.json();
         
         // Filter by search term
@@ -83,15 +83,15 @@ async function loadGuests(searchTerm = '') {
             );
         }
         
-        displayGuests(guests);
+        renderGuestList(guests);
     } catch (error) {
         console.error('Error loading guests:', error);
-        displayGuests([]);
+        renderGuestList([]);
     }
 }
 
 // Display guests
-function displayGuests(guests) {
+function renderGuestList(guests) {
     if (guests.length === 0) {
         guestsList.innerHTML = `
             <div class="card-panel center-align grey lighten-4">
@@ -140,7 +140,7 @@ function displayGuests(guests) {
 }
 
 // Handle form submission
-async function handleFormSubmit(e) {
+async function handleGuestFormSubmit(e) {
     e.preventDefault();
     
     const guest = {
@@ -150,48 +150,50 @@ async function handleFormSubmit(e) {
     
     try {
         let response;
-        if (currentEditId) {
+        if (currentGuestEditId) {
             // Update existing guest
-            response = await fetch(`${API_URL}/guests/${currentEditId}`, {
+            response = await fetch(`${API_URL_GUESTS}/guests/${currentGuestEditId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(guest)
             });
-            showNotification('Guest updated successfully!', 'success');
+            showGuestNotification('Guest updated successfully!', 'success');
         } else {
             // Create new guest
-            response = await fetch(`${API_URL}/guests`, {
+            response = await fetch(`${API_URL_GUESTS}/guests`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(guest)
             });
-            showNotification('Guest added successfully!', 'success');
+            showGuestNotification('Guest added successfully!', 'success');
         }
         
         if (response.ok) {
             guestForm.reset();
-            currentEditId = null;
+            currentGuestEditId = null;
             cancelGuestEditBtn.style.display = 'none';
             
             // Reset submit button text and icon
             const submitBtn = guestForm.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="material-icons left">add</i>Add';
+                submitBtn.innerHTML = '<i class="material-icons left">add</i>Add';
+                const actionsRow = guestForm.querySelector('.guest-actions-row');
+                if (actionsRow) actionsRow.classList.remove('editing');
             
             // Reinitialize Material UI components
             M.updateTextFields();
             
-            await loadGuests();
+            await loadGuestData();
         }
     } catch (error) {
         console.error('Error saving guest:', error);
-        showNotification('Failed to save guest', 'error');
+        showGuestNotification('Failed to save guest', 'error');
     }
 }
 
 // Edit guest
 async function editGuest(id) {
     try {
-        const response = await fetch(`${API_URL}/guests/${id}`);
+        const response = await fetch(`${API_URL_GUESTS}/guests/${id}`);
         const guest = await response.json();
         
         document.getElementById('guestName').value = guest.name;
@@ -200,37 +202,46 @@ async function editGuest(id) {
         // Update Material UI labels
         M.updateTextFields();
         
-        currentEditId = id;
+        currentGuestEditId = id;
         cancelGuestEditBtn.style.display = 'inline-block';
         
         // Change submit button text
         const submitBtn = guestForm.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="material-icons left">save</i>Update Guest';
+        submitBtn.innerHTML = '<i class="material-icons">save</i>';
+            const actionsRow = guestForm.querySelector('.guest-actions-row');
+            if (actionsRow) actionsRow.classList.add('editing');
+        
+        cancelGuestEditBtn.innerHTML = '<i class="material-icons">cancel</i>';
         
         // Scroll to form
         guestForm.scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
         console.error('Error loading guest for edit:', error);
-        showNotification('Failed to load guest', 'error');
+        showGuestNotification('Failed to load guest', 'error');
     }
 }
 
 // Cancel edit
-function cancelEdit() {
+function cancelGuestEdit() {
     guestForm.reset();
-    currentEditId = null;
+    currentGuestEditId = null;
     cancelGuestEditBtn.style.display = 'none';
     
     // Reset submit button text
     const submitBtn = guestForm.querySelector('button[type="submit"]');
     submitBtn.innerHTML = '<i class="material-icons left">add</i>Add';
+    const actionsRow = guestForm.querySelector('.guest-actions-row');
+    if (actionsRow) actionsRow.classList.remove('editing');
+    cancelGuestEditBtn.innerHTML = '<i class="material-icons left">cancel</i>Cancel';
+    
+    cancelGuestEditBtn.innerHTML = '<i class="material-icons left">cancel</i>Cancel';
     
     // Update Material UI labels
     M.updateTextFields();
 }
 
 // Show notification
-function showNotification(message, type = 'success') {
+function showGuestNotification(message, type = 'success') {
     // Use Materialize toast
     const color = type === 'success' ? 'green' : 'red';
     M.toast({
@@ -241,52 +252,53 @@ function showNotification(message, type = 'success') {
 }
 
 // Confirmation modal helper
-let confirmCallback = null;
+let confirmGuestCallback = null;
 
-function showConfirm(title, message, onConfirm, btnText = 'Delete', btnClass = 'red') {
+function showGuestConfirm(title, message, onConfirm, btnText = 'Delete', btnClass = 'red') {
     document.getElementById('confirmTitle').textContent = title;
     document.getElementById('confirmMessage').textContent = message;
     const confirmBtn = document.getElementById('confirmActionBtn');
     confirmBtn.textContent = btnText;
     confirmBtn.className = `modal-close waves-effect waves-${btnClass} btn ${btnClass}`;
-    confirmCallback = onConfirm;
+    confirmBtn.onclick = executeGuestConfirmAction;
+    confirmGuestCallback = onConfirm;
     const modal = M.Modal.getInstance(document.getElementById('confirmModal'));
     modal.open();
 }
 
-function executeConfirmAction() {
-    if (confirmCallback) {
-        confirmCallback();
-        confirmCallback = null;
+function executeGuestConfirmAction() {
+    if (confirmGuestCallback) {
+        confirmGuestCallback();
+        confirmGuestCallback = null;
     }
 }
 
 // Delete guest
 async function deleteGuest(id) {
-    showConfirm(
+    showGuestConfirm(
         'Delete Guest',
         'Are you sure you want to delete this guest?',
         async () => {
             try {
-                const response = await fetch(`${API_URL}/guests/${id}`, {
+                const response = await fetch(`${API_URL_GUESTS}/guests/${id}`, {
                     method: 'DELETE'
                 });
                 
                 if (response.ok) {
-                    showNotification('Guest deleted successfully!', 'success');
-                    await loadGuests();
+                    showGuestNotification('Guest deleted successfully!', 'success');
+                    await loadGuestData();
                 }
             } catch (error) {
                 console.error('Error deleting guest:', error);
-                showNotification('Failed to delete guest', 'error');
+                showGuestNotification('Failed to delete guest', 'error');
             }
         }
     );
 }
 
 // Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
+const guestStyle = document.createElement('style');
+guestStyle.textContent = `
     @keyframes slideIn {
         from { transform: translateX(400px); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -296,4 +308,4 @@ style.textContent = `
         to { transform: translateX(400px); opacity: 0; }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(guestStyle);
