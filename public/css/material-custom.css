@@ -12,6 +12,19 @@ body {
     overflow-x: hidden;
 }
 
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.card {
+    overflow-x: hidden;
+}
+
+.card-content {
+    overflow-x: hidden;
+}
+
 /* Compact Layout Optimizations */
 .container {
     width: 95% !important;
@@ -283,8 +296,20 @@ nav ul li.active a {
     }
     
     .btn-small {
-        padding: 0 8px;
-        font-size: 0.8rem;
+        padding: 0 6px !important;
+        font-size: 0.75rem !important;
+        height: 26px !important;
+        line-height: 26px !important;
+        white-space: nowrap;
+    }
+    
+    .btn-small .material-icons {
+        font-size: 0.85rem !important;
+        margin-right: 2px !important;
+    }
+    
+    .btn-small span {
+        font-size: 0.7rem !important;
     }
     
     .chip {
@@ -292,6 +317,22 @@ nav ul li.active a {
         line-height: 20px;
         font-size: 0.7rem;
         padding: 0 8px;
+    }
+    
+    /* Prevent horizontal scroll in expense cards */
+    .card-content > .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    .card-content .col {
+        padding: 0 5px !important;
+    }
+    
+    /* Ensure button container doesn't overflow */
+    .card-content [style*="display: flex"] {
+        flex-wrap: wrap !important;
+        gap: 3px !important;
     }
 }
 
