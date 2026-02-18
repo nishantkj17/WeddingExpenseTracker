@@ -195,6 +195,18 @@ function populateDropdowns() {
     // Note: Paid By dropdowns are now hardcoded with Ranjana, Mummy, Choti in HTML
 }
 
+// Update subcategory datalist in the edit modal based on typed/selected category
+function updateEditSubCategories() {
+    const category = document.getElementById('editCategory').value;
+    const subCategoryList = document.getElementById('editSubCategoryList');
+    const relevantSubCategories = [...new Set(
+        allExpenses
+            .filter(e => (!category || e.category === category) && e.subCategory)
+            .map(e => e.subCategory)
+    )];
+    subCategoryList.innerHTML = relevantSubCategories.map(s => `<option value="${s}">`).join('');
+}
+
 // Update subcategory datalist based on selected category
 function updateSubCategories() {
     const category = document.getElementById('category').value;
@@ -700,6 +712,14 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
         document.getElementById('editCategory').value = expense.category || '';
         document.getElementById('editSubCategory').value = expense.subCategory || '';
         document.getElementById('editDescription').value = expense.description || '';
+
+        // Populate category datalist from allExpenses
+        const editCategoryList = document.getElementById('editCategoryList');
+        const allCategories = [...new Set(allExpenses.map(e => e.category).filter(c => c))];
+        editCategoryList.innerHTML = allCategories.map(c => `<option value="${c}">`).join('');
+
+        // Populate subcategory datalist filtered to current category
+        updateEditSubCategories();
 
         // Reinitialize form select and update labels
         M.FormSelect.init(document.querySelectorAll('#paymentModal select'));

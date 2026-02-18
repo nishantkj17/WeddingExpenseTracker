@@ -358,12 +358,14 @@
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12 m4" style="margin-top: 0;">
                         <i class="material-icons prefix">category</i>
-                        <input type="text" id="editCategory">
+                        <input type="text" id="editCategory" list="editCategoryList" oninput="updateEditSubCategories()">
+                        <datalist id="editCategoryList"></datalist>
                         <label for="editCategory">Category</label>
                     </div>
                     <div class="input-field col s12 m4" style="margin-top: 0;">
                         <i class="material-icons prefix">label</i>
-                        <input type="text" id="editSubCategory">
+                        <input type="text" id="editSubCategory" list="editSubCategoryList">
+                        <datalist id="editSubCategoryList"></datalist>
                         <label for="editSubCategory">Sub Category</label>
                     </div>
                     <div class="input-field col s12 m4" style="margin-top: 0;">
