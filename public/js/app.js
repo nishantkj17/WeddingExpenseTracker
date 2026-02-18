@@ -1282,3 +1282,92 @@ function updateCategoryChart() {
     categoryChartInstance.data.datasets[0].data = sortedEntries.map(e => e[1]);
     categoryChartInstance.update();
 }
+
+// ── Settings: Export ──────────────────────────────────────────────────────────
+function exportData() {
+    window.location.href = `${API_URL}/data/export`;
+}
+
+function exportCSV() {
+    const headers = ['DESCRIPTION', 'CATEGORY', 'SUB-CATEGORY', 'AMOUNT PAID', 'BALANCE AMOUNT', 'PAID BY'];
+
+    const rows = allExpenses.map(expense => {
+        const payments = expense.payments || [];
+        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+        const balance = expense.remainingBalance > 0 ? expense.remainingBalance : '';
+        const paidBy = [...new Set(payments.map(p => p.paidBy).filter(Boolean))].join(' / ');
+
+        return [
+            expense.description || '',
+            expense.category || '',
+            expense.subCategory || '',
+            totalPaid ? totalPaid.toFixed(2) : '',
+            balance !== '' ? Number(balance).toFixed(2) : '',
+            paidBy
+        ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+    });
+
+    const csv = [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `expenses-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ── Settings: Import ──────────────────────────────────────────────────────────
+async function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            const response = await fetch(`${API_URL}/data/import`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                showNotification('Data imported successfully!', 'success');
+                M.Modal.getInstance(document.getElementById('settingsModal')).close();
+                await loadData();
+                updateCharts();
+            } else {
+                const err = await response.json();
+                showNotification(err.error || 'Import failed', 'error');
+            }
+        } catch {
+            showNotification('Invalid JSON file', 'error');
+        }
+        // reset so same file can be re-selected
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+}
+
+// ── Settings: Clean ───────────────────────────────────────────────────────────
+function cleanData() {
+    showConfirm(
+        'Clean All Data',
+        'This will permanently delete ALL expenses, guests and reset the budget. Are you sure?',
+        async () => {
+            try {
+                const response = await fetch(`${API_URL}/data/clean`, { method: 'POST' });
+                if (response.ok) {
+                    showNotification('All data cleared!', 'success');
+                    M.Modal.getInstance(document.getElementById('settingsModal')).close();
+                    await loadData();
+                    updateCharts();
+                } else {
+                    showNotification('Failed to clean data', 'error');
+                }
+            } catch {
+                showNotification('Error cleaning data', 'error');
+            }
+        }
+    );
+}

@@ -418,6 +418,48 @@ app.delete('/api/guests/:id', async (req, res) => {
     }
 });
 
+// Export full data
+app.get('/api/data/export', async (req, res) => {
+    try {
+        const data = await readData();
+        res.setHeader('Content-Disposition', 'attachment; filename="expenses-backup.json"');
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(data, null, 2));
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to export data' });
+    }
+});
+
+// Import full data (overwrites everything)
+app.post('/api/data/import', async (req, res) => {
+    try {
+        const incoming = req.body;
+        if (!incoming || !Array.isArray(incoming.expenses)) {
+            return res.status(400).json({ error: 'Invalid data format' });
+        }
+        await writeData(incoming);
+        res.json({ message: 'Data imported successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to import data' });
+    }
+});
+
+// Clean all data
+app.post('/api/data/clean', async (req, res) => {
+    try {
+        const emptyData = {
+            budget: 0,
+            expenses: [],
+            guests: [],
+            moneyReceived: { ranjana: 0, mummy: 0, choti: 0 }
+        };
+        await writeData(emptyData);
+        res.json({ message: 'Data cleaned successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to clean data' });
+    }
+});
+
 // Start server
 app.listen(PORT, async () => {
     await initDataFile();

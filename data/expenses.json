@@ -1008,60 +1008,6 @@
       "remainingBalance": 0,
       "date": "2026-02-09",
       "fullyPaid": true
-    },
-    {
-      "id": "1770679633919",
-      "category": "Testing1",
-      "subCategory": "testing2",
-      "description": "ones",
-      "totalCost": 15000,
-      "payments": [
-        {
-          "date": "2026-02-09",
-          "amount": 5000,
-          "paidBy": "Ranjana",
-          "notes": "Initial advance payment"
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 2000,
-          "paidBy": "Choti",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 1000,
-          "paidBy": "Mummy",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 3000,
-          "paidBy": "Ranjana",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 1000,
-          "paidBy": "Ranjana",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-10",
-          "amount": 1000,
-          "paidBy": "Mummy",
-          "notes": ""
-        },
-        {
-          "date": "2026-02-10",
-          "amount": 100,
-          "paidBy": "Mummy",
-          "notes": ""
-        }
-      ],
-      "remainingBalance": 1900,
-      "fullyPaid": false,
-      "date": "2026-02-09"
     }
   ],
   "moneyReceived": {

@@ -23,6 +23,9 @@
             <a href="index.html" class="brand-logo grey-text text-darken-2" style="font-size: 1.2rem; font-weight: 500;">
                 Sanjana's Wedding
             </a>
+            <ul class="right">
+                <li><a href="#settingsModal" class="modal-trigger grey-text text-darken-2"><i class="material-icons">settings</i></a></li>
+            </ul>
         </div>
     </nav>
 
@@ -404,6 +407,52 @@
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h5 class="grey-text text-darken-2"><i class="material-icons" style="vertical-align: middle;">settings</i> Settings</h5>
+            <div class="divider" style="margin: 10px 0 20px 0;"></div>
+
+            <!-- Export -->
+            <div style="margin-bottom: 20px;">
+                <p style="font-weight: 500; margin: 0 0 6px 0;"><i class="material-icons tiny">download</i> Export Data</p>
+                <p class="grey-text" style="font-size: 0.85rem; margin: 0 0 10px 0;">Download the full expenses JSON file as a backup.</p>
+                <a href="#!" class="btn waves-effect waves-light blue-grey darken-1" onclick="exportData()">
+                    <i class="material-icons left">download</i>Export JSON
+                </a>
+                <a href="#!" class="btn waves-effect waves-light teal darken-1" style="margin-left: 8px;" onclick="exportCSV()">
+                    <i class="material-icons left">table_chart</i>Export CSV
+                </a>
+            </div>
+
+            <div class="divider" style="margin: 0 0 20px 0;"></div>
+
+            <!-- Import -->
+            <div style="margin-bottom: 20px;">
+                <p style="font-weight: 500; margin: 0 0 6px 0;"><i class="material-icons tiny">upload</i> Import Data</p>
+                <p class="grey-text" style="font-size: 0.85rem; margin: 0 0 10px 0;">Import a previously exported JSON file. This will <strong>overwrite</strong> all current data.</p>
+                <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importData(event)">
+                <a href="#!" class="btn waves-effect waves-light blue-grey" onclick="document.getElementById('importFileInput').click()">
+                    <i class="material-icons left">upload</i>Import JSON
+                </a>
+            </div>
+
+            <div class="divider" style="margin: 0 0 20px 0;"></div>
+
+            <!-- Clean -->
+            <div>
+                <p style="font-weight: 500; margin: 0 0 6px 0;"><i class="material-icons tiny" style="color:#e53935;">delete_forever</i> <span style="color:#e53935;">Clean All Data</span></p>
+                <p class="grey-text" style="font-size: 0.85rem; margin: 0 0 10px 0;">Permanently deletes all expenses, guests, and resets budget. Cannot be undone.</p>
+                <a href="#!" class="btn waves-effect waves-light red darken-1" onclick="cleanData()">
+                    <i class="material-icons left">delete_forever</i>Clean Data
+                </a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Close</a>
         </div>
     </div>
 
