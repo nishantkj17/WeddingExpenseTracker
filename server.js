@@ -128,17 +128,13 @@ app.put('/api/expenses/:id', async (req, res) => {
         const data = await readData();
         const index = data.expenses.findIndex(e => e.id === req.params.id);
         if (index !== -1) {
+            const updates = {};
+            if (req.body.category !== undefined) updates.category = req.body.category;
+            if (req.body.subCategory !== undefined) updates.subCategory = req.body.subCategory;
+            if (req.body.description !== undefined) updates.description = req.body.description;
             data.expenses[index] = {
                 ...data.expenses[index],
-                category: req.body.category,
-                subCategory: req.body.subCategory || '',
-                paidBy: req.body.paidBy,
-                description: req.body.description,
-                cost: parseFloat(req.body.cost) || 0,
-                paid: req.body.paid,
-                hasRemaining: req.body.hasRemaining,
-                date: data.expenses[index].date,
-                parentId: data.expenses[index].parentId || null
+                ...updates
             };
             await writeData(data);
             res.json(data.expenses[index]);

@@ -319,9 +319,6 @@
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <h4 id="paymentModalTitle" class="grey-text text-darken-2"><i class="material-icons">payment</i> Add Payment</h4>
-            <div id="paymentExpenseDetails" class="card-panel grey lighten-4">
-                <!-- Expense details will be populated here -->
-            </div>
             <form id="paymentForm">
                 <div class="row">
                     <div class="input-field col s12">
@@ -332,6 +329,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
+                        <i class="material-icons prefix">person</i>
                         <select id="paymentPaidBy" required>
                             <option value="" disabled selected>Select who paid...</option>
                             <option value="Ranjana">Ranjana</option>
@@ -353,6 +351,25 @@
                         <i class="material-icons prefix">notes</i>
                         <textarea id="paymentNotes" class="materialize-textarea"></textarea>
                         <label for="paymentNotes">Notes (Optional)</label>
+                    </div>
+                </div>
+                <div class="divider" style="margin: 0 0 12px 0;"></div>
+                <p class="grey-text text-darken-1" style="font-size: 0.8rem; margin: 0 0 4px 0; font-weight: 500;"><i class="material-icons tiny">label</i> Expense Details</p>
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="input-field col s12 m4" style="margin-top: 0;">
+                        <i class="material-icons prefix">category</i>
+                        <input type="text" id="editCategory">
+                        <label for="editCategory">Category</label>
+                    </div>
+                    <div class="input-field col s12 m4" style="margin-top: 0;">
+                        <i class="material-icons prefix">label</i>
+                        <input type="text" id="editSubCategory">
+                        <label for="editSubCategory">Sub Category</label>
+                    </div>
+                    <div class="input-field col s12 m4" style="margin-top: 0;">
+                        <i class="material-icons prefix">description</i>
+                        <input type="text" id="editDescription">
+                        <label for="editDescription">Description</label>
                     </div>
                 </div>
             </form>

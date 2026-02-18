@@ -678,15 +678,6 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
         const payments = expense.payments || [];
         const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
         
-        // Populate expense details
-        const remaining = (expense.remainingBalance || 0);
-        document.getElementById('paymentExpenseDetails').innerHTML = `
-            <strong>${expense.description}</strong><br>
-            Category: ${expense.category}${expense.subCategory ? ' > ' + expense.subCategory : ''}<br>
-            Total Cost: ${formatCurrency(expense.totalCost)}
-            ${remaining > 0 ? `<br>Paid: ${formatCurrency(totalPaid)}<br>Remaining: ${formatCurrency(remaining)}` : ''}
-        `;
-        
         // Update modal title
         document.getElementById('paymentModalTitle').innerHTML = paymentIndex !== null ? '<i class="material-icons">edit</i> Edit Payment' : '<i class="material-icons">payment</i> Add Payment';
         
@@ -705,6 +696,11 @@ async function openPaymentModal(expenseId, paymentIndex = null) {
             document.getElementById('paymentNotes').value = '';
         }
         
+        // Populate expense detail fields
+        document.getElementById('editCategory').value = expense.category || '';
+        document.getElementById('editSubCategory').value = expense.subCategory || '';
+        document.getElementById('editDescription').value = expense.description || '';
+
         // Reinitialize form select and update labels
         M.FormSelect.init(document.querySelectorAll('#paymentModal select'));
         M.updateTextFields();
@@ -773,6 +769,21 @@ async function submitPayment(event) {
         }
         
         if (response.ok) {
+            // Also save expense detail fields (category, subCategory, description)
+            const editCategory = document.getElementById('editCategory').value.trim();
+            const editSubCategory = document.getElementById('editSubCategory').value.trim();
+            const editDescription = document.getElementById('editDescription').value.trim();
+            if (editCategory || editDescription) {
+                await fetch(`${API_URL}/expenses/${expenseId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        category: editCategory,
+                        subCategory: editSubCategory,
+                        description: editDescription
+                    })
+                });
+            }
             showNotification(isEditing ? 'Payment updated successfully!' : 'Payment added successfully!', 'success');
             closePaymentModal();
             await loadSummary();
