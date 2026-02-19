@@ -15,6 +15,17 @@
     
     <!-- Custom Material Styles -->
     <link rel="stylesheet" href="css/material-custom.css">
+    <style>
+        /* Personal header colors */
+        #peTotal { color: #d32f2f; }
+        #peWalletTop { color: #1976d2; }
+        #peRemaining { color: #2e7d32; }
+        .section-title small.grey-text { color: #9e9e9e; }
+        /* Match label color to their value colors (use explicit ids on labels) */
+        #peTotalLabel { color: #d32f2f; }
+        #peWalletLabel { color: #1976d2; }
+        #peRemainingLabel { color: #2e7d32; }
+    </style>
 </head>
 <body class="grey lighten-5 has-bottom-tabs">
     <!-- Navigation Bar -->
@@ -132,7 +143,7 @@
                         <!-- Chart 2: Top 10 Expenses -->
                         <div class="carousel-item white">
                             <div class="card-content" style="padding: 15px;">
-                                <span class="card-title grey-text text-darken-2" style="font-size: 0.95rem; margin-bottom: 5px; display: block.">🏆 Top 10 Expenses</span>
+                                <span class="card-title grey-text text-darken-2" style="font-size: 0.95rem; margin-bottom: 5px; display: block;">🏆 Top 10 Expenses</span>
                                 <div style="height: 480px;">
                                     <canvas id="topExpensesChart"></canvas>
                                 </div>
@@ -306,7 +317,66 @@
     </div>
 
     
+    
+        <div id="tab-personal-expense" class="tab-section col s12">
+            <div class="section-title" style="display:flex; align-items:center; gap:12px;">
+                <i class="material-icons" style="font-size:1.6rem;">wallet</i>
+                <div style="display:flex; gap:12px; align-items:center; margin-left:auto;">
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                        <span id="peTotal" style="font-weight:600; font-size:0.95rem;">₹0.00</span>
+                        <small id="peTotalLabel" class="grey-text" style="font-size:0.65rem;">Total expense</small>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                        <span id="peWalletTop" style="font-weight:600; font-size:0.95rem;">₹0.00</span>
+                        <small id="peWalletLabel" class="grey-text" style="font-size:0.65rem;">Wallet</small>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                        <span id="peRemaining" style="font-weight:600; font-size:0.95rem;">₹0.00</span>
+                        <small id="peRemainingLabel" class="grey-text" style="font-size:0.65rem;">Remaining</small>
+                    </div>
+                </div>
+            </div>
+            <div class="white" style="padding: 0 12px 12px 12px;">
+                <ul class="collapsible" style="margin: 6px 0 12px 0;">
+                    <li>
+                        <div class="collapsible-header" style="padding:8px 12px;"><i class="material-icons">add</i><span style="font-weight:600; margin-left:6px;">Add / Edit Personal Expense</span></div>
+                        <div class="collapsible-body" style="padding:8px 12px 12px 12px;">
+                            <form id="personalExpenseForm">
+                                <!-- Row 1: Date | Description | Amount -->
+                                <div class="row" style="margin-bottom:6px;">
+                                    <div class="input-field col s4" style="margin:0;">
+                                        <input type="date" id="peDate" required style="height:32px;">
+                                    </div>
+                                    <div class="input-field col s4" style="margin:0;">
+                                        <input type="text" id="peDesc" placeholder="Description" required style="height:32px;">
+                                    </div>
+                                    <div class="input-field col s4" style="margin:0;">
+                                        <input type="number" id="peAmount" step="0.01" placeholder="Amount" required style="height:32px;">
+                                    </div>
+                                </div>
 
+                                <!-- Row 2: Wallet Size | Save Wallet | Add -->
+                                <div class="row" style="margin-bottom:6px;">
+                                    <div class="input-field col s4" style="margin:0;">
+                                        <input type="number" id="peWallet" step="0.01" placeholder="Wallet size" style="height:32px;">
+                                    </div>
+                                    <div class="col s4" style="display:flex; align-items:center;">
+                                        <button id="peWalletSaveBtn" type="button" class="btn-small waves-effect waves-light grey" style="width:100%;">Save Wallet</button>
+                                    </div>
+                                    <div class="col s4" style="display:flex; align-items:center;">
+                                        <button id="peSubmitBtn" type="submit" class="btn-small waves-effect waves-light blue-grey darken-1" style="width:100%;">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+                <div id="personalExpensesList" style="margin-top:6px; height: calc(100vh - 360px); overflow-y:auto;"><!-- entries --></div>
+            </div>
+        </div>
+
+    
     <div class="bottom-tabs">
         <div class="container">
             <ul class="tabs tabs-fixed-width">
@@ -314,6 +384,7 @@
                 <li class="tab col s3"><a href="#tab-add-expense"><i class="material-icons">add_circle</i></a></li>
                 <li class="tab col s3"><a href="#tab-expense-list"><i class="material-icons">list</i></a></li>
                 <li class="tab col s3"><a href="#tab-guests"><i class="material-icons">people</i></a></li>
+                <li class="tab col s3"><a href="#tab-personal-expense"><i class="material-icons" style="font-size:1.4rem;">wallet</i></a></li>
             </ul>
         </div>
     </div>

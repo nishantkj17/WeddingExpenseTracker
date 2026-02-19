@@ -2,6 +2,7 @@ const API_URL = '/api';
 
 let currentEditId = null;
 let allExpenses = [];
+let currentPersonalEditId = null;
 
 // DOM Elements
 const budgetInput = document.getElementById('budgetInput');
@@ -23,12 +24,14 @@ const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 
 // Initialize app
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Materialize components
     initializeMaterialize();
-    loadData();
+    await loadData();
     setupEventListeners();
     initializeCharts();
+    await loadPersonalWallet();
+    await loadPersonalExpenses();
 });
 
 // Initialize Materialize components
@@ -94,6 +97,19 @@ function toggleSection(header) {
 let currentChartIndex = 0;
 let categoryChartInstance = null;
 let journeyChartInstance = null;
+// Personal expense DOM elements
+const personalExpenseForm = document.getElementById('personalExpenseForm');
+const personalExpensesList = document.getElementById('personalExpensesList');
+const peSubmitBtn = document.getElementById('peSubmitBtn');
+const peWalletInput = document.getElementById('peWallet');
+const peWalletSaveBtn = document.getElementById('peWalletSaveBtn');
+const peTotalEl = document.getElementById('peTotal');
+const peWalletTopEl = document.getElementById('peWalletTop');
+const peRemainingEl = document.getElementById('peRemaining');
+
+// Personal wallet state/cache
+let personalWalletAmount = 0;
+let personalExpensesCache = [];
 
 function showChart(index) {
     // Materialize carousel handles this
@@ -156,6 +172,14 @@ function setupEventListeners() {
             });
         }
     });
+
+    // Personal expense form
+    if (personalExpenseForm) {
+        personalExpenseForm.addEventListener('submit', submitPersonalExpense);
+        if (peWalletSaveBtn) {
+            peWalletSaveBtn.addEventListener('click', savePersonalWallet);
+        }
+    }
 }
 
 // Update total cost display
@@ -897,6 +921,218 @@ function filterExpenses() {
     loadExpenses(keyword, paidBy, pendingOnly);
 }
 
+// ===== Personal Expenses (independent) =====
+async function loadPersonalExpenses() {
+    try {
+        const res = await fetch(`${API_URL}/personal-expenses`);
+        if (!res.ok) return;
+        const items = await res.json();
+        personalExpensesCache = items || [];
+        renderPersonalExpenses(personalExpensesCache);
+        updatePersonalTotals();
+    } catch (error) {
+        console.error('Error loading personal expenses:', error);
+    }
+}
+
+function renderPersonalExpenses(items) {
+    if (!personalExpensesList) return;
+    if (!items || items.length === 0) {
+        personalExpensesList.innerHTML = `<div class="card-panel center-align grey lighten-4"><p style="margin:0">No personal expenses yet.</p></div>`;
+        return;
+    }
+    // Ensure newest first (IDs are timestamps)
+    items.sort((a,b) => b.id.localeCompare(a.id));
+
+    // Render compact single-row items to minimize vertical space
+    personalExpensesList.innerHTML = items.map(it => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:5px 4px; border-bottom:1px solid #eee; font-size:0.85rem;">
+            <div style="display:flex; gap:8px; align-items:center; flex:1; min-width:0;">
+                <div title="${(it.description||'').replace(/"/g,'&quot;')}" style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; font-size:0.9rem;">${it.description}</div>
+                <div style="width:64px; color:#616161; font-size:0.82rem; text-align:right;">${formatDateShort(it.date)}</div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; margin-left:10px;">
+                <div style="width:84px; text-align:right; font-weight:600; font-size:0.9rem;">${formatCurrency(it.amount)}</div>
+                <a href="#" onclick="editPersonalExpense('${it.id}'); return false;" title="Edit" style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; padding:0; border-radius:4px; background:transparent;">
+                    <i class="material-icons" style="font-size:16px; color:#546e7a;">edit</i>
+                </a>
+                <a href="#" onclick="confirmDeletePersonalExpense('${it.id}'); return false;" title="Delete" style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; padding:0; border-radius:4px; background:transparent;">
+                    <i class="material-icons" style="font-size:16px; color:#616161;">delete</i>
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function submitPersonalExpense(e) {
+    e.preventDefault();
+    if (!personalExpenseForm) return;
+    const date = document.getElementById('peDate').value;
+    const description = document.getElementById('peDesc').value.trim();
+    const amount = parseFloat(document.getElementById('peAmount').value) || 0;
+
+    if (!description || !amount) {
+        showNotification('Please enter date, description and amount', 'error');
+        return;
+    }
+
+    try {
+        let res;
+        if (currentPersonalEditId) {
+            // update
+            res = await fetch(`${API_URL}/personal-expenses/${currentPersonalEditId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ date, description, amount })
+            });
+        } else {
+            res = await fetch(`${API_URL}/personal-expenses`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ date, description, amount })
+            });
+        }
+
+        if (res.ok) {
+            personalExpenseForm.reset();
+            currentPersonalEditId = null;
+            if (peSubmitBtn) peSubmitBtn.textContent = 'Add';
+            M.updateTextFields();
+            await loadPersonalExpenses();
+            showNotification(currentPersonalEditId ? 'Personal expense updated' : 'Personal expense added', 'success');
+        } else {
+            showNotification('Failed to save personal expense', 'error');
+        }
+    } catch (err) {
+        console.error('Error adding personal expense:', err);
+        showNotification('Error adding personal expense', 'error');
+    }
+}
+
+function editPersonalExpense(id) {
+    // populate form with existing entry
+    (async () => {
+        try {
+            const res = await fetch(`${API_URL}/personal-expenses`);
+            if (!res.ok) return;
+            const items = await res.json();
+            const it = (items || []).find(x => x.id === id);
+            if (!it) return;
+            document.getElementById('peDate').value = it.date;
+            document.getElementById('peDesc').value = it.description;
+            document.getElementById('peAmount').value = it.amount;
+            currentPersonalEditId = id;
+            if (peSubmitBtn) peSubmitBtn.textContent = 'Save';
+            M.updateTextFields();
+
+            // Ensure collapsible is expanded so the form is visible when editing
+            try {
+                const collapsibleElem = document.querySelector('.collapsible');
+                if (collapsibleElem) {
+                    let instance = M.Collapsible.getInstance(collapsibleElem);
+                    if (!instance) instance = M.Collapsible.init(collapsibleElem, { accordion: true });
+                    // open first item (index 0)
+                    if (instance && typeof instance.open === 'function') {
+                        instance.open(0);
+                    } else if (collapsibleElem.classList.contains('collapsible')) {
+                        // fallback: toggle by removing/adding active class on the li
+                        const firstLi = collapsibleElem.querySelector('li');
+                        if (firstLi && !firstLi.classList.contains('active')) {
+                            firstLi.classList.add('active');
+                        }
+                    }
+                }
+            } catch (e) {
+                // ignore any errors while trying to open collapsible
+            }
+
+            // switch to personal-expense tab if needed
+            const tabLink = document.querySelector('a[href="#tab-personal-expense"]');
+            if (tabLink) tabLink.click();
+        } catch (err) {
+            console.error('Error preparing edit:', err);
+        }
+    })();
+}
+
+function confirmDeletePersonalExpense(id) {
+    showConfirm('Delete Personal Expense', 'Are you sure you want to delete this personal expense?', async () => {
+        try {
+            const res = await fetch(`${API_URL}/personal-expenses/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadPersonalExpenses();
+                showNotification('Deleted', 'success');
+            } else {
+                showNotification('Failed to delete', 'error');
+            }
+        } catch (err) {
+            console.error('Error deleting personal expense:', err);
+            showNotification('Error deleting', 'error');
+        }
+    });
+}
+
+async function deletePersonalExpense(id) {
+    if (!confirm('Delete this personal expense?')) return;
+    try {
+        const res = await fetch(`${API_URL}/personal-expenses/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await loadPersonalExpenses();
+            showNotification('Deleted', 'success');
+        } else {
+            showNotification('Failed to delete', 'error');
+        }
+    } catch (err) {
+        console.error('Error deleting personal expense:', err);
+        showNotification('Error deleting', 'error');
+    }
+}
+
+// Load personal wallet amount from server
+async function loadPersonalWallet() {
+    try {
+        const res = await fetch(`${API_URL}/personal-wallet`);
+        if (!res.ok) return;
+        const obj = await res.json();
+        personalWalletAmount = parseFloat(obj.amount) || 0;
+        if (peWalletInput) peWalletInput.value = personalWalletAmount || '';
+        updatePersonalTotals();
+    } catch (err) {
+        console.error('Error loading personal wallet:', err);
+    }
+}
+
+// Save personal wallet amount to server
+async function savePersonalWallet() {
+    try {
+        const val = parseFloat((peWalletInput && peWalletInput.value) || 0) || 0;
+        const res = await fetch(`${API_URL}/personal-wallet`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: val })
+        });
+        if (res.ok) {
+            personalWalletAmount = val;
+            updatePersonalTotals();
+            showNotification('Wallet size saved', 'success');
+        } else {
+            showNotification('Failed to save wallet', 'error');
+        }
+    } catch (err) {
+        console.error('Error saving wallet:', err);
+        showNotification('Error saving wallet', 'error');
+    }
+}
+
+// Update total and remaining values in the UI
+function updatePersonalTotals() {
+    const total = (personalExpensesCache || []).reduce((s, it) => s + (parseFloat(it.amount) || 0), 0);
+    if (peTotalEl) peTotalEl.textContent = formatCurrency(total);
+    const remaining = (personalWalletAmount || 0) - total;
+    if (peRemainingEl) peRemainingEl.textContent = formatCurrency(remaining);
+    if (peWalletTopEl) peWalletTopEl.textContent = formatCurrency(personalWalletAmount || 0);
+}
+
 // Utility functions
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-IN', {
@@ -909,6 +1145,15 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// Short date format: e.g., "Feb 18" (no year)
+function formatDateShort(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric'
     });

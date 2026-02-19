@@ -7,6 +7,8 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'expenses.json');
+const PERSONAL_FILE = path.join(__dirname, 'data', 'personal_expense.json');
+const WALLET_FILE = path.join(__dirname, 'data', 'personal_wallet.json');
 
 // Middleware
 app.use(cors());
@@ -41,6 +43,45 @@ async function readData() {
     } catch (error) {
         console.error('Error reading data:', error);
         return { budget: 0, expenses: [] };
+    }
+}
+
+// Helper functions for personal expenses
+async function readPersonalData() {
+    try {
+        const data = await fs.readFile(PERSONAL_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('Error reading personal expense data:', error);
+        return [];
+    }
+}
+
+async function writePersonalData(arr) {
+    try {
+        await fs.writeFile(PERSONAL_FILE, JSON.stringify(arr, null, 2));
+    } catch (error) {
+        console.error('Error writing personal expense data:', error);
+        throw error;
+    }
+}
+
+// Helper functions for wallet (personal wallet size)
+async function readWalletData() {
+    try {
+        const data = await fs.readFile(WALLET_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        return { amount: 0 };
+    }
+}
+
+async function writeWalletData(obj) {
+    try {
+        await fs.writeFile(WALLET_FILE, JSON.stringify(obj, null, 2));
+    } catch (error) {
+        console.error('Error writing wallet data:', error);
+        throw error;
     }
 }
 
@@ -325,6 +366,102 @@ app.get('/api/summary', async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ error: 'Failed to get summary' });
+    }
+});
+
+// ===== PERSONAL EXPENSES =====
+
+// Get all personal expenses
+app.get('/api/personal-expenses', async (req, res) => {
+    try {
+        const items = await readPersonalData();
+        res.json(items);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve personal expenses' });
+    }
+});
+
+// Create a personal expense
+app.post('/api/personal-expenses', async (req, res) => {
+    try {
+        const items = await readPersonalData();
+        const newItem = {
+            id: Date.now().toString(),
+            date: req.body.date || new Date().toISOString().split('T')[0],
+            description: req.body.description || '',
+            amount: parseFloat(req.body.amount) || 0
+        };
+        items.push(newItem);
+        await writePersonalData(items);
+        res.status(201).json(newItem);
+    } catch (error) {
+        console.error('Error creating personal expense:', error);
+        res.status(500).json({ error: 'Failed to create personal expense' });
+    }
+});
+
+// Delete a personal expense
+app.delete('/api/personal-expenses/:id', async (req, res) => {
+    try {
+        const items = await readPersonalData();
+        const filtered = items.filter(i => i.id !== req.params.id);
+        if (filtered.length === items.length) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        await writePersonalData(filtered);
+        res.json({ message: 'Deleted' });
+    } catch (error) {
+        console.error('Error deleting personal expense:', error);
+        res.status(500).json({ error: 'Failed to delete personal expense' });
+    }
+});
+
+// Update a personal expense
+app.put('/api/personal-expenses/:id', async (req, res) => {
+    try {
+        const items = await readPersonalData();
+        const index = items.findIndex(i => i.id === req.params.id);
+        if (index === -1) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        const updated = {
+            ...items[index],
+            date: req.body.date || items[index].date,
+            description: req.body.description !== undefined ? req.body.description : items[index].description,
+            amount: req.body.amount !== undefined ? parseFloat(req.body.amount) || 0 : items[index].amount
+        };
+
+        items[index] = updated;
+        await writePersonalData(items);
+        res.json(updated);
+    } catch (error) {
+        console.error('Error updating personal expense:', error);
+        res.status(500).json({ error: 'Failed to update personal expense' });
+    }
+});
+
+// ===== PERSONAL WALLET =====
+// Get personal wallet (amount)
+app.get('/api/personal-wallet', async (req, res) => {
+    try {
+        const wallet = await readWalletData();
+        res.json(wallet);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve wallet' });
+    }
+});
+
+// Update personal wallet amount
+app.put('/api/personal-wallet', async (req, res) => {
+    try {
+        const amount = parseFloat(req.body.amount) || 0;
+        const obj = { amount };
+        await writeWalletData(obj);
+        res.json(obj);
+    } catch (error) {
+        console.error('Error updating wallet:', error);
+        res.status(500).json({ error: 'Failed to update wallet' });
     }
 });
 
